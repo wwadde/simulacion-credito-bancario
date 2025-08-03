@@ -1,0 +1,3 @@
+com\william\credito\service\CreditServiceImplTest.class
+com\william\credito\FeignTestConfig.class
+com\william\credito\infrastructure\controller\CreditControllerTest.class

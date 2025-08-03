@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="bba7281e-8d9a-4728-945a-39a614b43ddc" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Exception" />
+        <option value="Record" />
+        <option value="JUnit5 Test Class" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;wwadde&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/wwadde/Gestionar-Credito.git&quot;,
+    &quot;accountId&quot;: &quot;961bc414-48b0-4a05-be84-e4be0d8509ed&quot;
+  }
+}</component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2mlGxgVBiC04xOqbcVZ2tVXpIN1" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.CreditoApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.CuentaApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.DiscoveryServerApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.GatewayApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.PersonaApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Test.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AuthControllerIntegrationTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AuthControllerIntegrationTest.refreshToken_ShouldReturnBadRequest_WhenRefreshTokenNotFound.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AuthControllerRefreshTokenTest.refreshToken_ShouldCallAuthServiceWithCorrectToken.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AuthControllerRefreshTokenTest.refreshToken_ShouldReturnNewAccessToken_WhenRequestIsValid.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AuthControllerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AuthControllerTest.refreshToken_EndToEnd_ShouldWork.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AuthServiceRefreshTokenTest.refreshToken_ShouldReturnNewAccessToken_WhenRefreshTokenIsValid.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.credito-service [org.springframework.boot:spring-boot-maven-plugin:3.5.3:run].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.AuthApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.AuthServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.CreditoApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.CuentaApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.DiscoveryServerApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.GatewayApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.PersonaApplication.executor&quot;: &quot;Run&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/William/Documents/IdeaProjects/GestionCredito/credito-service/src/main/resources&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\William\Documents\IdeaProjects\GestionCredito\credito-service\src\main\resources" />
+      <recent name="C:\Users\William\Documents\IdeaProjects\GestionCredito\cuenta-service\src\main\resources" />
+      <recent name="C:\Users\William\Documents\IdeaProjects\GestionCredito\persona-service\src\main\resources\certs" />
+      <recent name="C:\Users\William\Documents\IdeaProjects\GestionCredito\persona-service\src\main\resources" />
+      <recent name="C:\Users\William\Documents\IdeaProjects\Gestionar-Credito" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\William\Documents\IdeaProjects\GestionCredito\persona-service\src\main\resources\certs" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.william.authservice.service" />
+      <recent name="com.william.credito.infrastructure.controller" />
+      <recent name="com.william.credito.service" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="KtorApplicationConfigurationType" />
+        <option value="MicronautRunConfigurationType" />
+        <option value="QuarkusRunConfigurationType" />
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+  </component>
+  <component name="RunManager" selected="JUnit.AuthControllerIntegrationTest.refreshToken_ShouldReturnBadRequest_WhenRefreshTokenNotFound">
+    <configuration name="AuthControllerIntegrationTest.refreshToken_ShouldReturnBadRequest_WhenRefreshTokenNotFound" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="auth-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.william.authservice.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.william.authservice.service" />
+      <option name="MAIN_CLASS_NAME" value="com.william.authservice.service.AuthControllerIntegrationTest" />
+      <option name="METHOD_NAME" value="refreshToken_ShouldReturnBadRequest_WhenRefreshTokenNotFound" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AuthControllerRefreshTokenTest.refreshToken_ShouldCallAuthServiceWithCorrectToken" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="auth-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.william.authservice.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.william.authservice.service" />
+      <option name="MAIN_CLASS_NAME" value="com.william.authservice.service.AuthControllerRefreshTokenTest" />
+      <option name="METHOD_NAME" value="refreshToken_ShouldCallAuthServiceWithCorrectToken" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AuthServiceRefreshTokenTest.refreshToken_ShouldReturnNewAccessToken_WhenRefreshTokenIsValid" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="auth-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.william.authservice.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.william.authservice.service" />
+      <option name="MAIN_CLASS_NAME" value="com.william.authservice.service.AuthServiceRefreshTokenTest" />
+      <option name="METHOD_NAME" value="refreshToken_ShouldReturnNewAccessToken_WhenRefreshTokenIsValid" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AuthApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="auth-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.william.authservice.AuthApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CreditoApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="credito-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.william.credito.CreditoApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CuentaApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="cuenta-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.william.cuenta.CuentaApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DiscoveryServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="discovery-server" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.william.discoveryserver.DiscoveryServerApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.william.discoveryserver.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GatewayApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="gateway-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.william.gateway.GatewayApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PersonaApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="persona-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.william.persona.PersonaApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="JUnit.AuthControllerIntegrationTest.refreshToken_ShouldReturnBadRequest_WhenRefreshTokenNotFound" />
+      <item itemvalue="JUnit.AuthControllerRefreshTokenTest.refreshToken_ShouldCallAuthServiceWithCorrectToken" />
+      <item itemvalue="JUnit.AuthServiceRefreshTokenTest.refreshToken_ShouldReturnNewAccessToken_WhenRefreshTokenIsValid" />
+      <item itemvalue="Spring Boot.AuthApplication" />
+      <item itemvalue="Spring Boot.CreditoApplication" />
+      <item itemvalue="Spring Boot.CuentaApplication" />
+      <item itemvalue="Spring Boot.GatewayApplication" />
+      <item itemvalue="Spring Boot.PersonaApplication" />
+      <item itemvalue="Spring Boot.DiscoveryServerApplication" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.DiscoveryServerApplication" />
+        <item itemvalue="JUnit.AuthControllerIntegrationTest.refreshToken_ShouldReturnBadRequest_WhenRefreshTokenNotFound" />
+        <item itemvalue="JUnit.AuthServiceRefreshTokenTest.refreshToken_ShouldReturnNewAccessToken_WhenRefreshTokenIsValid" />
+        <item itemvalue="JUnit.AuthControllerRefreshTokenTest.refreshToken_ShouldCallAuthServiceWithCorrectToken" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.27812.49" />
+        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-IU-251.27812.49" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="bba7281e-8d9a-4728-945a-39a614b43ddc" name="Changes" comment="" />
+      <created>1727643996909</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1727643996909</updated>
+      <workItem from="1729568040880" duration="2600000" />
+      <workItem from="1729608758779" duration="489000" />
+      <workItem from="1729787071159" duration="32000" />
+      <workItem from="1729787187952" duration="101000" />
+      <workItem from="1731343827229" duration="630000" />
+      <workItem from="1752461731906" duration="7963000" />
+      <workItem from="1752513982184" duration="2431000" />
+      <workItem from="1752723547390" duration="4471000" />
+      <workItem from="1752844273104" duration="392000" />
+      <workItem from="1752844689048" duration="1602000" />
+      <workItem from="1752903725497" duration="442000" />
+      <workItem from="1753363445191" duration="10000" />
+      <workItem from="1753365350854" duration="2090000" />
+      <workItem from="1753368792700" duration="28000" />
+      <workItem from="1753368824725" duration="232000" />
+      <workItem from="1753369082133" duration="167000" />
+      <workItem from="1753369259913" duration="41000" />
+      <workItem from="1753369357874" duration="1528000" />
+      <workItem from="1753371681634" duration="16000" />
+      <workItem from="1753371924086" duration="11288000" />
+      <workItem from="1753418944658" duration="2351000" />
+      <workItem from="1753560107862" duration="363000" />
+      <workItem from="1753560564294" duration="16264000" />
+      <workItem from="1753671613788" duration="8246000" />
+      <workItem from="1753762991141" duration="6164000" />
+      <workItem from="1753909577588" duration="12294000" />
+      <workItem from="1753939745912" duration="5689000" />
+      <workItem from="1754019038531" duration="4662000" />
+      <workItem from="1754160515330" duration="1495000" />
+      <workItem from="1754183261334" duration="9129000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.pem" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="com.william.persona.config.exceptions.PersonNotFoundException" package="com.william.persona.config.exceptions" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

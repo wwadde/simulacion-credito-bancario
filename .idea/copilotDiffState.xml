@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/auth-service/src/main/java/com/william/authservice/dto/LoginRequest.java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/auth-service/src/main/java/com/william/authservice/dto/LoginRequest.java" />
+              <option name="updatedContent" value="package com.william.authservice.dto;&#10;&#10;import jakarta.validation.constraints.Email;&#10;import jakarta.validation.constraints.NotBlank;&#10;import jakarta.validation.constraints.Size;&#10;&#10;public class LoginRequest {&#10;    &#10;    @NotBlank&#10;    private String username;&#10;    &#10;    @NotBlank&#10;    private String password;&#10;    &#10;    public LoginRequest() {}&#10;    &#10;    public LoginRequest(String username, String password) {&#10;        this.username = username;&#10;        this.password = password;&#10;    }&#10;    &#10;    public String getUsername() {&#10;        return username;&#10;    }&#10;    &#10;    public void setUsername(String username) {&#10;        this.username = username;&#10;    }&#10;    &#10;    public String getPassword() {&#10;        return password;&#10;    }&#10;    &#10;    public void setPassword(String password) {&#10;        this.password = password;&#10;    }&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/auth-service/src/main/java/com/william/authservice/entity/Role.java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/auth-service/src/main/java/com/william/authservice/entity/Role.java" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/auth-service/src/main/java/com/william/authservice/entity/Usuario.java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/auth-service/src/main/java/com/william/authservice/entity/Usuario.java" />
+              <option name="updatedContent" value="package com.william.authservice.entity;&#10;&#10;import jakarta.persistence.*;&#10;import jakarta.validation.constraints.Email;&#10;import jakarta.validation.constraints.NotBlank;&#10;import jakarta.validation.constraints.Size;&#10;import org.springframework.security.core.GrantedAuthority;&#10;import org.springframework.security.core.authority.SimpleGrantedAuthority;&#10;import org.springframework.security.core.userdetails.UserDetails;&#10;&#10;import java.util.Collection;&#10;import java.util.List;&#10;&#10;@Entity&#10;@Table(name = &quot;usuarios&quot;)&#10;public class Usuario implements UserDetails {&#10;&#10;    @Id&#10;    @GeneratedValue(strategy = GenerationType.IDENTITY)&#10;    private Long id;&#10;&#10;    @NotBlank&#10;    @Size(max = 50)&#10;    @Column(unique = true)&#10;    private String username;&#10;&#10;    @NotBlank&#10;    @Size(max = 100)&#10;    @Email&#10;    @Column(unique = true)&#10;    private String email;&#10;&#10;    @NotBlank&#10;    @Size(max = 120)&#10;    private String password;&#10;&#10;    @Enumerated(EnumType.STRING)&#10;    private Role role = Role.USER;&#10;&#10;    private boolean enabled = true;&#10;    private boolean accountNonExpired = true;&#10;    private boolean accountNonLocked = true;&#10;    private boolean credentialsNonExpired = true;&#10;&#10;    public Usuario() {}&#10;&#10;    public Usuario(String username, String email, String password) {&#10;        this.username = username;&#10;        this.email = email;&#10;        this.password = password;&#10;    }&#10;&#10;    // Getters y Setters&#10;    public Long getId() {&#10;        return id;&#10;    }&#10;&#10;    public void setId(Long id) {&#10;        this.id = id;&#10;    }&#10;&#10;    public String getUsername() {&#10;        return username;&#10;    }&#10;&#10;    public void setUsername(String username) {&#10;        this.username = username;&#10;    }&#10;&#10;    public String getEmail() {&#10;        return email;&#10;    }&#10;&#10;    public void setEmail(String email) {&#10;        this.email = email;&#10;    }&#10;&#10;    public String getPassword() {&#10;        return password;&#10;    }&#10;&#10;    public void setPassword(String password) {&#10;        this.password = password;&#10;    }&#10;&#10;    public Role getRole() {&#10;        return role;&#10;    }&#10;&#10;    public void setRole(Role role) {&#10;        this.role = role;&#10;    }&#10;&#10;    public void setEnabled(boolean enabled) {&#10;        this.enabled = enabled;&#10;    }&#10;&#10;    public void setAccountNonExpired(boolean accountNonExpired) {&#10;        this.accountNonExpired = accountNonExpired;&#10;    }&#10;&#10;    public void setAccountNonLocked(boolean accountNonLocked) {&#10;        this.accountNonLocked = accountNonLocked;&#10;    }&#10;&#10;    public void setCredentialsNonExpired(boolean credentialsNonExpired) {&#10;        this.credentialsNonExpired = credentialsNonExpired;&#10;    }&#10;&#10;    // Métodos de UserDetails&#10;    @Override&#10;    public Collection&lt;? extends GrantedAuthority&gt; getAuthorities() {&#10;        return List.of(new SimpleGrantedAuthority(&quot;ROLE_&quot; + role.name()));&#10;    }&#10;&#10;    @Override&#10;    public boolean isAccountNonExpired() {&#10;        return accountNonExpired;&#10;    }&#10;&#10;    @Override&#10;    public boolean isAccountNonLocked() {&#10;        return accountNonLocked;&#10;    }&#10;&#10;    @Override&#10;    public boolean isCredentialsNonExpired() {&#10;        return credentialsNonExpired;&#10;    }&#10;&#10;    @Override&#10;    public boolean isEnabled() {&#10;        return enabled;&#10;    }&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/auth-service/src/main/java/com/william/authservice/repository/UsuarioRepository.java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/auth-service/src/main/java/com/william/authservice/repository/UsuarioRepository.java" />
+              <option name="updatedContent" value="package com.william.authservice.repository;&#10;&#10;import com.william.authservice.entity.Usuario;&#10;import org.springframework.data.jpa.repository.JpaRepository;&#10;import org.springframework.stereotype.Repository;&#10;&#10;import java.util.Optional;&#10;&#10;@Repository&#10;public interface UsuarioRepository extends JpaRepository&lt;Usuario, Long&gt; {&#10;    &#10;    Optional&lt;Usuario&gt; findByUsername(String username);&#10;    &#10;    Optional&lt;Usuario&gt; findByEmail(String email);&#10;    &#10;    Boolean existsByUsername(String username);&#10;    &#10;    Boolean existsByEmail(String email);&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/pom.xml">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/pom.xml" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
