@@ -10,6 +10,7 @@ import com.william.cuenta.infrastructure.dao.payment.PaymentDao;
 import com.william.cuenta.infrastructure.dto.AccountDTO;
 import com.william.cuenta.infrastructure.dto.PersonResponseDTO;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +37,8 @@ public class AccountServiceImpl implements AccountService {
     private final Function<Account, AccountDTO> entityToAccountDTO;
     private final AccountDao accountDao;
     private final PaymentDao paymentDao;
+    @Value("${persona.base-url}")
+    private String personaServiceUrl;
 
 
     @Override
@@ -122,7 +125,7 @@ public class AccountServiceImpl implements AccountService {
 
     private PersonResponseDTO fetchPerson(Long personId, String bearerToken) {
         return restClient.get()
-                .uri("http://localhost:8080/persona/private?personaId={personId}", personId)
+                .uri(personaServiceUrl+"/private?personaId={personId}", personId)
                 .header("Authorization", bearerToken)
                 .retrieve()
                 .onStatus(status -> status.value() == HttpStatus.NOT_FOUND.value(),
