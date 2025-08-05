@@ -1,5 +1,6 @@
 package com.william.persona.infrastructure.controller;
 
+import com.william.persona.config.exceptions.PersonException;
 import com.william.persona.infrastructure.dto.EditPersonDTO;
 import com.william.persona.infrastructure.dto.PersonDTO;
 import com.william.persona.service.PersonService;
@@ -19,6 +20,11 @@ public class PersonController {
     @GetMapping
     public ResponseEntity<PersonDTO> findPerson(@RequestParam(name = "personaId", required = false) Long id,
                                                 @RequestParam(name = "personaDocumento", required = false) String document) {
+
+        if (id == null && document == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
         if (id != null) {
             return ResponseEntity.ok(personService.findPerson(id));
         }

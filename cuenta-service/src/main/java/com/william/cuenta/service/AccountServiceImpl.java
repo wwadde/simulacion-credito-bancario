@@ -130,14 +130,17 @@ public class AccountServiceImpl implements AccountService {
                 .retrieve()
                 .onStatus(status -> status.value() == HttpStatus.NOT_FOUND.value(),
                         (request, response) -> {
-                            throw new AccountNotFoundException("Person with id: " + personId + " not found");
+                            log.error(new String(response.getBody().readAllBytes()));
+                            throw new AccountNotFoundException("Person with document: " + personId + " not found");
                         })
                 .onStatus(HttpStatusCode::is4xxClientError,
                         (request, response) -> {
+                            log.error(new String(response.getBody().readAllBytes()));
                             throw new AccountException(new String(response.getBody().readAllBytes()));
                         })
                 .onStatus(HttpStatusCode::is5xxServerError,
                         (request, response) -> {
+                            log.error(new String(response.getBody().readAllBytes()));
                             throw new AccountException("External service error");
                         })
                 .body(PersonResponseDTO.class);
