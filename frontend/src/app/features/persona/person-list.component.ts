@@ -429,7 +429,8 @@ export class PersonListComponent implements OnInit {
 
   openPersonDialog(person?: PersonDTO): void {
     const dialogRef = this.dialog.open(PersonFormDialogComponent, {
-      width: '600px',
+      maxWidth: '90vw',
+      width: 'auto',
       data: person ? { ...person } : null
     });
 

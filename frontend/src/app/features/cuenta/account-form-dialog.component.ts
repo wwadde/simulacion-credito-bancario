@@ -161,14 +161,15 @@ import { PersonDTO } from '../../core/models/person.model';
     }
 
     .account-form {
-      min-width: 700px;
-      max-width: 850px;
+      width: 100%;
+      max-width: 650px;
+      min-width: 320px;
       padding: 0;
     }
 
     .form-section {
-      margin-bottom: 32px;
-      padding: 24px;
+      margin-bottom: 24px;
+      padding: 20px;
       background: var(--surface-color);
       border-radius: 12px;
       border: 1px solid var(--border-color);
@@ -185,7 +186,7 @@ import { PersonDTO } from '../../core/models/person.model';
       display: flex;
       align-items: center;
       gap: 8px;
-      margin: 0 0 20px 0;
+      margin: 0 0 16px 0;
       font-size: 18px;
       font-weight: 600;
       color: #4caf50;
@@ -200,7 +201,7 @@ import { PersonDTO } from '../../core/models/person.model';
 
     .full-width {
       width: 100%;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .person-option {
@@ -326,6 +327,21 @@ import { PersonDTO } from '../../core/models/person.model';
       background: linear-gradient(135deg, 
         rgba(76, 175, 80, 0.02), 
         rgba(139, 195, 74, 0.02));
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Dialog container width control */
+    :host ::ng-deep .mat-mdc-dialog-container {
+      max-width: 90vw !important;
+      width: auto !important;
+      min-width: 320px !important;
+    }
+
+    :host ::ng-deep .mat-mdc-dialog-surface {
+      max-width: 650px !important;
+      width: auto !important;
+      min-width: 320px !important;
     }
 
     mat-dialog-title {
@@ -801,8 +817,9 @@ import { PersonDTO } from '../../core/models/person.model';
     /* Responsive design */
     @media (max-width: 768px) {
       .account-form {
-        min-width: unset;
+        min-width: 280px;
         max-width: 100%;
+        width: 100%;
       }
 
       .dialog-header {
@@ -819,19 +836,65 @@ import { PersonDTO } from '../../core/models/person.model';
       }
 
       .form-section {
-        margin-bottom: 20px;
+        margin-bottom: 16px;
         padding: 16px;
       }
 
       .section-title {
         font-size: 16px;
       }
+
+      :host ::ng-deep .mat-mdc-dialog-container {
+        max-width: 95vw !important;
+        margin: 16px !important;
+      }
+
+      :host ::ng-deep .mat-mdc-dialog-surface {
+        max-width: 100% !important;
+        margin: 0 !important;
+      }
     }
 
-    @media (min-width: 1200px) {
+    @media (max-width: 576px) {
       .account-form {
-        min-width: 850px;
-        max-width: 950px;
+        min-width: 280px;
+        max-width: 100%;
+      }
+
+      .form-section {
+        padding: 12px;
+        margin-bottom: 16px;
+      }
+
+      .full-width {
+        margin-bottom: 16px;
+      }
+
+      :host ::ng-deep .mat-mdc-dialog-container {
+        max-width: 98vw !important;
+        margin: 8px !important;
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .account-form {
+        min-width: 500px;
+        max-width: 600px;
+      }
+
+      :host ::ng-deep .mat-mdc-dialog-surface {
+        max-width: 600px !important;
+      }
+    }
+
+    @media (min-width: 1025px) {
+      .account-form {
+        min-width: 550px;
+        max-width: 650px;
+      }
+
+      :host ::ng-deep .mat-mdc-dialog-surface {
+        max-width: 650px !important;
       }
     }
 

@@ -235,14 +235,15 @@ import { PersonDTO, EditPersonDTO, DocumentType, PersonStatus, AddPersonDTO } fr
     }
 
     .person-form {
-      min-width: 700px;
-      max-width: 850px;
+      width: 100%;
+      max-width: 650px;
+      min-width: 320px;
       padding: 0;
     }
 
     .form-section {
-      margin-bottom: 32px;
-      padding: 24px;
+      margin-bottom: 24px;
+      padding: 20px;
       background: var(--surface-color);
       border-radius: 12px;
       border: 1px solid var(--border-color);
@@ -259,7 +260,7 @@ import { PersonDTO, EditPersonDTO, DocumentType, PersonStatus, AddPersonDTO } fr
       display: flex;
       align-items: center;
       gap: 8px;
-      margin: 0 0 20px 0;
+      margin: 0 0 16px 0;
       font-size: 18px;
       font-weight: 600;
       color: var(--primary-color);
@@ -274,19 +275,19 @@ import { PersonDTO, EditPersonDTO, DocumentType, PersonStatus, AddPersonDTO } fr
 
     .form-row {
       display: flex;
-      gap: 20px;
+      gap: 16px;
       width: 100%;
       align-items: flex-start;
     }
 
     .full-width {
       width: 100%;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .half-width {
       flex: 1;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     mat-dialog-content {
@@ -296,6 +297,21 @@ import { PersonDTO, EditPersonDTO, DocumentType, PersonStatus, AddPersonDTO } fr
       background: linear-gradient(135deg, 
         rgba(103, 58, 183, 0.02), 
         rgba(156, 39, 176, 0.02));
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Dialog container width control */
+    :host ::ng-deep .mat-mdc-dialog-container {
+      max-width: 90vw !important;
+      width: auto !important;
+      min-width: 320px !important;
+    }
+
+    :host ::ng-deep .mat-mdc-dialog-surface {
+      max-width: 650px !important;
+      width: auto !important;
+      min-width: 320px !important;
     }
 
     mat-dialog-title {
@@ -573,8 +589,9 @@ import { PersonDTO, EditPersonDTO, DocumentType, PersonStatus, AddPersonDTO } fr
     /* Responsive design */
     @media (max-width: 768px) {
       .person-form {
-        min-width: unset;
+        min-width: 280px;
         max-width: 100%;
+        width: 100%;
       }
       
       .form-row {
@@ -607,12 +624,62 @@ import { PersonDTO, EditPersonDTO, DocumentType, PersonStatus, AddPersonDTO } fr
       .section-title {
         font-size: 16px;
       }
+
+      :host ::ng-deep .mat-mdc-dialog-container {
+        max-width: 95vw !important;
+        margin: 16px !important;
+      }
+
+      :host ::ng-deep .mat-mdc-dialog-surface {
+        max-width: 100% !important;
+        margin: 0 !important;
+      }
     }
 
-    @media (min-width: 1200px) {
+    @media (max-width: 576px) {
       .person-form {
-        min-width: 850px;
-        max-width: 950px;
+        min-width: 280px;
+        max-width: 100%;
+      }
+
+      .form-section {
+        padding: 12px;
+        margin-bottom: 16px;
+      }
+
+      .form-row {
+        gap: 0;
+      }
+
+      .half-width, .full-width {
+        margin-bottom: 16px;
+      }
+
+      :host ::ng-deep .mat-mdc-dialog-container {
+        max-width: 98vw !important;
+        margin: 8px !important;
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .person-form {
+        min-width: 500px;
+        max-width: 600px;
+      }
+
+      :host ::ng-deep .mat-mdc-dialog-surface {
+        max-width: 600px !important;
+      }
+    }
+
+    @media (min-width: 1025px) {
+      .person-form {
+        min-width: 550px;
+        max-width: 650px;
+      }
+
+      :host ::ng-deep .mat-mdc-dialog-surface {
+        max-width: 650px !important;
       }
     }
 
