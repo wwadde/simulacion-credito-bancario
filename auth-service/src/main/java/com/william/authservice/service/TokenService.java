@@ -48,7 +48,7 @@ public class TokenService {
                 .subject(person.getName())
                 .claim("personId", person.getId())
                 .build();
-        return Pair.of(this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue(), claims.getIssuedAt());
+        return Pair.of(this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue(), claims.getExpiresAt());
     }
 
     public Long extractPersonIdFromExpiredToken(String token) {
