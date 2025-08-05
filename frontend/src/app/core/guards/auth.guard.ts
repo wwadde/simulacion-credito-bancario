@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { LoggerService } from '../services/logger.service';
+import { STORAGE_KEYS } from '../constants/app.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -9,26 +11,29 @@ export class AuthGuard implements CanActivate {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private logger: LoggerService
   ) {}
 
   canActivate(): boolean {
-    console.log('AuthGuard: Checking authentication...');
+    this.logger.debug('AuthGuard: Checking authentication');
     
     // Verificar si hay token en localStorage
-    const token = localStorage.getItem('access_token');
-    const expiresAt = localStorage.getItem('expires_at');
-    console.log('AuthGuard: Token exists:', !!token);
-    console.log('AuthGuard: Expires at:', expiresAt);
+    const token = localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
+    const expiresAt = localStorage.getItem(STORAGE_KEYS.EXPIRES_AT);
+    
+    this.logger.debug('AuthGuard: Token validation', { 
+      hasToken: !!token, 
+      expiresAt 
+    });
     
     const isAuth = this.authService.isAuthenticated();
-    console.log('AuthGuard: Is authenticated?', isAuth);
     
     if (isAuth) {
-      console.log('AuthGuard: User is authenticated, allowing access');
+      this.logger.debug('AuthGuard: User authenticated, access granted');
       return true;
     } else {
-      console.log('AuthGuard: User is not authenticated, redirecting to login');
+      this.logger.info('AuthGuard: User not authenticated, redirecting to login');
       this.router.navigate(['/auth/login']);
       return false;
     }

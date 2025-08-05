@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { LoggerService } from '../services/logger.service';
+import { STORAGE_KEYS } from '../constants/app.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -9,26 +11,29 @@ export class PublicGuard implements CanActivate {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private logger: LoggerService
   ) {}
 
   canActivate(): boolean {
-    console.log('PublicGuard: Checking authentication...');
+    this.logger.debug('PublicGuard: Checking authentication');
     
     // Verificar si hay token en localStorage
-    const token = localStorage.getItem('access_token');
-    const expiresAt = localStorage.getItem('expires_at');
-    console.log('PublicGuard: Token exists:', !!token);
-    console.log('PublicGuard: Expires at:', expiresAt);
+    const token = localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
+    const expiresAt = localStorage.getItem(STORAGE_KEYS.EXPIRES_AT);
+    
+    this.logger.debug('PublicGuard: Token validation', { 
+      hasToken: !!token, 
+      expiresAt 
+    });
     
     const isAuth = this.authService.isAuthenticated();
-    console.log('PublicGuard: Is authenticated?', isAuth);
     
     if (!isAuth) {
-      console.log('PublicGuard: User is not authenticated, allowing access to public route');
+      this.logger.debug('PublicGuard: User not authenticated, access to public route granted');
       return true;
     } else {
-      console.log('PublicGuard: User is authenticated, redirecting to dashboard');
+      this.logger.info('PublicGuard: User authenticated, redirecting to dashboard');
       this.router.navigate(['/dashboard']);
       return false;
     }

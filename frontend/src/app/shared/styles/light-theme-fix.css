@@ -1,4 +1,27 @@
-/* Light Theme Override for Form Fields */
+/* =================================================================
+   Light Theme Override Styles
+   ================================================================= */
+
+/* Light theme selectors for consistency */
+:root:not(.dark-theme),
+.light-theme,
+body.light-theme {
+  /* CSS Custom Properties for light theme */
+  --light-primary-text: #212121;
+  --light-secondary-text: rgba(0, 0, 0, 0.6);
+  --light-border-color: rgba(0, 0, 0, 0.42);
+  --light-border-hover: rgba(0, 0, 0, 0.87);
+  --light-accent-color: #673ab7;
+  --light-background: #ffffff;
+  --light-surface: #f5f5f5;
+  --light-divider: #e0e0e0;
+}
+
+/* =================================================================
+   Form Field Styles
+   ================================================================= */
+
+/* Form field outlines */
 :root:not(.dark-theme) .mat-mdc-form-field .mdc-notched-outline__leading,
 :root:not(.dark-theme) .mat-mdc-form-field .mdc-notched-outline__trailing,
 :root:not(.dark-theme) .mat-mdc-form-field .mdc-notched-outline__notch,
@@ -8,10 +31,11 @@
 body.light-theme .mat-mdc-form-field .mdc-notched-outline__leading,
 body.light-theme .mat-mdc-form-field .mdc-notched-outline__trailing,
 body.light-theme .mat-mdc-form-field .mdc-notched-outline__notch {
-  border-color: rgba(0, 0, 0, 0.42) !important;
+  border-color: var(--light-border-color) !important;
   border-width: 1px !important;
 }
 
+/* Form field hover states */
 :root:not(.dark-theme) .mat-mdc-form-field:hover .mdc-notched-outline__leading,
 :root:not(.dark-theme) .mat-mdc-form-field:hover .mdc-notched-outline__trailing,
 :root:not(.dark-theme) .mat-mdc-form-field:hover .mdc-notched-outline__notch,
@@ -21,9 +45,10 @@ body.light-theme .mat-mdc-form-field .mdc-notched-outline__notch {
 body.light-theme .mat-mdc-form-field:hover .mdc-notched-outline__leading,
 body.light-theme .mat-mdc-form-field:hover .mdc-notched-outline__trailing,
 body.light-theme .mat-mdc-form-field:hover .mdc-notched-outline__notch {
-  border-color: rgba(0, 0, 0, 0.87) !important;
+  border-color: var(--light-border-hover) !important;
 }
 
+/* Form field focus states */
 :root:not(.dark-theme) .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
 :root:not(.dark-theme) .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing,
 :root:not(.dark-theme) .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
@@ -33,159 +58,181 @@ body.light-theme .mat-mdc-form-field:hover .mdc-notched-outline__notch {
 body.light-theme .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
 body.light-theme .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing,
 body.light-theme .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch {
-  border-color: #673ab7 !important;
+  border-color: var(--light-accent-color) !important;
   border-width: 2px !important;
 }
 
+/* =================================================================
+   Input Field Styles
+   ================================================================= */
+
+/* Input element text color */
 :root:not(.dark-theme) .mat-mdc-form-field .mat-mdc-input-element,
 .light-theme .mat-mdc-form-field .mat-mdc-input-element,
-body.light-theme .mat-mdc-form-field .mat-mdc-input-element {
-  color: #212121 !important;
-  caret-color: #673ab7 !important;
-}
-
-:root:not(.dark-theme) .mat-mdc-form-field .mat-mdc-input-element::placeholder,
-.light-theme .mat-mdc-form-field .mat-mdc-input-element::placeholder,
-body.light-theme .mat-mdc-form-field .mat-mdc-input-element::placeholder {
-  color: rgba(0, 0, 0, 0.6) !important;
-}
-
-:root:not(.dark-theme) .mat-mdc-form-field .mdc-floating-label,
-.light-theme .mat-mdc-form-field .mdc-floating-label,
-body.light-theme .mat-mdc-form-field .mdc-floating-label {
-  color: rgba(0, 0, 0, 0.6) !important;
-}
-
-:root:not(.dark-theme) .mat-mdc-form-field.mat-focused .mdc-floating-label,
-.light-theme .mat-mdc-form-field.mat-focused .mdc-floating-label,
-body.light-theme .mat-mdc-form-field.mat-focused .mdc-floating-label {
-  color: #673ab7 !important;
-}
-
-:root:not(.dark-theme) .mat-mdc-form-field .mat-mdc-select-value-text,
-.light-theme .mat-mdc-form-field .mat-mdc-select-value-text,
-body.light-theme .mat-mdc-form-field .mat-mdc-select-value-text {
-  color: #212121 !important;
-}
-
-:root:not(.dark-theme) .mat-mdc-form-field .mat-mdc-select-placeholder,
-.light-theme .mat-mdc-form-field .mat-mdc-select-placeholder,
-body.light-theme .mat-mdc-form-field .mat-mdc-select-placeholder {
-  color: rgba(0, 0, 0, 0.6) !important;
-}
-
-:root:not(.dark-theme) .mat-mdc-text-field-wrapper,
-.light-theme .mat-mdc-text-field-wrapper,
-body.light-theme .mat-mdc-text-field-wrapper {
-  background-color: #ffffff !important;
-}
-
-/* Input text color fix for light theme */
+body.light-theme .mat-mdc-form-field .mat-mdc-input-element,
 :root:not(.dark-theme) input.mat-mdc-input-element,
 .light-theme input.mat-mdc-input-element,
 body.light-theme input.mat-mdc-input-element {
-  color: #212121 !important;
+  color: var(--light-primary-text) !important;
+  caret-color: var(--light-accent-color) !important;
 }
 
-/* Auto-fill fix for light theme */
+/* Placeholder text */
+:root:not(.dark-theme) .mat-mdc-form-field .mat-mdc-input-element::placeholder,
+.light-theme .mat-mdc-form-field .mat-mdc-input-element::placeholder,
+body.light-theme .mat-mdc-form-field .mat-mdc-input-element::placeholder {
+  color: var(--light-secondary-text) !important;
+}
+
+/* Auto-fill styles */
 :root:not(.dark-theme) input.mat-mdc-input-element:-webkit-autofill,
 .light-theme input.mat-mdc-input-element:-webkit-autofill,
 body.light-theme input.mat-mdc-input-element:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
-  -webkit-text-fill-color: #212121 !important;
+  -webkit-box-shadow: 0 0 0 1000px var(--light-background) inset !important;
+  -webkit-text-fill-color: var(--light-primary-text) !important;
 }
 
-/* Dialog Background Fix */
+/* =================================================================
+   Label Styles
+   ================================================================= */
+
+/* Floating labels */
+:root:not(.dark-theme) .mat-mdc-form-field .mdc-floating-label,
+.light-theme .mat-mdc-form-field .mdc-floating-label,
+body.light-theme .mat-mdc-form-field .mdc-floating-label {
+  color: var(--light-secondary-text) !important;
+}
+
+/* Focused floating labels */
+:root:not(.dark-theme) .mat-mdc-form-field.mat-focused .mdc-floating-label,
+.light-theme .mat-mdc-form-field.mat-focused .mdc-floating-label,
+body.light-theme .mat-mdc-form-field.mat-focused .mdc-floating-label {
+  color: var(--light-accent-color) !important;
+}
+
+/* =================================================================
+   Select Field Styles
+   ================================================================= */
+
+/* Select value text */
+:root:not(.dark-theme) .mat-mdc-form-field .mat-mdc-select-value-text,
+.light-theme .mat-mdc-form-field .mat-mdc-select-value-text,
+body.light-theme .mat-mdc-form-field .mat-mdc-select-value-text {
+  color: var(--light-primary-text) !important;
+}
+
+/* Select placeholder */
+:root:not(.dark-theme) .mat-mdc-form-field .mat-mdc-select-placeholder,
+.light-theme .mat-mdc-form-field .mat-mdc-select-placeholder,
+body.light-theme .mat-mdc-form-field .mat-mdc-select-placeholder {
+  color: var(--light-secondary-text) !important;
+}
+
+/* Select dropdown panel */
+:root:not(.dark-theme) .mat-mdc-select-panel,
+.light-theme .mat-mdc-select-panel,
+body.light-theme .mat-mdc-select-panel {
+  background: var(--light-background) !important;
+  border: 1px solid var(--light-divider) !important;
+}
+
+/* =================================================================
+   Select Options Styles
+   ================================================================= */
+
+/* Option base styles */
+:root:not(.dark-theme) .mat-mdc-option,
+.light-theme .mat-mdc-option,
+body.light-theme .mat-mdc-option {
+  color: var(--light-primary-text) !important;
+  background: var(--light-background) !important;
+}
+
+/* Option text elements */
+:root:not(.dark-theme) .mat-mdc-option .mdc-list-item__primary-text,
+.light-theme .mat-mdc-option .mdc-list-item__primary-text,
+body.light-theme .mat-mdc-option .mdc-list-item__primary-text,
+:root:not(.dark-theme) .mat-mdc-option span,
+.light-theme .mat-mdc-option span,
+body.light-theme .mat-mdc-option span {
+  color: var(--light-primary-text) !important;
+}
+
+/* Option hover states */
+:root:not(.dark-theme) .mat-mdc-option:hover,
+.light-theme .mat-mdc-option:hover,
+body.light-theme .mat-mdc-option:hover {
+  background: var(--light-surface) !important;
+  color: var(--light-primary-text) !important;
+}
+
+:root:not(.dark-theme) .mat-mdc-option:hover .mdc-list-item__primary-text,
+.light-theme .mat-mdc-option:hover .mdc-list-item__primary-text,
+body.light-theme .mat-mdc-option:hover .mdc-list-item__primary-text,
+:root:not(.dark-theme) .mat-mdc-option:hover span,
+.light-theme .mat-mdc-option:hover span,
+body.light-theme .mat-mdc-option:hover span {
+  color: var(--light-primary-text) !important;
+}
+
+/* Selected option states */
+:root:not(.dark-theme) .mat-mdc-option.mdc-list-item--selected,
+.light-theme .mat-mdc-option.mdc-list-item--selected,
+body.light-theme .mat-mdc-option.mdc-list-item--selected {
+  background: #e8eaf6 !important;
+  color: var(--light-accent-color) !important;
+}
+
+:root:not(.dark-theme) .mat-mdc-option.mdc-list-item--selected .mdc-list-item__primary-text,
+.light-theme .mat-mdc-option.mdc-list-item--selected .mdc-list-item__primary-text,
+body.light-theme .mat-mdc-option.mdc-list-item--selected .mdc-list-item__primary-text,
+:root:not(.dark-theme) .mat-mdc-option.mdc-list-item--selected span,
+.light-theme .mat-mdc-option.mdc-list-item--selected span,
+body.light-theme .mat-mdc-option.mdc-list-item--selected span {
+  color: var(--light-accent-color) !important;
+}
+
+/* =================================================================
+   Background and Surface Styles
+   ================================================================= */
+
+/* Text field wrapper background */
+:root:not(.dark-theme) .mat-mdc-text-field-wrapper,
+.light-theme .mat-mdc-text-field-wrapper,
+body.light-theme .mat-mdc-text-field-wrapper {
+  background-color: var(--light-background) !important;
+}
+
+/* Dialog and form sections */
 :root:not(.dark-theme) .form-section,
 .light-theme .form-section,
 body.light-theme .form-section {
-  background: #ffffff !important;
-  border-color: #e0e0e0 !important;
+  background: var(--light-background) !important;
+  border-color: var(--light-divider) !important;
 }
 
 :root:not(.dark-theme) mat-dialog-actions,
 .light-theme mat-dialog-actions,
 body.light-theme mat-dialog-actions {
-  background: #ffffff !important;
-  border-top-color: #e0e0e0 !important;
+  background: var(--light-background) !important;
+  border-top-color: var(--light-divider) !important;
 }
 
-/* Select dropdown fixes */
-:root:not(.dark-theme) .mat-mdc-select-panel,
-.light-theme .mat-mdc-select-panel,
-body.light-theme .mat-mdc-select-panel {
-  background: #ffffff !important;
-  border: 1px solid #e0e0e0 !important;
-}
+/* =================================================================
+   Icon and Interactive Element Styles
+   ================================================================= */
 
-:root:not(.dark-theme) .mat-mdc-option,
-.light-theme .mat-mdc-option,
-body.light-theme .mat-mdc-option {
-  color: #212121 !important;
-  background: #ffffff !important;
-}
-
-:root:not(.dark-theme) .mat-mdc-option .mdc-list-item__primary-text,
-.light-theme .mat-mdc-option .mdc-list-item__primary-text,
-body.light-theme .mat-mdc-option .mdc-list-item__primary-text {
-  color: #212121 !important;
-}
-
-:root:not(.dark-theme) .mat-mdc-option span,
-.light-theme .mat-mdc-option span,
-body.light-theme .mat-mdc-option span {
-  color: #212121 !important;
-}
-
-:root:not(.dark-theme) .mat-mdc-option:hover,
-.light-theme .mat-mdc-option:hover,
-body.light-theme .mat-mdc-option:hover {
-  background: #f5f5f5 !important;
-  color: #212121 !important;
-}
-
-:root:not(.dark-theme) .mat-mdc-option:hover .mdc-list-item__primary-text,
-.light-theme .mat-mdc-option:hover .mdc-list-item__primary-text,
-body.light-theme .mat-mdc-option:hover .mdc-list-item__primary-text {
-  color: #212121 !important;
-}
-
-:root:not(.dark-theme) .mat-mdc-option:hover span,
-.light-theme .mat-mdc-option:hover span,
-body.light-theme .mat-mdc-option:hover span {
-  color: #212121 !important;
-}
-
-:root:not(.dark-theme) .mat-mdc-option.mdc-list-item--selected,
-.light-theme .mat-mdc-option.mdc-list-item--selected,
-body.light-theme .mat-mdc-option.mdc-list-item--selected {
-  background: #e8eaf6 !important;
-  color: #673ab7 !important;
-}
-
-:root:not(.dark-theme) .mat-mdc-option.mdc-list-item--selected .mdc-list-item__primary-text,
-.light-theme .mat-mdc-option.mdc-list-item--selected .mdc-list-item__primary-text,
-body.light-theme .mat-mdc-option.mdc-list-item--selected .mdc-list-item__primary-text {
-  color: #673ab7 !important;
-}
-
-:root:not(.dark-theme) .mat-mdc-option.mdc-list-item--selected span,
-.light-theme .mat-mdc-option.mdc-list-item--selected span,
-body.light-theme .mat-mdc-option.mdc-list-item--selected span {
-  color: #673ab7 !important;
-}
-
-/* Icon color fixes */
+/* Form field icons */
 :root:not(.dark-theme) .mat-mdc-form-field-icon-suffix mat-icon,
 .light-theme .mat-mdc-form-field-icon-suffix mat-icon,
 body.light-theme .mat-mdc-form-field-icon-suffix mat-icon {
-  color: #673ab7 !important;
+  color: var(--light-accent-color) !important;
   opacity: 0.8;
 }
 
-/* Date picker fixes */
+/* Date picker toggle */
 :root:not(.dark-theme) .mat-datepicker-toggle,
 .light-theme .mat-datepicker-toggle,
 body.light-theme .mat-datepicker-toggle {
-  color: #673ab7 !important;
+  color: var(--light-accent-color) !important;
 }

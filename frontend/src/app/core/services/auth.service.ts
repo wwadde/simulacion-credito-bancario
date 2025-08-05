@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, tap, catchError, throwError, of } from 'rxjs';
 import { AuthResponse, LoginRequest, RefreshTokenRequest } from '../models/auth.model';
 import { environment } from '../../../environments/environment';
+import { LoggerService } from './logger.service';
+import { API_ENDPOINTS, STORAGE_KEYS } from '../constants/app.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -12,16 +14,20 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<any>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private logger: LoggerService
+  ) {
     this.loadStoredUser();
   }
 
   login(credentials: LoginRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_URL}/api/login`, credentials)
+    return this.http.post<AuthResponse>(`${this.API_URL}${API_ENDPOINTS.AUTH.LOGIN}`, credentials)
       .pipe(
         tap(response => {
           if (response.accessToken) {
             this.setSession(response);
+            this.logger.info('User logged in successfully');
           }
         })
       );
@@ -29,25 +35,28 @@ export class AuthService {
 
   refreshToken(token: string): Observable<AuthResponse> {
     const request: RefreshTokenRequest = { accessToken: token };
-    return this.http.post<AuthResponse>(`${this.API_URL}/api/refresh-token`, request)
+    return this.http.post<AuthResponse>(`${this.API_URL}${API_ENDPOINTS.AUTH.REFRESH_TOKEN}`, request)
       .pipe(
         tap(response => {
           if (response.accessToken) {
             this.setSession(response);
+            this.logger.debug('Token refreshed successfully');
           }
         })
       );
   }
 
   logout(): Observable<string> {
-    return this.http.post<string>(`${this.API_URL}/api/logout`, {})
+    return this.http.post<string>(`${this.API_URL}${API_ENDPOINTS.AUTH.LOGOUT}`, {})
       .pipe(
         tap(() => {
           this.clearSession();
+          this.logger.info('User logged out successfully');
         }),
         catchError((error: any) => {
           // Incluso si el logout falla en el servidor, limpiar la sesión local
           this.clearSession();
+          this.logger.warn('Logout failed on server, clearing local session', error);
           // Retornar éxito para evitar errores en la UI
           return of('Logout completed locally');
         })
@@ -55,24 +64,27 @@ export class AuthService {
   }
 
   private setSession(authResult: AuthResponse): void {
-    console.log('Setting session with:', authResult);
-    localStorage.setItem('access_token', authResult.accessToken);
-    localStorage.setItem('expires_at', authResult.expiresAt);
-    localStorage.setItem('token_type', authResult.tokenType);
+    this.logger.debug('Setting user session', { tokenType: authResult.tokenType, expiresAt: authResult.expiresAt });
+    
+    localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, authResult.accessToken);
+    localStorage.setItem(STORAGE_KEYS.EXPIRES_AT, authResult.expiresAt);
+    localStorage.setItem(STORAGE_KEYS.TOKEN_TYPE, authResult.tokenType);
     
     // Actualizar el subject inmediatamente
     this.currentUserSubject.next(authResult);
     
-    console.log('Session set. Is authenticated:', this.isAuthenticated());
-    console.log('Token stored:', localStorage.getItem('access_token'));
-    console.log('Expires at stored:', localStorage.getItem('expires_at'));
+    this.logger.debug('Session established', { 
+      isAuthenticated: this.isAuthenticated(),
+      hasToken: !!localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN)
+    });
   }
 
   private clearSession(): void {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('expires_at');
-    localStorage.removeItem('token_type');
+    localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+    localStorage.removeItem(STORAGE_KEYS.EXPIRES_AT);
+    localStorage.removeItem(STORAGE_KEYS.TOKEN_TYPE);
     this.currentUserSubject.next(null);
+    this.logger.debug('User session cleared');
   }
 
   public clearSessionPublic(): void {
@@ -80,31 +92,34 @@ export class AuthService {
   }
 
   private loadStoredUser(): void {
-    const token = localStorage.getItem('access_token');
-    const expiresAt = localStorage.getItem('expires_at');
+    const token = localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
+    const expiresAt = localStorage.getItem(STORAGE_KEYS.EXPIRES_AT);
     
     if (token && expiresAt && new Date(expiresAt) > new Date()) {
       this.currentUserSubject.next({
         accessToken: token,
         expiresAt: expiresAt,
-        tokenType: localStorage.getItem('token_type')
+        tokenType: localStorage.getItem(STORAGE_KEYS.TOKEN_TYPE)
       });
+      this.logger.debug('Stored user session loaded');
     }
   }
 
   getToken(): string | null {
-    return localStorage.getItem('access_token');
+    return localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
   }
 
   isAuthenticated(): boolean {
     const token = this.getToken();
-    const expiresAt = localStorage.getItem('expires_at');
+    const expiresAt = localStorage.getItem(STORAGE_KEYS.EXPIRES_AT);
     
-    console.log('Checking authentication - token exists:', !!token);
-    console.log('Checking authentication - expiresAt:', expiresAt);
+    this.logger.debug('Checking authentication status', { 
+      hasToken: !!token, 
+      expiresAt 
+    });
     
     if (!token || !expiresAt) {
-      console.log('No token or expiration date found');
+      this.logger.debug('Authentication failed: missing token or expiration');
       return false;
     }
     
@@ -113,19 +128,21 @@ export class AuthService {
       const currentDate = new Date();
       const isValid = expirationDate > currentDate;
       
-      console.log('Current date:', currentDate.toISOString());
-      console.log('Expiration date:', expirationDate.toISOString());
-      console.log('Token is valid:', isValid);
+      this.logger.debug('Token validation result', {
+        currentDate: currentDate.toISOString(),
+        expirationDate: expirationDate.toISOString(),
+        isValid
+      });
       
       return isValid;
     } catch (error) {
-      console.error('Error parsing expiration date:', error);
+      this.logger.error('Error parsing expiration date', error);
       return false;
     }
   }
 
   isTokenExpired(): boolean {
-    const expiresAt = localStorage.getItem('expires_at');
+    const expiresAt = localStorage.getItem(STORAGE_KEYS.EXPIRES_AT);
     if (!expiresAt) {
       return true;
     }

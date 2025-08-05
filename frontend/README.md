@@ -2,7 +2,42 @@
 
 ## 📋 Descripción
 
-Aplicación frontend desarrollada en Angular 20 para gestionar un sistema de crédito bancario que consume microservicios existentes. La aplicación cuenta con autenticación JWT, gestión de personas, cuentas y créditos, todo con una interfaz moderna y responsiva.
+Aplicación frontend desarrollada en Angular 20 para gestionar un sistema de crédito bancario que consume microservicios existentes. La aplicación cuenta con autenticación JWT, gestión de personas, cuentas y créditos, todo con una interfaz moderna y responsiva siguiendo principios de Clean Code y mejores prácticas de desarrollo.
+
+## 🏗️ Arquitectura
+
+### Estructura del Proyecto
+```
+src/
+├── app/
+│   ├── core/                    # Servicios, modelos, interceptors, guards
+│   │   ├── services/            # Servicios de la aplicación
+│   │   ├── models/              # Interfaces y tipos de datos
+│   │   ├── guards/              # Guards de autenticación
+│   │   ├── interceptors/        # HTTP interceptors
+│   │   ├── constants/           # Constantes de la aplicación
+│   │   ├── utils/               # Utilidades y helpers
+│   │   └── types/               # Definiciones de tipos TypeScript
+│   ├── features/                # Módulos funcionales
+│   │   ├── auth/                # Autenticación
+│   │   ├── persona/             # Gestión de personas
+│   │   ├── cuenta/              # Gestión de cuentas
+│   │   ├── credito/             # Gestión de créditos
+│   │   └── dashboard/           # Panel principal
+│   ├── shared/                  # Componentes y utilidades compartidas
+│   │   ├── components/          # Componentes reutilizables
+│   │   ├── layouts/             # Layouts de la aplicación
+│   │   └── styles/              # Estilos globales
+│   └── environments/            # Configuraciones de entorno
+```
+
+### Principios Aplicados
+- **Clean Code**: Código limpio, legible y mantenible
+- **SOLID**: Principios de diseño orientado a objetos
+- **DRY**: Don't Repeat Yourself
+- **Single Responsibility**: Cada clase/función tiene una responsabilidad única
+- **Separation of Concerns**: Separación clara de responsabilidades
+- **Type Safety**: Uso extensivo de TypeScript para mayor seguridad
 
 ## 🚀 Características Principales
 
