@@ -9,9 +9,10 @@
 
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: #fafafa;
-  color: #333;
+  background-color: var(--background-color);
+  color: var(--text-primary);
   line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 html, body {
@@ -34,7 +35,7 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Custom Purple Theme Variables */
+/* Custom Purple Theme Variables - Light Theme (Default) */
 :root {
   --primary-color: #673ab7;
   --primary-light: #9c27b0;
@@ -44,8 +45,234 @@ html, body {
   --success-color: #4caf50;
   --background-color: #fafafa;
   --surface-color: #ffffff;
-  --text-primary: #212121;
-  --text-secondary: #757575;
+  --text-primary: #1a1a1a;
+  --text-secondary: #666666;
+  --text-muted: #999999;
+  --text-disabled: #cccccc;
+  --border-color: #e0e0e0;
+  --hover-color: #f5f5f5;
+}
+
+/* Light theme explicit class */
+.light-theme {
+  --background-color: #fafafa;
+  --surface-color: #ffffff;
+  --text-primary: #1a1a1a;
+  --text-secondary: #666666;
+  --text-muted: #999999;
+  --text-disabled: #cccccc;
+  --border-color: #e0e0e0;
+  --hover-color: #f5f5f5;
+}
+
+.light-theme body {
+  background-color: var(--background-color) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Dark theme variables - Applied when .dark-theme class is present */
+.dark-theme {
+  --background-color: #121212;
+  --surface-color: #1e1e1e;
+  --text-primary: #ffffff;
+  --text-secondary: #b3b3b3;
+  --text-muted: #888888;
+  --text-disabled: #555555;
+  --border-color: #333333;
+  --hover-color: #2a2a2a;
+}
+
+.dark-theme body {
+  background-color: var(--background-color) !important;
+  color: var(--text-primary) !important;
+}
+
+.dark-theme ::-webkit-scrollbar-track {
+  background: #2e2e2e !important;
+}
+
+/* Material Components dark theme adaptations */
+.dark-theme .mat-mdc-card {
+  background: var(--surface-color) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.dark-theme .mat-mdc-card-content {
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .mat-mdc-button {
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .mat-mdc-icon-button {
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .mat-mdc-list-item {
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .mat-mdc-menu-panel {
+  background: var(--surface-color) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.dark-theme .mat-mdc-table {
+  background: var(--surface-color) !important;
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .mat-mdc-header-cell {
+  background: var(--surface-color) !important;
+  color: var(--text-primary) !important;
+  border-bottom-color: var(--border-color) !important;
+}
+
+.dark-theme .mat-mdc-cell {
+  color: var(--text-primary) !important;
+  border-bottom-color: var(--border-color) !important;
+}
+
+.dark-theme .mat-mdc-row:hover .mat-mdc-cell {
+  background: var(--hover-color) !important;
+}
+
+.dark-theme .mat-mdc-form-field {
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .mat-mdc-form-field .mat-mdc-floating-label {
+  color: var(--text-secondary) !important;
+}
+
+.dark-theme .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+  color: var(--primary-color) !important;
+}
+
+.dark-theme .mat-mdc-input-element {
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .mat-mdc-dialog-container {
+  background: var(--surface-color) !important;
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .mat-mdc-snack-bar-container {
+  background: var(--surface-color) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Enhanced contrast and focus styles */
+.mat-mdc-button:focus,
+.mat-mdc-icon-button:focus,
+.mat-mdc-raised-button:focus {
+  outline: 2px solid var(--primary-color) !important;
+  outline-offset: 2px !important;
+}
+
+/* Better contrast for disabled elements */
+.mat-mdc-button:disabled,
+.mat-mdc-raised-button:disabled,
+.mat-mdc-icon-button:disabled {
+  opacity: 0.5 !important;
+}
+
+/* Improved hover states */
+.mat-mdc-button:hover:not(:disabled),
+.mat-mdc-icon-button:hover:not(:disabled) {
+  background-color: var(--hover-color) !important;
+}
+
+/* Better text selection */
+::selection {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+/* Improved input focus styles */
+.mat-mdc-form-field.mat-focused .mat-mdc-form-field-outline {
+  border-color: var(--primary-color) !important;
+}
+
+/* Dark theme improvements for specific components */
+.dark-theme .mat-mdc-option {
+  background: var(--surface-color) !important;
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .mat-mdc-option:hover {
+  background: var(--hover-color) !important;
+}
+
+.dark-theme .mat-mdc-select-panel {
+  background: var(--surface-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.dark-theme .mat-mdc-datepicker-panel {
+  background: var(--surface-color) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.dark-theme .mat-calendar-table-header {
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .mat-calendar-body-cell {
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .mat-calendar-body-cell:hover {
+  background: var(--hover-color) !important;
+}
+
+/* Improved tooltip styles */
+.dark-theme .mat-mdc-tooltip {
+  background: var(--surface-color) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+/* Better progress spinner visibility */
+.dark-theme .mat-mdc-progress-spinner circle {
+  stroke: var(--primary-color) !important;
+}
+
+/* Enhanced tab styling */
+.dark-theme .mat-mdc-tab-group {
+  background: var(--surface-color) !important;
+}
+
+.dark-theme .mat-mdc-tab-label {
+  color: var(--text-secondary) !important;
+}
+
+.dark-theme .mat-mdc-tab-label.mdc-tab--active {
+  color: var(--primary-color) !important;
+}
+
+/* Auto dark theme for users who prefer it by default - but only if no manual theme is set */
+@media (prefers-color-scheme: dark) {
+  :root:not(.dark-theme):not(.light-theme) {
+    --background-color: #121212;
+    --surface-color: #1e1e1e;
+    --text-primary: #ffffff;
+    --text-secondary: #b3b3b3;
+    --text-muted: #888888;
+    --text-disabled: #555555;
+    --border-color: #333333;
+    --hover-color: #2a2a2a;
+  }
+  
+  body:not(.dark-theme):not(.light-theme) {
+    background-color: var(--background-color);
+    color: var(--text-primary);
+  }
 }
 
 /* Material Design Customizations */
@@ -79,7 +306,8 @@ html, body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--background-color);
+  opacity: 0.9;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -88,13 +316,20 @@ html, body {
 
 /* Responsive utilities */
 .container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.container-limited {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 16px;
 }
 
 @media (max-width: 768px) {
-  .container {
+  .container,
+  .container-limited {
     padding: 0 8px;
   }
 }
@@ -105,7 +340,7 @@ html, body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--hover-color);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -130,6 +365,30 @@ html, body {
   color: var(--text-secondary) !important;
 }
 
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+.text-disabled {
+  color: var(--text-disabled) !important;
+}
+
+.text-white {
+  color: #ffffff !important;
+}
+
+.bg-surface {
+  background-color: var(--surface-color) !important;
+}
+
+.bg-hover {
+  background-color: var(--hover-color) !important;
+}
+
+.border-color {
+  border-color: var(--border-color) !important;
+}
+
 .mb-16 {
   margin-bottom: 16px !important;
 }
@@ -145,3 +404,456 @@ html, body {
 .mt-24 {
   margin-top: 24px !important;
 }
+
+/* Enhanced readability utilities */
+.readable-text {
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  color: var(--text-primary) !important;
+}
+
+.readable-secondary {
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+  color: var(--text-secondary) !important;
+  font-weight: 500 !important;
+}
+
+.readable-muted {
+  font-size: 11px !important;
+  line-height: 1.3 !important;
+  color: var(--text-muted) !important;
+  font-weight: 400 !important;
+}
+
+/* Better contrast for cards and surfaces */
+.enhanced-card {
+  background-color: var(--surface-color) !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.dark-theme .enhanced-card {
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Improved status indicators */
+.status-active {
+  color: var(--success-color) !important;
+  font-weight: 600 !important;
+}
+
+.status-inactive {
+  color: var(--warn-color) !important;
+  font-weight: 600 !important;
+}
+
+.status-pending {
+  color: var(--accent-color) !important;
+  font-weight: 600 !important;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --text-primary: #000000;
+    --text-secondary: #333333;
+    --text-muted: #666666;
+    --border-color: #000000;
+  }
+  
+  .dark-theme {
+    --text-primary: #ffffff;
+    --text-secondary: #cccccc;
+    --text-muted: #999999;
+    --border-color: #ffffff;
+  }
+  
+  .mat-mdc-card,
+  .enhanced-card {
+    border-width: 2px !important;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Forzar ancho completo para todos los componentes principales */
+app-main-layout,
+app-person-list, 
+app-account-list, 
+app-credit-list,
+app-dashboard {
+  width: 100% !important;
+  max-width: none !important;
+  display: block !important;
+}
+
+/* Forzar ancho completo para contenedores Angular Material */
+mat-sidenav-container,
+mat-sidenav-content,
+.mat-sidenav-content {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+/* Asegurar que las rutas usen todo el ancho */
+router-outlet + * {
+  width: 100% !important;
+  max-width: none !important;
+  display: block !important;
+}
+
+/* Reglas específicas para eliminar completamente las limitaciones de ancho */
+app-person-list .person-list-container,
+app-account-list .account-list-container,
+app-credit-list .credit-list-container {
+  width: 100vw !important;
+  max-width: none !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+  box-sizing: border-box !important;
+}
+
+/* Ajustar el ancho considerando el sidenav */
+@media (min-width: 768px) {
+  app-person-list .person-list-container,
+  app-account-list .account-list-container,
+  app-credit-list .credit-list-container {
+    width: calc(100vw - 260px) !important;
+    margin-left: 0 !important;
+  }
+}
+
+/* En móvil, usar todo el ancho */
+@media (max-width: 767px) {
+  app-person-list .person-list-container,
+  app-account-list .account-list-container,
+  app-credit-list .credit-list-container {
+    width: 100vw !important;
+  }
+}
+
+/* Beautiful button styles */
+.mat-mdc-raised-button {
+  border-radius: 25px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
+  font-size: 14px !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.mat-mdc-raised-button:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2) !important;
+}
+
+.mat-mdc-raised-button.mat-primary {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light)) !important;
+  color: white !important;
+}
+
+.mat-mdc-raised-button.mat-accent {
+  background: linear-gradient(135deg, var(--accent-color), #ff6ec7) !important;
+  color: white !important;
+}
+
+/* Beautiful icon buttons */
+.mat-mdc-icon-button {
+  border-radius: 50% !important;
+  transition: all 0.3s ease !important;
+}
+
+.mat-mdc-icon-button:hover {
+  transform: scale(1.1) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Enhanced table cells */
+.mat-mdc-cell {
+  padding: 16px 12px !important;
+  vertical-align: middle !important;
+}
+
+.mat-mdc-header-cell {
+  padding: 16px 12px !important;
+  text-transform: uppercase !important;
+}
+
+/* Beautiful loading spinner */
+.mat-mdc-progress-spinner {
+  filter: drop-shadow(0 0 8px rgba(103, 58, 183, 0.3));
+}
+
+/* Enhanced cards for dark theme */
+.dark-theme .table-card {
+  background: linear-gradient(135deg, var(--surface-color), rgba(255, 255, 255, 0.02)) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark-theme .table-card:hover {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 12px 40px rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Enhanced gradients for dark theme */
+.dark-theme .page-title {
+  background: linear-gradient(135deg, #bb86fc, #e1bee7) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
+
+.dark-theme .empty-icon {
+  background: linear-gradient(135deg, var(--primary-color), #bb86fc) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
+
+/* Beautiful form fields */
+.mat-mdc-form-field {
+  border-radius: 12px !important;
+}
+
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+  border-color: var(--primary-color) !important;
+  border-width: 2px !important;
+}
+
+/* Enhanced chips */
+.mat-mdc-standard-chip {
+  border-radius: 16px !important;
+  font-weight: 500 !important;
+  transition: all 0.3s ease !important;
+}
+
+.mat-mdc-standard-chip:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Beautiful dialog styles */
+.mat-mdc-dialog-container {
+  border-radius: 20px !important;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2) !important;
+  overflow: hidden !important;
+}
+
+.mat-mdc-dialog-title {
+  padding: 24px 24px 16px !important;
+  margin: 0 !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.mat-mdc-dialog-content {
+  padding: 24px !important;
+}
+
+.mat-mdc-dialog-actions {
+  padding: 16px 24px 24px !important;
+  border-top: 1px solid var(--border-color) !important;
+}
+
+/* Dark theme dialog enhancements */
+.dark-theme .mat-mdc-dialog-container {
+  background: linear-gradient(135deg, var(--surface-color), rgba(255, 255, 255, 0.02)) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark-theme .mat-mdc-dialog-title {
+  border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark-theme .mat-mdc-dialog-actions {
+  border-top-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Enhanced snackbar */
+.mat-mdc-snack-bar-container {
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+}
+
+.success-snackbar .mat-mdc-snack-bar-container {
+  background: linear-gradient(135deg, var(--success-color), #66bb6a) !important;
+}
+
+.error-snackbar .mat-mdc-snack-bar-container {
+  background: linear-gradient(135deg, var(--warn-color), #ff7043) !important;
+}
+
+/* Beautiful menu */
+.mat-mdc-menu-panel {
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+  overflow: hidden !important;
+}
+
+.mat-mdc-menu-item {
+  transition: all 0.3s ease !important;
+}
+
+.mat-mdc-menu-item:hover {
+  background: linear-gradient(135deg, var(--hover-color), rgba(103, 58, 183, 0.05)) !important;
+  transform: translateX(4px) !important;
+}
+
+/* Enhanced table styling */
+.mat-mdc-table {
+  border-radius: 0 0 16px 16px !important;
+  overflow: hidden !important;
+}
+
+.mat-mdc-row {
+  transition: all 0.3s ease !important;
+}
+
+.mat-mdc-row:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.02) !important;
+}
+
+.dark-theme .mat-mdc-row:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.02) !important;
+}
+
+/* Enhanced select dropdown */
+.mat-mdc-select-panel {
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+  overflow: hidden !important;
+}
+
+/* Beautiful datepicker */
+.mat-datepicker-panel {
+  border-radius: 16px !important;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15) !important;
+  overflow: hidden !important;
+}
+
+.mat-calendar-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light)) !important;
+  color: white !important;
+}
+
+.mat-calendar-body-selected {
+  background: var(--primary-color) !important;
+  color: white !important;
+}
+
+.mat-calendar-body-cell:hover {
+  background: var(--hover-color) !important;
+}
+
+/* Subtle animations for better UX */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Apply animations to components */
+.table-card {
+  animation: fadeInUp 0.6s ease-out !important;
+}
+
+.mat-mdc-dialog-container {
+  animation: fadeInScale 0.4s ease-out !important;
+}
+
+.mat-mdc-row {
+  animation: slideInRight 0.3s ease-out !important;
+}
+
+.mat-mdc-row:nth-child(1) { animation-delay: 0.1s !important; }
+.mat-mdc-row:nth-child(2) { animation-delay: 0.2s !important; }
+.mat-mdc-row:nth-child(3) { animation-delay: 0.3s !important; }
+.mat-mdc-row:nth-child(4) { animation-delay: 0.4s !important; }
+.mat-mdc-row:nth-child(5) { animation-delay: 0.5s !important; }
+
+.empty-state {
+  animation: fadeInUp 0.8s ease-out !important;
+}
+
+.page-title {
+  animation: fadeInUp 0.6s ease-out !important;
+}
+
+/* Pulse effect for loading */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.loading-container .mat-mdc-progress-spinner {
+  animation: pulse 2s infinite !important;
+}
+
+/* Hover effects for interactive elements */
+.mat-mdc-chip:hover {
+  animation: none !important;
+  transform: translateY(-1px) scale(1.05) !important;
+}
+
+.balance-chip:hover {
+  animation: none !important;
+  transform: translateY(-1px) scale(1.05) !important;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4) !important;
+}
+
+.balance-chip.negative:hover {
+  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.4) !important;
+}
+
+/* Stagger animation for form fields */
+.person-form .mat-mdc-form-field:nth-child(1) { animation: fadeInUp 0.4s ease-out 0.1s both !important; }
+.person-form .mat-mdc-form-field:nth-child(2) { animation: fadeInUp 0.4s ease-out 0.2s both !important; }
+.person-form .mat-mdc-form-field:nth-child(3) { animation: fadeInUp 0.4s ease-out 0.3s both !important; }
+.person-form .mat-mdc-form-field:nth-child(4) { animation: fadeInUp 0.4s ease-out 0.4s both !important; }
+
+.account-form .mat-mdc-form-field:nth-child(1) { animation: fadeInUp 0.4s ease-out 0.1s both !important; }
+.account-form .mat-mdc-form-field:nth-child(2) { animation: fadeInUp 0.4s ease-out 0.2s both !important; }
+.account-form .mat-mdc-form-field:nth-child(3) { animation: fadeInUp 0.4s ease-out 0.3s both !important; }

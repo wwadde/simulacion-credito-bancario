@@ -134,8 +134,13 @@ import { PersonDTO } from '../../core/models/person.model';
   `,
   styles: [`
     .credit-list-container {
-      max-width: 1200px;
-      margin: 0 auto;
+      width: 100% !important;
+      max-width: none !important;
+      margin: 0 !important;
+      padding: 24px !important;
+      box-sizing: border-box !important;
+      display: block !important;
+      position: relative;
     }
 
     .header-section {
@@ -150,7 +155,7 @@ import { PersonDTO } from '../../core/models/person.model';
     .page-title {
       font-size: 32px;
       font-weight: 300;
-      color: #333;
+      color: var(--text-primary);
       margin: 0;
     }
 
@@ -164,6 +169,7 @@ import { PersonDTO } from '../../core/models/person.model';
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       border-radius: 12px;
       transition: transform 0.3s ease;
+      background-color: var(--surface-color);
     }
 
     .person-card:hover {
@@ -173,12 +179,12 @@ import { PersonDTO } from '../../core/models/person.model';
     .no-credit {
       text-align: center;
       padding: 20px;
-      color: #666;
+      color: var(--text-secondary);
     }
 
     .no-credit-icon {
       font-size: 48px;
-      color: #ccc;
+      color: var(--text-disabled);
       margin-bottom: 12px;
     }
 
@@ -200,7 +206,7 @@ import { PersonDTO } from '../../core/models/person.model';
     .amount {
       font-size: 18px;
       font-weight: 600;
-      color: #673ab7;
+      color: var(--primary-color);
     }
 
     .progress-info {
@@ -211,7 +217,7 @@ import { PersonDTO } from '../../core/models/person.model';
       display: flex;
       justify-content: space-between;
       font-size: 12px;
-      color: #666;
+      color: var(--text-secondary);
       margin-bottom: 4px;
     }
 
@@ -244,11 +250,11 @@ import { PersonDTO } from '../../core/models/person.model';
 
     .interest-rate {
       font-size: 12px;
-      color: #666;
+      color: var(--text-secondary);
     }
 
     .date-info {
-      color: #666;
+      color: var(--text-secondary);
       font-size: 12px;
     }
 
@@ -258,12 +264,12 @@ import { PersonDTO } from '../../core/models/person.model';
       justify-content: space-between;
       margin-top: 16px;
       padding-top: 16px;
-      border-top: 1px solid #eee;
+      border-top: 1px solid var(--border-color);
     }
 
     .label {
       font-size: 14px;
-      color: #666;
+      color: var(--text-secondary);
     }
 
     .loading-container {
@@ -280,18 +286,47 @@ import { PersonDTO } from '../../core/models/person.model';
 
     .empty-icon {
       font-size: 64px;
-      color: #ccc;
+      color: var(--text-disabled);
       margin-bottom: 16px;
     }
 
     .empty-state h3 {
-      color: #666;
+      color: var(--text-secondary);
       margin-bottom: 8px;
     }
 
     .empty-state p {
-      color: #999;
+      color: var(--text-muted);
       margin-bottom: 24px;
+    }
+
+    /* Asegurar que el contenido use todo el ancho en pantallas grandes */
+    .table-card {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      width: 100%;
+      max-width: none;
+      background-color: var(--surface-color);
+    }
+
+    .mat-mdc-table {
+      width: 100% !important;
+      max-width: none !important;
+    }
+
+    /* Forzar que todos los contenedores usen el ancho completo */
+    .table-card mat-card-content {
+      width: 100% !important;
+      max-width: none !important;
+      padding: 16px !important;
+    }
+
+    .credit-list-container,
+    .credit-list-container > *,
+    .table-card,
+    .table-card > * {
+      width: 100% !important;
+      max-width: none !important;
     }
 
     @media (max-width: 768px) {

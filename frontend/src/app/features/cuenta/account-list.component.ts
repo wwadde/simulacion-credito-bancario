@@ -116,8 +116,13 @@ import { AccountFormDialogComponent } from './account-form-dialog.component';
   `,
   styles: [`
     .account-list-container {
-      max-width: 1200px;
-      margin: 0 auto;
+      width: 100% !important;
+      max-width: none !important;
+      margin: 0 !important;
+      padding: 24px !important;
+      box-sizing: border-box !important;
+      display: block !important;
+      position: relative;
     }
 
     .header-section {
@@ -131,14 +136,29 @@ import { AccountFormDialogComponent } from './account-form-dialog.component';
 
     .page-title {
       font-size: 32px;
-      font-weight: 300;
-      color: #333;
+      font-weight: 400;
+      color: var(--text-primary);
       margin: 0;
+      background: linear-gradient(135deg, #4caf50, #8bc34a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .table-card {
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      border-radius: 16px;
+      width: 100%;
+      max-width: none;
+      background-color: var(--surface-color);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .table-card:hover {
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+      transform: translateY(-2px);
     }
 
     .loading-container {
@@ -150,23 +170,35 @@ import { AccountFormDialogComponent } from './account-form-dialog.component';
 
     .empty-state {
       text-align: center;
-      padding: 60px 20px;
+      padding: 80px 20px;
+      background: linear-gradient(135deg, rgba(76, 175, 80, 0.02), rgba(139, 195, 74, 0.02));
+      border-radius: 12px;
+      margin: 20px;
     }
 
     .empty-icon {
-      font-size: 64px;
-      color: #ccc;
-      margin-bottom: 16px;
+      font-size: 80px;
+      color: var(--success-color);
+      margin-bottom: 20px;
+      opacity: 0.6;
+      background: linear-gradient(135deg, #4caf50, #8bc34a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .empty-state h3 {
-      color: #666;
-      margin-bottom: 8px;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      font-size: 24px;
+      font-weight: 500;
     }
 
     .empty-state p {
-      color: #999;
-      margin-bottom: 24px;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      font-size: 16px;
+      line-height: 1.5;
     }
 
     .accounts-table {
@@ -174,7 +206,8 @@ import { AccountFormDialogComponent } from './account-form-dialog.component';
     }
 
     .account-row:hover {
-      background-color: #f5f5f5;
+      background: linear-gradient(135deg, var(--hover-color), rgba(76, 175, 80, 0.02));
+      transition: all 0.3s ease;
     }
 
     .person-info {
@@ -184,26 +217,62 @@ import { AccountFormDialogComponent } from './account-form-dialog.component';
 
     .document {
       font-size: 12px;
-      color: #666;
+      color: var(--text-secondary);
+      font-weight: 500;
     }
 
     .balance-chip {
-      font-weight: 600;
+      font-weight: 700;
       font-size: 14px;
+      padding: 8px 16px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #4caf50, #66bb6a);
+      color: white;
+      box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+    }
+
+    .balance-chip.negative {
+      background: linear-gradient(135deg, var(--warn-color), #ff7043);
+      box-shadow: 0 2px 8px rgba(244, 67, 54, 0.3);
     }
 
     .payments-count {
-      color: #666;
+      color: var(--text-secondary);
       font-size: 14px;
+      font-weight: 500;
+      background: var(--hover-color);
+      padding: 4px 12px;
+      border-radius: 12px;
+      display: inline-block;
     }
 
     .mat-mdc-table {
-      background: transparent;
+      width: 100% !important;
+      max-width: none !important;
+    }
+
+    /* Forzar que todos los contenedores usen el ancho completo */
+    .table-card mat-card-content {
+      width: 100% !important;
+      max-width: none !important;
+      padding: 16px !important;
+    }
+
+    .account-list-container,
+    .account-list-container > *,
+    .table-card,
+    .table-card > * {
+      width: 100% !important;
+      max-width: none !important;
     }
 
     .mat-mdc-header-cell {
-      font-weight: 600;
-      color: #333;
+      font-weight: 700;
+      color: var(--success-color);
+      background: linear-gradient(135deg, rgba(76, 175, 80, 0.05), rgba(139, 195, 74, 0.05));
+      border-bottom: 2px solid var(--success-color);
+      font-size: 14px;
+      letter-spacing: 0.5px;
     }
 
     @media (max-width: 768px) {

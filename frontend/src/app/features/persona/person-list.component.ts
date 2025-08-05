@@ -127,8 +127,13 @@ import { PersonFormDialogComponent } from './person-form-dialog.component';
   `,
   styles: [`
     .person-list-container {
-      max-width: 1200px;
-      margin: 0 auto;
+      width: 100% !important;
+      max-width: none !important;
+      margin: 0 !important;
+      padding: 24px !important;
+      box-sizing: border-box !important;
+      display: block !important;
+      position: relative;
     }
 
     .header-section {
@@ -142,14 +147,29 @@ import { PersonFormDialogComponent } from './person-form-dialog.component';
 
     .page-title {
       font-size: 32px;
-      font-weight: 300;
-      color: #333;
+      font-weight: 400;
+      color: var(--text-primary);
       margin: 0;
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .table-card {
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      border-radius: 16px;
+      width: 100%;
+      max-width: none;
+      background-color: var(--surface-color);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .table-card:hover {
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+      transform: translateY(-2px);
     }
 
     .loading-container {
@@ -161,23 +181,35 @@ import { PersonFormDialogComponent } from './person-form-dialog.component';
 
     .empty-state {
       text-align: center;
-      padding: 60px 20px;
+      padding: 80px 20px;
+      background: linear-gradient(135deg, rgba(103, 58, 183, 0.02), rgba(156, 39, 176, 0.02));
+      border-radius: 12px;
+      margin: 20px;
     }
 
     .empty-icon {
-      font-size: 64px;
-      color: #ccc;
-      margin-bottom: 16px;
+      font-size: 80px;
+      color: var(--primary-color);
+      margin-bottom: 20px;
+      opacity: 0.6;
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .empty-state h3 {
-      color: #666;
-      margin-bottom: 8px;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      font-size: 24px;
+      font-weight: 500;
     }
 
     .empty-state p {
-      color: #999;
-      margin-bottom: 24px;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      font-size: 16px;
+      line-height: 1.5;
     }
 
     .persons-table {
@@ -185,7 +217,8 @@ import { PersonFormDialogComponent } from './person-form-dialog.component';
     }
 
     .person-row:hover {
-      background-color: #f5f5f5;
+      background: linear-gradient(135deg, var(--hover-color), rgba(103, 58, 183, 0.02));
+      transition: all 0.3s ease;
     }
 
     .name-container {
@@ -200,21 +233,59 @@ import { PersonFormDialogComponent } from './person-form-dialog.component';
     }
 
     .document-number {
-      font-weight: 500;
+      font-weight: 600;
+      color: var(--text-primary);
     }
 
     mat-chip {
       font-size: 12px;
-      min-height: 24px;
+      min-height: 26px;
+      font-weight: 500;
+      border-radius: 13px;
+    }
+
+    .mat-mdc-chip.mat-accent {
+      background: linear-gradient(135deg, var(--accent-color), #ff6ec7);
+      color: white;
+    }
+
+    .mat-mdc-chip.mat-primary {
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+      color: white;
+    }
+
+    .mat-mdc-chip.mat-warn {
+      background: linear-gradient(135deg, var(--warn-color), #ff7043);
+      color: white;
     }
 
     .mat-mdc-table {
-      background: transparent;
+      width: 100% !important;
+      max-width: none !important;
+    }
+
+    /* Forzar que todos los contenedores usen el ancho completo */
+    .table-card mat-card-content {
+      width: 100% !important;
+      max-width: none !important;
+      padding: 16px !important;
+    }
+
+    .person-list-container,
+    .person-list-container > *,
+    .table-card,
+    .table-card > * {
+      width: 100% !important;
+      max-width: none !important;
     }
 
     .mat-mdc-header-cell {
-      font-weight: 600;
-      color: #333;
+      font-weight: 700;
+      color: var(--primary-color);
+      background: linear-gradient(135deg, rgba(103, 58, 183, 0.05), rgba(156, 39, 176, 0.05));
+      border-bottom: 2px solid var(--primary-color);
+      font-size: 14px;
+      letter-spacing: 0.5px;
     }
 
     @media (max-width: 768px) {

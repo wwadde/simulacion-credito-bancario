@@ -195,13 +195,13 @@ import { AddPersonDTO, DocumentType } from '../../core/models/person.model';
     }
 
     mat-card-title {
-      color: #6d4c8a;
+      color: var(--primary-color);
       font-size: 24px;
       font-weight: 600;
     }
 
     mat-card-subtitle {
-      color: #666;
+      color: var(--text-secondary);
       font-size: 14px;
     }
 

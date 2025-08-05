@@ -103,27 +103,53 @@ import { PersonDTO, EditPersonDTO, DocumentType, PersonStatus } from '../../core
     .person-form {
       min-width: 500px;
       padding: 20px 0;
+      background: linear-gradient(135deg, rgba(103, 58, 183, 0.02), rgba(156, 39, 176, 0.02));
+      border-radius: 12px;
+      margin: 0 -24px;
+      padding: 24px;
     }
 
     .form-row {
       display: flex;
-      gap: 16px;
+      gap: 20px;
       width: 100%;
     }
 
     .full-width {
       width: 100%;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
 
     .half-width {
       flex: 1;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
 
     mat-dialog-content {
       max-height: 70vh;
       overflow-y: auto;
+      padding: 0 !important;
+    }
+
+    mat-dialog-title {
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 600;
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 0;
+    }
+
+    mat-dialog-actions {
+      padding: 24px 0 8px !important;
+      justify-content: center !important;
+      gap: 16px;
+    }
+
+    mat-dialog-actions button {
+      min-width: 120px;
     }
 
     @media (max-width: 600px) {

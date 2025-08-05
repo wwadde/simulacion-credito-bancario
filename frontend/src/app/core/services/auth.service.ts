@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, tap } from 'rxjs';
+import { Observable, BehaviorSubject, tap, catchError, throwError, of } from 'rxjs';
 import { AuthResponse, LoginRequest, RefreshTokenRequest } from '../models/auth.model';
 import { environment } from '../../../environments/environment';
 
@@ -44,6 +44,12 @@ export class AuthService {
       .pipe(
         tap(() => {
           this.clearSession();
+        }),
+        catchError((error: any) => {
+          // Incluso si el logout falla en el servidor, limpiar la sesión local
+          this.clearSession();
+          // Retornar éxito para evitar errores en la UI
+          return of('Logout completed locally');
         })
       );
   }
@@ -67,6 +73,10 @@ export class AuthService {
     localStorage.removeItem('expires_at');
     localStorage.removeItem('token_type');
     this.currentUserSubject.next(null);
+  }
+
+  public clearSessionPublic(): void {
+    this.clearSession();
   }
 
   private loadStoredUser(): void {

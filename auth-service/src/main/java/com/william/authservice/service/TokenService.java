@@ -63,13 +63,14 @@ public class TokenService {
 
         // Buscar token existente para la persona
         Optional<RefreshToken> existingToken = refreshTokenRepository
-                .findByPersonIdAndRevokedFalse(person.getId());
+                .findByPersonId(person.getId());
 
         RefreshToken refreshToken = existingToken.orElse(new RefreshToken());
         refreshToken.setPersonId(person.getId());
         refreshToken.setToken(datosToken.getFirst());
         refreshToken.setExpiryDate(datosToken.getSecond());
         refreshToken.setCreatedAt(Instant.now());
+        refreshToken.setRevoked(false);
         refreshTokenRepository.save(refreshToken);
         log.info("Refresh token generado para: {}", person.getName());
     }
