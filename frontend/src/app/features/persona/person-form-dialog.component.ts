@@ -540,12 +540,38 @@ import { PersonDTO, EditPersonDTO, DocumentType, PersonStatus, AddPersonDTO } fr
       background: #ffffff !important;
     }
 
+    :host-context(.light-theme) ::ng-deep .mat-mdc-option .mdc-list-item__primary-text {
+      color: #212121 !important;
+    }
+
     :host-context(.light-theme) ::ng-deep .mat-mdc-option:hover {
       background: #f5f5f5 !important;
+      color: #212121 !important;
+    }
+
+    :host-context(.light-theme) ::ng-deep .mat-mdc-option:hover .mdc-list-item__primary-text {
+      color: #212121 !important;
     }
 
     :host-context(.light-theme) ::ng-deep .mat-mdc-option.mdc-list-item--selected {
       background: #e8eaf6 !important;
+      color: #673ab7 !important;
+    }
+
+    :host-context(.light-theme) ::ng-deep .mat-mdc-option.mdc-list-item--selected .mdc-list-item__primary-text {
+      color: #673ab7 !important;
+    }
+
+    /* Additional option text fixes for light theme */
+    :host-context(.light-theme) ::ng-deep .mat-mdc-option span {
+      color: #212121 !important;
+    }
+
+    :host-context(.light-theme) ::ng-deep .mat-mdc-option:hover span {
+      color: #212121 !important;
+    }
+
+    :host-context(.light-theme) ::ng-deep .mat-mdc-option.mdc-list-item--selected span {
       color: #673ab7 !important;
     }
 

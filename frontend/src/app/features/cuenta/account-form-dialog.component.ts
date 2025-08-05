@@ -682,7 +682,14 @@ import { PersonDTO } from '../../core/models/person.model';
     .light-theme mat-dialog-actions { background: #fff !important; border-top: 1px solid #e0e0e0 !important; }
     .light-theme ::ng-deep .mat-mdc-select-panel { background: #fff !important; border: 1px solid #e0e0e0 !important; }
     .light-theme ::ng-deep .mat-mdc-option { color: #212121 !important; background: #fff !important; }
-    .light-theme ::ng-deep .mat-mdc-option:hover { background: #f5f5f5 !important; }
+    .light-theme ::ng-deep .mat-mdc-option .mdc-list-item__primary-text { color: #212121 !important; }
+    .light-theme ::ng-deep .mat-mdc-option span { color: #212121 !important; }
+    .light-theme ::ng-deep .mat-mdc-option:hover { background: #f5f5f5 !important; color: #212121 !important; }
+    .light-theme ::ng-deep .mat-mdc-option:hover .mdc-list-item__primary-text { color: #212121 !important; }
+    .light-theme ::ng-deep .mat-mdc-option:hover span { color: #212121 !important; }
+    .light-theme ::ng-deep .mat-mdc-option.mdc-list-item--selected { background: #e8f5e8 !important; color: #4caf50 !important; }
+    .light-theme ::ng-deep .mat-mdc-option.mdc-list-item--selected .mdc-list-item__primary-text { color: #4caf50 !important; }
+    .light-theme ::ng-deep .mat-mdc-option.mdc-list-item--selected span { color: #4caf50 !important; }
 
     :not(.dark-theme) ::ng-deep .mat-mdc-option:hover {
       background: #f5f5f5 !important;
