@@ -1,0 +1,100 @@
+/* Form Dialog Styles - Universal Light/Dark Theme Support */
+
+/* Light theme form styles */
+.light-theme .form-dialog .mat-mdc-form-field .mdc-notched-outline__leading,
+.light-theme .form-dialog .mat-mdc-form-field .mdc-notched-outline__trailing,
+.light-theme .form-dialog .mat-mdc-form-field .mdc-notched-outline__notch,
+body:not(.dark-theme) .form-dialog .mat-mdc-form-field .mdc-notched-outline__leading,
+body:not(.dark-theme) .form-dialog .mat-mdc-form-field .mdc-notched-outline__trailing,
+body:not(.dark-theme) .form-dialog .mat-mdc-form-field .mdc-notched-outline__notch {
+  border-color: rgba(0, 0, 0, 0.38) !important;
+}
+
+.light-theme .form-dialog .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+.light-theme .form-dialog .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing,
+.light-theme .form-dialog .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+body:not(.dark-theme) .form-dialog .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+body:not(.dark-theme) .form-dialog .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing,
+body:not(.dark-theme) .form-dialog .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch {
+  border-color: var(--primary-color) !important;
+  border-width: 2px !important;
+}
+
+.light-theme .form-dialog .mat-mdc-form-field .mat-mdc-input-element,
+body:not(.dark-theme) .form-dialog .mat-mdc-form-field .mat-mdc-input-element {
+  color: #212121 !important;
+  caret-color: var(--primary-color) !important;
+}
+
+.light-theme .form-dialog .mat-mdc-form-field .mdc-floating-label,
+body:not(.dark-theme) .form-dialog .mat-mdc-form-field .mdc-floating-label {
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.light-theme .form-dialog .mat-mdc-form-field.mat-focused .mdc-floating-label,
+body:not(.dark-theme) .form-dialog .mat-mdc-form-field.mat-focused .mdc-floating-label {
+  color: var(--primary-color) !important;
+}
+
+.light-theme .form-dialog .mat-mdc-form-field .mat-mdc-select-value-text,
+body:not(.dark-theme) .form-dialog .mat-mdc-form-field .mat-mdc-select-value-text {
+  color: #212121 !important;
+}
+
+.light-theme .form-dialog .mat-mdc-text-field-wrapper,
+body:not(.dark-theme) .form-dialog .mat-mdc-text-field-wrapper {
+  background-color: #ffffff !important;
+}
+
+.light-theme .form-dialog .form-section,
+body:not(.dark-theme) .form-dialog .form-section {
+  background: #ffffff !important;
+  border-color: #e0e0e0 !important;
+}
+
+.light-theme .form-dialog mat-dialog-actions,
+body:not(.dark-theme) .form-dialog mat-dialog-actions {
+  background: #ffffff !important;
+  border-top-color: #e0e0e0 !important;
+}
+
+/* Dark theme form styles */
+.dark-theme .form-dialog .mat-mdc-form-field .mdc-notched-outline__leading,
+.dark-theme .form-dialog .mat-mdc-form-field .mdc-notched-outline__trailing,
+.dark-theme .form-dialog .mat-mdc-form-field .mdc-notched-outline__notch {
+  border-color: rgba(255, 255, 255, 0.38) !important;
+}
+
+.dark-theme .form-dialog .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+.dark-theme .form-dialog .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing,
+.dark-theme .form-dialog .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch {
+  border-color: var(--primary-light) !important;
+  border-width: 2px !important;
+}
+
+.dark-theme .form-dialog .mat-mdc-form-field .mat-mdc-input-element {
+  color: var(--text-primary) !important;
+  caret-color: var(--primary-light) !important;
+}
+
+.dark-theme .form-dialog .mat-mdc-form-field .mdc-floating-label {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.dark-theme .form-dialog .mat-mdc-form-field.mat-focused .mdc-floating-label {
+  color: var(--primary-light) !important;
+}
+
+.dark-theme .form-dialog .mat-mdc-form-field .mat-mdc-select-value-text {
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .form-dialog .form-section {
+  background: var(--surface-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+.dark-theme .form-dialog mat-dialog-actions {
+  background: var(--surface-color) !important;
+  border-top-color: var(--border-color) !important;
+}

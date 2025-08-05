@@ -1,4 +1,6 @@
 @import '@angular/material/prebuilt-themes/purple-green.css';
+@import 'app/shared/styles/theme-system.css';
+@import 'app/shared/styles/light-theme-fix.css';
 
 /* Global Styles */
 * {
@@ -355,6 +357,8 @@ html, body {
   background: var(--primary-dark);
 }
 
+
+
 /* Utility classes */
 .text-center {
   text-align: center;
@@ -635,6 +639,79 @@ app-credit-list .credit-list-container {
   border-color: var(--primary-color) !important;
   border-width: 2px !important;
 }
+
+/* ==========================================================================
+   MATERIAL DESIGN THEME SYSTEM - CLEAN ARCHITECTURE
+   ========================================================================== */
+
+/* Base Material Form Field Styling */
+.mat-mdc-form-field {
+  border-radius: 12px;
+}
+
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+  border-color: var(--primary-color);
+  border-width: 2px;
+}
+
+/* Light Theme Form Fields */
+:root .mat-mdc-form-field .mdc-notched-outline__leading,
+:root .mat-mdc-form-field .mdc-notched-outline__trailing,
+:root .mat-mdc-form-field .mdc-notched-outline__notch {
+  border-color: rgba(0, 0, 0, 0.38);
+}
+
+:root .mat-mdc-form-field .mat-mdc-input-element {
+  color: var(--text-primary);
+  caret-color: var(--primary-color);
+}
+
+:root .mat-mdc-form-field .mdc-floating-label {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+:root .mat-mdc-form-field.mat-focused .mdc-floating-label {
+  color: var(--primary-color);
+}
+
+:root .mat-mdc-form-field .mat-mdc-select-value-text {
+  color: var(--text-primary);
+}
+
+:root .mat-mdc-text-field-wrapper {
+  background-color: var(--surface-color);
+}
+
+/* Dark Theme Form Fields Override */
+.dark-theme .mat-mdc-form-field .mdc-notched-outline__leading,
+.dark-theme .mat-mdc-form-field .mdc-notched-outline__trailing,
+.dark-theme .mat-mdc-form-field .mdc-notched-outline__notch {
+  border-color: rgba(255, 255, 255, 0.38);
+}
+
+.dark-theme .mat-mdc-form-field .mdc-floating-label {
+  color: var(--text-secondary);
+}
+
+.dark-theme .mat-mdc-form-field.mat-focused .mdc-floating-label {
+  color: var(--primary-light);
+}
+
+/* Form Section Backgrounds */
+.form-section {
+  background: var(--surface-color);
+  border-color: var(--border-color);
+}
+
+/* Dialog Actions */
+mat-dialog-actions {
+  background: var(--surface-color);
+  border-top-color: var(--border-color);
+}
+
+
 
 /* Enhanced chips */
 .mat-mdc-standard-chip {

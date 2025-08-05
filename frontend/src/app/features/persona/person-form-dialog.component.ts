@@ -235,7 +235,8 @@ import { PersonDTO, EditPersonDTO, DocumentType, PersonStatus, AddPersonDTO } fr
     }
 
     .person-form {
-      min-width: 600px;
+      min-width: 700px;
+      max-width: 850px;
       padding: 0;
     }
 
@@ -365,7 +366,6 @@ import { PersonDTO, EditPersonDTO, DocumentType, PersonStatus, AddPersonDTO } fr
     }
 
     .mat-mdc-text-field-wrapper {
-      background-color: var(--surface-color) !important;
       border-radius: 8px !important;
     }
 
@@ -377,6 +377,19 @@ import { PersonDTO, EditPersonDTO, DocumentType, PersonStatus, AddPersonDTO } fr
     .mat-mdc-form-field-focus-overlay {
       background-color: var(--primary-color) !important;
       opacity: 0.05 !important;
+    }
+
+    /* Default theme handling */
+    .mat-mdc-text-field-wrapper {
+      background-color: var(--surface-color) !important;
+    }
+
+    .mat-mdc-form-field .mat-mdc-input-element {
+      color: var(--text-color) !important;
+    }
+
+    .mat-mdc-form-field .mdc-floating-label {
+      color: var(--text-secondary) !important;
     }
 
     /* Dark theme adjustments */
@@ -396,6 +409,165 @@ import { PersonDTO, EditPersonDTO, DocumentType, PersonStatus, AddPersonDTO } fr
 
     .dark-theme .section-title mat-icon {
       color: var(--primary-light);
+    }
+
+    /* Light theme specific fixes - applied when light theme is active */
+    :host-context(.light-theme) .form-section,
+    :host-context(body.light-theme) .form-section {
+      background: #ffffff !important;
+      border: 1px solid #e0e0e0 !important;
+    }
+
+    :host-context(.light-theme) .section-title,
+    :host-context(body.light-theme) .section-title {
+      color: #673ab7 !important;
+      border-bottom-color: #673ab7 !important;
+    }
+
+    :host-context(.light-theme) .section-title mat-icon,
+    :host-context(body.light-theme) .section-title mat-icon {
+      color: #673ab7 !important;
+    }
+
+    /* Light theme form fields with enhanced specificity */
+    :host-context(.light-theme) .mat-mdc-text-field-wrapper,
+    :host-context(body.light-theme) .mat-mdc-text-field-wrapper {
+      background-color: #ffffff !important;
+    }
+
+    :host-context(.light-theme) .mat-mdc-form-field .mdc-notched-outline__leading,
+    :host-context(.light-theme) .mat-mdc-form-field .mdc-notched-outline__trailing,
+    :host-context(.light-theme) .mat-mdc-form-field .mdc-notched-outline__notch,
+    :host-context(body.light-theme) .mat-mdc-form-field .mdc-notched-outline__leading,
+    :host-context(body.light-theme) .mat-mdc-form-field .mdc-notched-outline__trailing,
+    :host-context(body.light-theme) .mat-mdc-form-field .mdc-notched-outline__notch {
+      border-color: rgba(0, 0, 0, 0.42) !important;
+      border-width: 1px !important;
+    }
+
+    :host-context(.light-theme) .mat-mdc-form-field:hover .mdc-notched-outline__leading,
+    :host-context(.light-theme) .mat-mdc-form-field:hover .mdc-notched-outline__trailing,
+    :host-context(.light-theme) .mat-mdc-form-field:hover .mdc-notched-outline__notch,
+    :host-context(body.light-theme) .mat-mdc-form-field:hover .mdc-notched-outline__leading,
+    :host-context(body.light-theme) .mat-mdc-form-field:hover .mdc-notched-outline__trailing,
+    :host-context(body.light-theme) .mat-mdc-form-field:hover .mdc-notched-outline__notch {
+      border-color: rgba(0, 0, 0, 0.87) !important;
+    }
+
+    :host-context(.light-theme) .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+    :host-context(.light-theme) .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing,
+    :host-context(.light-theme) .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+    :host-context(body.light-theme) .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+    :host-context(body.light-theme) .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing,
+    :host-context(body.light-theme) .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch {
+      border-color: #673ab7 !important;
+      border-width: 2px !important;
+    }
+
+    :host-context(.light-theme) .mat-mdc-form-field .mat-mdc-input-element,
+    :host-context(body.light-theme) .mat-mdc-form-field .mat-mdc-input-element {
+      color: #212121 !important;
+      caret-color: #673ab7 !important;
+    }
+
+    :host-context(.light-theme) .mat-mdc-form-field .mat-mdc-input-element::placeholder,
+    :host-context(body.light-theme) .mat-mdc-form-field .mat-mdc-input-element::placeholder {
+      color: rgba(0, 0, 0, 0.6) !important;
+    }
+
+    :host-context(.light-theme) .mat-mdc-form-field .mdc-floating-label,
+    :host-context(body.light-theme) .mat-mdc-form-field .mdc-floating-label {
+      color: rgba(0, 0, 0, 0.6) !important;
+    }
+
+    :host-context(.light-theme) .mat-mdc-form-field.mat-focused .mdc-floating-label,
+    :host-context(body.light-theme) .mat-mdc-form-field.mat-focused .mdc-floating-label {
+      color: #673ab7 !important;
+    }
+
+    :host-context(.light-theme) .mat-mdc-form-field .mat-mdc-select-value-text,
+    :host-context(body.light-theme) .mat-mdc-form-field .mat-mdc-select-value-text {
+      color: #212121 !important;
+    }
+
+    :host-context(.light-theme) .mat-mdc-form-field .mat-mdc-select-placeholder,
+    :host-context(body.light-theme) .mat-mdc-form-field .mat-mdc-select-placeholder {
+      color: rgba(0, 0, 0, 0.6) !important;
+    }
+
+    :host-context(.light-theme) .mat-mdc-form-field-icon-suffix mat-icon,
+    :host-context(body.light-theme) .mat-mdc-form-field-icon-suffix mat-icon {
+      color: #673ab7 !important;
+      opacity: 0.8;
+    }
+
+    :host-context(.light-theme) mat-dialog-actions,
+    :host-context(body.light-theme) mat-dialog-actions {
+      background: #ffffff !important;
+      border-top: 1px solid #e0e0e0 !important;
+    }
+
+    :host-context(.light-theme) mat-dialog-content,
+    :host-context(body.light-theme) mat-dialog-content {
+      background: #f8f9fa !important;
+    }
+
+    /* Global overlays for light theme with enhanced specificity */
+    :host-context(.light-theme) ::ng-deep .mat-mdc-select-panel {
+      background: #ffffff !important;
+      border: 1px solid #e0e0e0 !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    :host-context(.light-theme) ::ng-deep .mat-mdc-option {
+      color: #212121 !important;
+      background: #ffffff !important;
+    }
+
+    :host-context(.light-theme) ::ng-deep .mat-mdc-option:hover {
+      background: #f5f5f5 !important;
+    }
+
+    :host-context(.light-theme) ::ng-deep .mat-mdc-option.mdc-list-item--selected {
+      background: #e8eaf6 !important;
+      color: #673ab7 !important;
+    }
+
+    :host-context(.light-theme) ::ng-deep .mat-datepicker-content {
+      background: #ffffff !important;
+      border: 1px solid #e0e0e0 !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    :host-context(.light-theme) ::ng-deep .mat-calendar-body-cell-content {
+      color: #212121 !important;
+    }
+
+    :host-context(.light-theme) ::ng-deep .mat-calendar-body-selected {
+      background-color: #673ab7 !important;
+      color: #ffffff !important;
+    }
+
+    :host-context(.light-theme) ::ng-deep .mat-datepicker-toggle {
+      color: #673ab7 !important;
+    }
+
+    /* Additional input styling for light theme */
+    :host-context(.light-theme) .mat-mdc-form-field input {
+      color: #212121 !important;
+    }
+
+    :host-context(.light-theme) .mat-mdc-form-field input:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+      -webkit-text-fill-color: #212121 !important;
+    }
+
+    :host-context(.light-theme) .mat-mdc-form-field .mat-mdc-select-arrow {
+      color: rgba(0, 0, 0, 0.54) !important;
+    }
+
+    :host-context(.light-theme) .mat-mdc-form-field.mat-focused .mat-mdc-select-arrow {
+      color: #673ab7 !important;
     }
 
     /* Responsive design */
@@ -434,6 +606,13 @@ import { PersonDTO, EditPersonDTO, DocumentType, PersonStatus, AddPersonDTO } fr
 
       .section-title {
         font-size: 16px;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .person-form {
+        min-width: 850px;
+        max-width: 950px;
       }
     }
 

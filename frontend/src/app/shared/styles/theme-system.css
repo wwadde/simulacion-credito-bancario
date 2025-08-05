@@ -1,0 +1,62 @@
+/* ==========================================================================
+   THEME SYSTEM - PROFESSIONAL IMPLEMENTATION
+   ========================================================================== */
+
+/* This file contains a clean, maintainable theme system that:
+   1. Uses CSS custom properties for consistency
+   2. Follows DRY principles (Don't Repeat Yourself)
+   3. Has predictable specificity
+   4. Is easy to maintain and extend
+   
+   Usage:
+   - Light theme is the default (:root)
+   - Dark theme overrides with .dark-theme class
+   - No !important unless absolutely necessary
+   - Clean, semantic selectors
+*/
+
+/* Base Material Component Overrides */
+.mat-mdc-select-panel {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+}
+
+.mat-mdc-option {
+  color: var(--text-primary);
+  background: var(--surface-color);
+}
+
+.mat-mdc-option:hover {
+  background: var(--hover-color);
+}
+
+.mat-mdc-datepicker-content {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+}
+
+.mat-calendar-table {
+  color: var(--text-primary);
+}
+
+.mat-calendar-body-cell-content {
+  color: var(--text-primary);
+}
+
+.mat-mdc-dialog-container {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+}
+
+/* Dark Theme Specific Overrides */
+.dark-theme .mat-mdc-datepicker-content {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-theme .mat-mdc-select-panel {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-theme .mat-mdc-dialog-container {
+  border-color: rgba(255, 255, 255, 0.1);
+}

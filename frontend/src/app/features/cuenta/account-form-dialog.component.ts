@@ -161,7 +161,8 @@ import { PersonDTO } from '../../core/models/person.model';
     }
 
     .account-form {
-      min-width: 600px;
+      min-width: 700px;
+      max-width: 850px;
       padding: 0;
     }
 
@@ -342,6 +343,18 @@ import { PersonDTO } from '../../core/models/person.model';
       border-top: 1px solid var(--border-color);
     }
 
+    /* Dark theme dialog adjustments */
+    .dark-theme mat-dialog-content {
+      background: linear-gradient(135deg, 
+        rgba(139, 195, 74, 0.05), 
+        rgba(76, 175, 80, 0.05));
+    }
+
+    .dark-theme mat-dialog-actions {
+      background: var(--surface-color);
+      border-top-color: var(--border-color);
+    }
+
     .cancel-btn {
       min-width: 140px;
       height: 44px;
@@ -399,6 +412,38 @@ import { PersonDTO } from '../../core/models/person.model';
       border-radius: 8px !important;
     }
 
+    /* Force Material Design outline styles for light theme */
+    .mat-mdc-form-field .mdc-notched-outline__leading,
+    .mat-mdc-form-field .mdc-notched-outline__trailing,
+    .mat-mdc-form-field .mdc-notched-outline__notch {
+      border-color: rgba(0, 0, 0, 0.38) !important;
+    }
+
+    .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+    .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing,
+    .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch {
+      border-color: #4caf50 !important;
+      border-width: 2px !important;
+    }
+
+    /* Input text and label colors - force override */
+    .mat-mdc-form-field .mat-mdc-input-element {
+      color: var(--text-primary) !important;
+      caret-color: #4caf50 !important;
+    }
+
+    .mat-mdc-form-field .mdc-floating-label {
+      color: rgba(0, 0, 0, 0.6) !important;
+    }
+
+    .mat-mdc-form-field.mat-focused .mdc-floating-label {
+      color: #4caf50 !important;
+    }
+
+    .mat-mdc-form-field .mat-mdc-select-value-text {
+      color: var(--text-primary) !important;
+    }
+
     .mat-mdc-form-field-icon-suffix mat-icon {
       color: #4caf50;
       opacity: 0.7;
@@ -409,22 +454,348 @@ import { PersonDTO } from '../../core/models/person.model';
       opacity: 0.05 !important;
     }
 
-    /* Dark theme adjustments */
-    .dark-theme .form-section {
-      background: var(--surface-dark);
-      border-color: var(--border-dark);
+    /* Select option text colors */
+    .person-main strong {
+      color: var(--text-primary);
     }
 
-    .dark-theme .mat-mdc-text-field-wrapper {
-      background-color: var(--surface-dark) !important;
+    .person-details {
+      color: var(--text-secondary);
+    }
+
+    /* Light theme explicit styles with higher specificity */
+    body.light-theme .mat-mdc-form-field .mdc-notched-outline__leading,
+    body.light-theme .mat-mdc-form-field .mdc-notched-outline__trailing,
+    body.light-theme .mat-mdc-form-field .mdc-notched-outline__notch,
+    .light-theme .mat-mdc-form-field .mdc-notched-outline__leading,
+    .light-theme .mat-mdc-form-field .mdc-notched-outline__trailing,
+    .light-theme .mat-mdc-form-field .mdc-notched-outline__notch,
+    .mat-mdc-form-field .mdc-notched-outline__leading,
+    .mat-mdc-form-field .mdc-notched-outline__trailing,
+    .mat-mdc-form-field .mdc-notched-outline__notch {
+      border-color: rgba(0, 0, 0, 0.38) !important;
+    }
+
+    body.light-theme .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+    body.light-theme .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing,
+    body.light-theme .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+    .light-theme .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+    .light-theme .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing,
+    .light-theme .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+    .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+    .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing,
+    .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch {
+      border-color: #4caf50 !important;
+      border-width: 2px !important;
+    }
+
+    body.light-theme .mat-mdc-form-field .mat-mdc-input-element,
+    .light-theme .mat-mdc-form-field .mat-mdc-input-element,
+    .mat-mdc-form-field .mat-mdc-input-element {
+      color: #212121 !important;
+      caret-color: #4caf50 !important;
+    }
+
+    body.light-theme .mat-mdc-form-field .mdc-floating-label,
+    .light-theme .mat-mdc-form-field .mdc-floating-label,
+    .mat-mdc-form-field .mdc-floating-label {
+      color: rgba(0, 0, 0, 0.6) !important;
+    }
+
+    body.light-theme .mat-mdc-form-field.mat-focused .mdc-floating-label,
+    .light-theme .mat-mdc-form-field.mat-focused .mdc-floating-label,
+    .mat-mdc-form-field.mat-focused .mdc-floating-label {
+      color: #4caf50 !important;
+    }
+
+    body.light-theme .mat-mdc-form-field .mat-mdc-select-value-text,
+    .light-theme .mat-mdc-form-field .mat-mdc-select-value-text,
+    .mat-mdc-form-field .mat-mdc-select-value-text {
+      color: #212121 !important;
+    }
+
+    .light-theme .form-section,
+    :root .form-section {
+      background: #ffffff;
+      border-color: #e0e0e0;
+    }
+
+    .light-theme .section-title,
+    :root .section-title {
+      color: #4caf50;
+      border-bottom-color: #4caf50;
+    }
+
+    .light-theme .section-title mat-icon,
+    :root .section-title mat-icon {
+      color: #4caf50;
+    }
+
+    .light-theme .mat-mdc-text-field-wrapper,
+    :root .mat-mdc-text-field-wrapper {
+      background-color: #ffffff !important;
+    }
+
+    .light-theme .mat-mdc-form-field-icon-suffix mat-icon,
+    :root .mat-mdc-form-field-icon-suffix mat-icon {
+      color: #4caf50;
+    }
+
+    .light-theme mat-dialog-actions,
+    :root mat-dialog-actions {
+      background: #ffffff;
+      border-top-color: #e0e0e0;
+    }
+
+    .light-theme .person-main strong,
+    :root .person-main strong {
+      color: #212121;
+    }
+
+    .light-theme .person-details,
+    :root .person-details {
+      color: #757575;
+    }
+
+    .light-theme .person-card,
+    :root .person-card {
+      background: linear-gradient(135deg, rgba(76, 175, 80, 0.05), rgba(139, 195, 74, 0.05));
+      border-color: #4caf50;
+    }
+
+    .light-theme .preview-card,
+    :root .preview-card {
+      background: linear-gradient(135deg, rgba(76, 175, 80, 0.05), rgba(139, 195, 74, 0.05));
+      border-color: #4caf50;
+    }
+
+    .light-theme .person-card mat-card-title,
+    :root .person-card mat-card-title {
+      color: #212121;
+    }
+
+    .light-theme .person-card mat-card-subtitle,
+    :root .person-card mat-card-subtitle {
+      color: #757575;
+    }
+
+    .light-theme .info-item,
+    :root .info-item {
+      color: #212121;
+    }
+
+    .light-theme .info-item mat-icon,
+    :root .info-item mat-icon {
+      color: #4caf50;
+    }
+
+    .light-theme .preview-card mat-icon,
+    :root .preview-card mat-icon {
+      color: #4caf50;
+    }
+
+    .light-theme .preview-label,
+    :root .preview-label {
+      color: #757575;
+    }
+
+    .light-theme .preview-amount,
+    :root .preview-amount {
+      color: #4caf50;
+    }
+
+    /* Dark theme adjustments with higher specificity */
+    .dark-theme .form-section {
+      background: var(--surface-color);
+      border-color: var(--border-color);
+    }
+
+    .dark-theme .section-title {
+      color: #8bc34a;
+      border-bottom-color: #8bc34a;
+    }
+
+    .dark-theme .section-title mat-icon {
+      color: #8bc34a;
+    }
+
+    .dark-theme .mat-mdc-form-field-icon-suffix mat-icon {
+      color: #8bc34a;
+    }
+
+    .dark-theme .mat-mdc-form-field.mat-focused .mdc-floating-label {
+      color: #8bc34a !important;
+    }
+
+    .dark-theme .mat-mdc-form-field .mdc-notched-outline__leading,
+    .dark-theme .mat-mdc-form-field .mdc-notched-outline__trailing,
+    .dark-theme .mat-mdc-form-field .mdc-notched-outline__notch {
+      border-color: rgba(255, 255, 255, 0.38) !important;
+    }
+
+    .dark-theme .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+    .dark-theme .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing,
+    .dark-theme .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch {
+      border-color: #8bc34a !important;
+      border-width: 2px !important;
+    }
+
+    .dark-theme .mat-mdc-form-field .mat-mdc-input-element {
+      color: var(--text-primary) !important;
+    }
+
+    .dark-theme .mat-mdc-form-field .mdc-floating-label {
+      color: rgba(255, 255, 255, 0.6) !important;
+    }
+
+    /* Light theme fixes - optimized */
+    .light-theme .form-section { background: #fff !important; border: 1px solid #e0e0e0 !important; }
+    .light-theme .section-title { color: #4caf50 !important; border-bottom-color: #4caf50 !important; }
+    .light-theme .section-title mat-icon { color: #4caf50 !important; }
+    .light-theme .mat-mdc-text-field-wrapper { background-color: #fff !important; }
+    .light-theme .mat-mdc-form-field .mdc-notched-outline__leading,
+    .light-theme .mat-mdc-form-field .mdc-notched-outline__trailing,
+    .light-theme .mat-mdc-form-field .mdc-notched-outline__notch { border-color: rgba(0,0,0,0.38) !important; }
+    .light-theme .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+    .light-theme .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing,
+    .light-theme .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch { border-color: #4caf50 !important; border-width: 2px !important; }
+    .light-theme .mat-mdc-form-field .mat-mdc-input-element { color: #212121 !important; caret-color: #4caf50 !important; }
+    .light-theme .mat-mdc-form-field .mdc-floating-label { color: rgba(0,0,0,0.6) !important; }
+    .light-theme .mat-mdc-form-field.mat-focused .mdc-floating-label { color: #4caf50 !important; }
+    .light-theme .mat-mdc-form-field .mat-mdc-select-value-text { color: #212121 !important; }
+    .light-theme mat-dialog-actions { background: #fff !important; border-top: 1px solid #e0e0e0 !important; }
+    .light-theme ::ng-deep .mat-mdc-select-panel { background: #fff !important; border: 1px solid #e0e0e0 !important; }
+    .light-theme ::ng-deep .mat-mdc-option { color: #212121 !important; background: #fff !important; }
+    .light-theme ::ng-deep .mat-mdc-option:hover { background: #f5f5f5 !important; }
+
+    :not(.dark-theme) ::ng-deep .mat-mdc-option:hover {
+      background: #f5f5f5 !important;
+    }
+
+    .dark-theme .mat-mdc-form-field .mat-mdc-select-value-text {
+      color: var(--text-primary) !important;
     }
 
     .dark-theme .person-card {
-      background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 195, 74, 0.1));
+      background: linear-gradient(135deg, rgba(139, 195, 74, 0.1), rgba(76, 175, 80, 0.1));
+      border-color: #8bc34a;
     }
 
     .dark-theme .preview-card {
-      background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 195, 74, 0.1));
+      background: linear-gradient(135deg, rgba(139, 195, 74, 0.1), rgba(76, 175, 80, 0.1));
+      border-color: #8bc34a;
+    }
+
+    .dark-theme .person-card mat-card-avatar {
+      background: #8bc34a;
+    }
+
+    .dark-theme .person-card mat-card-title {
+      color: var(--text-primary);
+    }
+
+    .dark-theme .person-card mat-card-subtitle {
+      color: var(--text-secondary);
+    }
+
+    .dark-theme .info-item {
+      color: var(--text-primary);
+    }
+
+    .dark-theme .info-item mat-icon {
+      color: #8bc34a;
+    }
+
+    .dark-theme .preview-card mat-icon {
+      color: #8bc34a;
+    }
+
+    .dark-theme .preview-label {
+      color: var(--text-secondary);
+    }
+
+    .dark-theme .preview-amount {
+      color: #8bc34a;
+    }
+
+    /* Global styles for Material components that render outside this component */
+    ::ng-deep .mat-mdc-select-panel {
+      background: var(--surface-color) !important;
+    }
+
+    ::ng-deep .mat-mdc-option {
+      color: var(--text-primary) !important;
+    }
+
+    ::ng-deep .mat-mdc-option:hover {
+      background: var(--hover-color) !important;
+    }
+
+    ::ng-deep .mat-mdc-option.mdc-list-item--selected {
+      background: var(--hover-color-alt) !important;
+    }
+
+    ::ng-deep .mat-mdc-snack-bar-container.success-snackbar {
+      background: var(--success-color) !important;
+      color: white !important;
+    }
+
+    ::ng-deep .mat-mdc-snack-bar-container.error-snackbar {
+      background: var(--warn-color) !important;
+      color: white !important;
+    }
+
+    /* Light theme global adjustments */
+    .light-theme ::ng-deep .mat-mdc-select-panel,
+    :root ::ng-deep .mat-mdc-select-panel {
+      background: #ffffff !important;
+      border: 1px solid #e0e0e0 !important;
+    }
+
+    .light-theme ::ng-deep .mat-mdc-option,
+    :root ::ng-deep .mat-mdc-option {
+      color: #212121 !important;
+    }
+
+    /* Dark theme global adjustments */
+    .dark-theme ::ng-deep .mat-mdc-select-panel {
+      background: var(--surface-color) !important;
+      border: 1px solid var(--border-color) !important;
+    }
+
+    .dark-theme ::ng-deep .mat-mdc-option {
+      color: var(--text-primary) !important;
+    }
+
+    .form-section:nth-child(2) { animation-delay: 0.2s; }
+
+    /* Animations */
+    @keyframes slideInUp {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .form-section {
+      animation: slideInUp 0.3s ease-out;
+    }
+
+    .form-section:nth-child(1) { animation-delay: 0.1s; }
+    .form-section:nth-child(2) { animation-delay: 0.2s; }
+
+    /* Success states */
+    .mat-mdc-form-field.ng-valid.ng-touched .mat-mdc-form-field-icon-suffix mat-icon {
+      color: #4caf50;
+    }
+
+    /* Error states */
+    .mat-mdc-form-field.mat-form-field-invalid .mat-mdc-form-field-icon-suffix mat-icon {
+      color: var(--warn-color);
     }
 
     /* Responsive design */
@@ -455,44 +826,20 @@ import { PersonDTO } from '../../core/models/person.model';
       .section-title {
         font-size: 16px;
       }
-
-      .person-card mat-card-header {
-        padding: 12px;
-      }
-
-      .person-info {
-        padding: 0 12px 12px;
-      }
     }
 
-    /* Animations */
-    @keyframes slideInUp {
-      from {
-        transform: translateY(20px);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
+    @media (min-width: 1200px) {
+      .account-form {
+        min-width: 850px;
+        max-width: 950px;
       }
     }
 
-    .form-section {
-      animation: slideInUp 0.3s ease-out;
-    }
-
-    .form-section:nth-child(1) { animation-delay: 0.1s; }
-    .form-section:nth-child(2) { animation-delay: 0.2s; }
-
-    /* Success states */
-    .mat-mdc-form-field.ng-valid.ng-touched .mat-mdc-form-field-icon-suffix mat-icon {
-      color: #4caf50;
-    }
-
-    /* Error states */
-    .mat-mdc-form-field.mat-form-field-invalid .mat-mdc-form-field-icon-suffix mat-icon {
-      color: var(--warn-color);
-    }
+    /* Essential light theme fixes */
+    .light-theme .form-section { background: #fff !important; }
+    .light-theme .mat-mdc-text-field-wrapper { background: #fff !important; }
+    .light-theme .mat-mdc-form-field .mat-mdc-input-element { color: #212121 !important; }
+    .light-theme .mat-mdc-form-field .mat-mdc-select-value-text { color: #212121 !important; }
   `]
 })
 export class AccountFormDialogComponent implements OnInit {
