@@ -6,10 +6,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { Observable, map, startWith, of } from 'rxjs';
 import { AccountService } from '../../core/services/account.service';
 import { PersonService } from '../../core/services/person.service';
 import { PersonDTO } from '../../core/models/person.model';
@@ -25,10 +28,12 @@ import { PersonDTO } from '../../core/models/person.model';
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
+    MatAutocompleteModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    MatTooltipModule
   ],
   template: `
     <div class="dialog-header">
@@ -45,9 +50,28 @@ import { PersonDTO } from '../../core/models/person.model';
           </h3>
           
           <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Seleccionar Persona *</mat-label>
-            <mat-select formControlName="personId" (selectionChange)="onPersonSelected($event.value)">
-              <mat-option *ngFor="let person of persons" [value]="person.id">
+            <mat-label>Buscar y Seleccionar Persona *</mat-label>
+            <input
+              type="text"
+              matInput
+              formControlName="personSearch"
+              [matAutocomplete]="auto"
+              placeholder="Haga clic para buscar y seleccionar una persona"
+              (focus)="onInputFocus()"
+              (input)="onInputChange()"
+              tabindex="2"
+              [readonly]="!searchEnabled"
+              (click)="enableSearch($event)">
+            <mat-autocomplete 
+              #auto="matAutocomplete" 
+              [displayWith]="displayPersonFn"
+              (optionSelected)="onPersonSelected($event.option.value)"
+              panelClass="person-autocomplete-panel"
+              autoActiveFirstOption="false">
+              <mat-option 
+                *ngFor="let person of filteredPersons$ | async; trackBy: trackByPersonId" 
+                [value]="person"
+                class="person-autocomplete-option">
                 <div class="person-option">
                   <div class="person-main">
                     <strong>{{person.name}} {{person.surname}}</strong>
@@ -58,8 +82,35 @@ import { PersonDTO } from '../../core/models/person.model';
                   </div>
                 </div>
               </mat-option>
-            </mat-select>
-            <mat-icon matSuffix>people</mat-icon>
+              <mat-option *ngIf="shouldShowLoadingOption()" disabled>
+                <div class="no-results">
+                  <mat-icon>hourglass_empty</mat-icon>
+                  <span>Cargando personas...</span>
+                </div>
+              </mat-option>
+              <mat-option *ngIf="shouldShowNoResultsOption()" disabled>
+                <div class="no-results">
+                  <mat-icon>search_off</mat-icon>
+                  <span>No se encontraron personas que coincidan con la búsqueda</span>
+                </div>
+              </mat-option>
+              <mat-option *ngIf="shouldShowNoPersonsOption()" disabled>
+                <div class="no-results">
+                  <mat-icon>person_off</mat-icon>
+                  <span>No hay personas activas registradas</span>
+                </div>
+              </mat-option>
+            </mat-autocomplete>
+            <button 
+              mat-icon-button 
+              matSuffix 
+              *ngIf="selectedPerson" 
+              (click)="clearPersonSelection()"
+              type="button"
+              matTooltip="Limpiar selección">
+              <mat-icon>clear</mat-icon>
+            </button>
+            <mat-icon matSuffix *ngIf="!selectedPerson">search</mat-icon>
             <mat-error *ngIf="accountForm.get('personId')?.hasError('required')">
               Debe seleccionar una persona
             </mat-error>
@@ -97,7 +148,7 @@ import { PersonDTO } from '../../core/models/person.model';
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Balance Inicial *</mat-label>
             <input matInput type="number" formControlName="balance" placeholder="0.00" 
-                   min="0" step="0.01" (input)="formatBalance($event)">
+                   min="0" step="0.01" (input)="formatBalance($event)" tabindex="1">
             <span matPrefix>$ </span>
             <mat-icon matSuffix>account_balance_wallet</mat-icon>
             <mat-hint>Ingrese el monto inicial para la cuenta</mat-hint>
@@ -910,13 +961,96 @@ import { PersonDTO } from '../../core/models/person.model';
     .light-theme .mat-mdc-text-field-wrapper { background: #fff !important; }
     .light-theme .mat-mdc-form-field .mat-mdc-input-element { color: #212121 !important; }
     .light-theme .mat-mdc-form-field .mat-mdc-select-value-text { color: #212121 !important; }
+
+    /* Autocomplete panel styles */
+    :host ::ng-deep .person-autocomplete-panel {
+      max-height: 300px !important;
+      overflow-y: auto !important;
+      background: var(--surface-color) !important;
+      border-radius: 12px !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .person-autocomplete-option {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      padding: 12px 16px !important;
+      min-height: auto !important;
+      line-height: normal !important;
+    }
+
+    .person-autocomplete-option:last-child {
+      border-bottom: none;
+    }
+
+    .person-autocomplete-option:hover {
+      background: rgba(76, 175, 80, 0.08) !important;
+    }
+
+    .person-autocomplete-option.mat-mdc-option.mat-selected {
+      background: rgba(76, 175, 80, 0.12) !important;
+    }
+
+    .no-results {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: rgba(0, 0, 0, 0.54);
+      font-style: italic;
+    }
+
+    .no-results mat-icon {
+      margin-right: 8px;
+      color: rgba(0, 0, 0, 0.38);
+    }
+
+    /* Light theme autocomplete fixes */
+    .light-theme :host ::ng-deep .person-autocomplete-panel {
+      background: #ffffff !important;
+    }
+
+    .light-theme .person-autocomplete-option {
+      color: #212121 !important;
+    }
+
+    .light-theme .person-autocomplete-option:hover {
+      background: rgba(76, 175, 80, 0.08) !important;
+      color: #212121 !important;
+    }
+
+    .light-theme .no-results {
+      color: rgba(0, 0, 0, 0.54) !important;
+    }
+
+    /* Readonly input styling */
+    input[readonly]:not([disabled]) {
+      cursor: pointer !important;
+      background: transparent !important;
+    }
+
+    input[readonly]:not([disabled]):hover {
+      background: rgba(0, 0, 0, 0.04) !important;
+    }
+
+    .mat-mdc-form-field input[readonly]:not([disabled]) {
+      color: rgba(0, 0, 0, 0.87) !important;
+    }
+
+    .light-theme .mat-mdc-form-field input[readonly]:not([disabled]) {
+      color: #212121 !important;
+    }
   `]
 })
 export class AccountFormDialogComponent implements OnInit {
   accountForm!: FormGroup;
   loading = false;
+  loadingPersons = true;
   persons: PersonDTO[] = [];
+  filteredPersons$: Observable<PersonDTO[]> = of([]);
   selectedPerson: PersonDTO | null = null;
+  hasUserInteracted = false;
+  currentFilteredCount = 0;
+  searchEnabled = false;
 
   constructor(
     private fb: FormBuilder,
@@ -929,21 +1063,28 @@ export class AccountFormDialogComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.loadPersons();
+    // setupPersonFilter() se llama ahora desde loadPersons() después de cargar los datos
   }
 
   private initForm(): void {
     this.accountForm = this.fb.group({
       personId: ['', [Validators.required]],
+      personSearch: [''],
       balance: [0, [Validators.required, Validators.min(0)]]
     });
   }
 
   private loadPersons(): void {
+    this.loadingPersons = true;
     this.personService.findAllPersons().subscribe({
       next: (persons) => {
         this.persons = persons.filter(p => p.status === 'ACTIVO');
+        this.loadingPersons = false;
+        // Configurar el filtro solo después de cargar las personas
+        this.setupPersonFilter();
       },
       error: () => {
+        this.loadingPersons = false;
         this.snackBar.open('Error al cargar personas', 'Cerrar', {
           duration: 3000,
           panelClass: ['error-snackbar']
@@ -952,8 +1093,122 @@ export class AccountFormDialogComponent implements OnInit {
     });
   }
 
-  onPersonSelected(personId: number): void {
-    this.selectedPerson = this.persons.find(p => p.id === personId) || null;
+  private setupPersonFilter(): void {
+    this.filteredPersons$ = this.accountForm.get('personSearch')!.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        // Solo mostrar opciones si el usuario ha interactuado con el campo
+        if (!this.hasUserInteracted) {
+          this.currentFilteredCount = 0;
+          return [];
+        }
+        
+        let result: PersonDTO[];
+        if (typeof value === 'object' && value) {
+          // Si es un objeto PersonDTO, mostrar todas las personas
+          result = this.persons;
+        } else {
+          // Si es string (búsqueda), filtrar
+          result = this._filterPersons(value || '');
+        }
+        
+        this.currentFilteredCount = result.length;
+        return result;
+      })
+    );
+  }
+
+  private _filterPersons(value: string): PersonDTO[] {
+    if (!value.trim()) {
+      return this.persons; // Mostrar todas si no hay texto de búsqueda
+    }
+    
+    const filterValue = value.toLowerCase();
+    return this.persons.filter(person => {
+      const fullName = `${person.name} ${person.surname}`.toLowerCase();
+      const document = person.document.toLowerCase();
+      const email = person.email.toLowerCase();
+      
+      return fullName.includes(filterValue) || 
+             document.includes(filterValue) || 
+             email.includes(filterValue);
+    });
+  }
+
+  onInputFocus(): void {
+    if (this.searchEnabled) {
+      this.hasUserInteracted = true;
+      // Trigger filter update
+      this.accountForm.get('personSearch')?.updateValueAndValidity();
+    }
+  }
+
+  onInputChange(): void {
+    if (this.searchEnabled) {
+      this.hasUserInteracted = true;
+    }
+  }
+
+  enableSearch(event: Event): void {
+    if (!this.searchEnabled) {
+      this.searchEnabled = true;
+      this.hasUserInteracted = true;
+      // Pequeño delay para que el campo se vuelva editable antes de hacer focus
+      setTimeout(() => {
+        const input = event.target as HTMLInputElement;
+        input.removeAttribute('readonly');
+        input.focus();
+        input.placeholder = "Escriba el nombre o documento de la persona";
+        // Trigger filter update
+        this.accountForm.get('personSearch')?.updateValueAndValidity();
+      }, 10);
+    }
+  }
+
+  shouldShowLoadingOption(): boolean {
+    return this.hasUserInteracted && this.loadingPersons;
+  }
+
+  shouldShowNoResultsOption(): boolean {
+    return this.hasUserInteracted && 
+           !this.loadingPersons && 
+           this.persons.length > 0 && 
+           this.currentFilteredCount === 0 &&
+           !!this.accountForm.get('personSearch')?.value?.trim();
+  }
+
+  shouldShowNoPersonsOption(): boolean {
+    return this.hasUserInteracted && 
+           !this.loadingPersons && 
+           this.persons.length === 0;
+  }
+
+  displayPersonFn = (person: PersonDTO): string => {
+    return person ? `${person.name} ${person.surname}` : '';
+  }
+
+  trackByPersonId = (index: number, person: PersonDTO): number => {
+    return person.id;
+  }
+
+  onPersonSelected(person: PersonDTO): void {
+    this.selectedPerson = person;
+    this.searchEnabled = false; // Deshabilitar la búsqueda una vez seleccionada
+    // Actualizar el campo personId para la validación del formulario
+    this.accountForm.get('personId')?.setValue(person.id);
+    this.accountForm.get('personId')?.markAsTouched();
+    // Mostrar el nombre de la persona seleccionada en el campo
+    this.accountForm.get('personSearch')?.setValue(person);
+  }
+
+  clearPersonSelection(): void {
+    this.selectedPerson = null;
+    this.hasUserInteracted = false;
+    this.searchEnabled = false;
+    this.currentFilteredCount = 0;
+    this.accountForm.get('personId')?.setValue('');
+    this.accountForm.get('personSearch')?.setValue('');
+    this.accountForm.get('personId')?.markAsUntouched();
   }
 
   formatBalance(event: any): void {
