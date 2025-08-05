@@ -45,24 +45,26 @@ html, body {
   --success-color: #4caf50;
   --background-color: #fafafa;
   --surface-color: #ffffff;
-  --text-primary: #1a1a1a;
-  --text-secondary: #666666;
-  --text-muted: #999999;
-  --text-disabled: #cccccc;
+  --text-primary: #212121;
+  --text-secondary: #545454;
+  --text-muted: #757575;
+  --text-disabled: #bdbdbd;
   --border-color: #e0e0e0;
-  --hover-color: #f5f5f5;
+  --hover-color: rgba(245, 245, 245, 0.9);
+  --hover-color-alt: rgba(103, 58, 183, 0.02);
 }
 
 /* Light theme explicit class */
 .light-theme {
   --background-color: #fafafa;
   --surface-color: #ffffff;
-  --text-primary: #1a1a1a;
-  --text-secondary: #666666;
-  --text-muted: #999999;
-  --text-disabled: #cccccc;
+  --text-primary: #212121;
+  --text-secondary: #545454;
+  --text-muted: #757575;
+  --text-disabled: #bdbdbd;
   --border-color: #e0e0e0;
-  --hover-color: #f5f5f5;
+  --hover-color: rgba(245, 245, 245, 0.9);
+  --hover-color-alt: rgba(103, 58, 183, 0.02);
 }
 
 .light-theme body {
@@ -75,11 +77,12 @@ html, body {
   --background-color: #121212;
   --surface-color: #1e1e1e;
   --text-primary: #ffffff;
-  --text-secondary: #b3b3b3;
-  --text-muted: #888888;
-  --text-disabled: #555555;
+  --text-secondary: #e0e0e0;
+  --text-muted: #bdbdbd;
+  --text-disabled: #757575;
   --border-color: #333333;
-  --hover-color: #2a2a2a;
+  --hover-color: rgba(103, 58, 183, 0.08);
+  --hover-color-alt: rgba(42, 42, 42, 0.8);
 }
 
 .dark-theme body {
@@ -857,3 +860,146 @@ app-credit-list .credit-list-container {
 .account-form .mat-mdc-form-field:nth-child(1) { animation: fadeInUp 0.4s ease-out 0.1s both !important; }
 .account-form .mat-mdc-form-field:nth-child(2) { animation: fadeInUp 0.4s ease-out 0.2s both !important; }
 .account-form .mat-mdc-form-field:nth-child(3) { animation: fadeInUp 0.4s ease-out 0.3s both !important; }
+
+/* Global hover improvements */
+.mat-mdc-row {
+  background-color: var(--surface-color) !important;
+}
+
+.mat-mdc-row:hover {
+  background-color: #f0f0f0 !important;
+}
+
+.dark-theme .mat-mdc-row:hover {
+  background-color: var(--hover-color) !important;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+  color: var(--text-primary) !important;
+}
+
+/* Header row improvements */
+.mat-mdc-header-row {
+  background-color: var(--surface-color) !important;
+}
+
+.mat-mdc-header-cell {
+  background-color: var(--surface-color) !important;
+}
+
+/* Ensure text remains readable on hover */
+.mat-mdc-table .mat-mdc-row {
+  background: var(--surface-color) !important;
+}
+
+.mat-mdc-table .mat-mdc-row:hover {
+  background: #f0f0f0 !important;
+}
+
+.dark-theme .mat-mdc-table .mat-mdc-row:hover {
+  background: var(--hover-color) !important;
+}
+
+.mat-mdc-table .mat-mdc-row:hover .mat-mdc-cell {
+  color: var(--text-primary) !important;
+}
+
+/* Improve table text readability */
+.mat-mdc-table .mat-mdc-cell {
+  color: var(--text-primary) !important;
+  font-weight: 500 !important;
+}
+
+.mat-mdc-table .mat-mdc-cell strong {
+  color: var(--text-primary) !important;
+  font-weight: 600 !important;
+}
+
+.mat-mdc-table .mat-mdc-cell span {
+  color: var(--text-secondary) !important;
+}
+
+/* Chip improvements */
+.mat-mdc-chip {
+  background: var(--primary-color) !important;
+  color: white !important;
+}
+
+.mat-mdc-chip.mat-primary {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light)) !important;
+  color: white !important;
+}
+
+.mat-mdc-chip.mat-accent {
+  background: linear-gradient(135deg, var(--accent-color), #ff6ec7) !important;
+  color: white !important;
+}
+
+.mat-mdc-chip.mat-warn {
+  background: linear-gradient(135deg, var(--warn-color), #ff7043) !important;
+  color: white !important;
+}
+
+/* Asegurar que el texto de los chips sea siempre blanco */
+.mat-mdc-chip .mdc-evolution-chip__text-label {
+  color: white !important;
+}
+
+.mat-mdc-chip .mat-mdc-chip-action-label {
+  color: white !important;
+}
+
+/* Estilos específicos para tema claro */
+.light-theme .mat-mdc-chip,
+:root .mat-mdc-chip {
+  color: white !important;
+}
+
+.light-theme .mat-mdc-chip .mdc-evolution-chip__text-label,
+:root .mat-mdc-chip .mdc-evolution-chip__text-label {
+  color: white !important;
+}
+
+.light-theme .mat-mdc-chip .mat-mdc-chip-action-label,
+:root .mat-mdc-chip .mat-mdc-chip-action-label {
+  color: white !important;
+}
+
+.light-theme .mat-mdc-chip span,
+:root .mat-mdc-chip span {
+  color: white !important;
+}
+
+/* Asegurar que el texto interno sea blanco independientemente del tema */
+.mat-mdc-chip * {
+  color: white !important;
+}
+
+/* Improve gradient text readability */
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Fallback for browsers that don't support background-clip: text */
+@supports not (-webkit-background-clip: text) {
+  .gradient-text {
+    color: var(--primary-color);
+  }
+}
+
+/* Dark theme text readability improvements */
+.dark-theme .gradient-text {
+  background: linear-gradient(135deg, #9c27b0, #ce93d8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@supports not (-webkit-background-clip: text) {
+  .dark-theme .gradient-text {
+    color: #9c27b0;
+  }
+}

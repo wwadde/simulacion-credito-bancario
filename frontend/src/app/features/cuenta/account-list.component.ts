@@ -137,12 +137,25 @@ import { AccountFormDialogComponent } from './account-form-dialog.component';
     .page-title {
       font-size: 32px;
       font-weight: 400;
-      color: var(--text-primary);
       margin: 0;
       background: linear-gradient(135deg, #4caf50, #8bc34a);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      position: relative;
+    }
+
+    .page-title::after {
+      content: attr(title);
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: var(--text-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      z-index: -1;
+      opacity: 0.1;
     }
 
     .table-card {
@@ -153,12 +166,6 @@ import { AccountFormDialogComponent } from './account-form-dialog.component';
       background-color: var(--surface-color);
       border: 1px solid var(--border-color);
       overflow: hidden;
-      transition: all 0.3s ease;
-    }
-
-    .table-card:hover {
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
-      transform: translateY(-2px);
     }
 
     .loading-container {
@@ -205,9 +212,34 @@ import { AccountFormDialogComponent } from './account-form-dialog.component';
       width: 100%;
     }
 
+    .account-row {
+      background-color: var(--surface-color) !important;
+    }
+
     .account-row:hover {
-      background: linear-gradient(135deg, var(--hover-color), rgba(76, 175, 80, 0.02));
-      transition: all 0.3s ease;
+      background-color: #f0f0f0 !important;
+    }
+
+    /* Deshabilitar todas las transiciones y animaciones en las filas */
+    .account-row,
+    .account-row *,
+    .account-row::before,
+    .account-row::after {
+      transition: none !important;
+      animation: none !important;
+    }
+
+    .dark-theme .account-row:hover {
+      background-color: var(--hover-color) !important;
+    }
+
+    .account-row td {
+      color: var(--text-primary) !important;
+      font-weight: 500;
+    }
+
+    .account-row:hover td {
+      color: var(--text-primary) !important;
     }
 
     .person-info {
@@ -215,31 +247,36 @@ import { AccountFormDialogComponent } from './account-form-dialog.component';
       flex-direction: column;
     }
 
+    .person-info strong {
+      color: var(--text-primary) !important;
+      font-weight: 600;
+    }
+
     .document {
       font-size: 12px;
-      color: var(--text-secondary);
+      color: var(--text-secondary) !important;
       font-weight: 500;
     }
 
     .balance-chip {
-      font-weight: 700;
-      font-size: 14px;
-      padding: 8px 16px;
-      border-radius: 20px;
-      background: linear-gradient(135deg, #4caf50, #66bb6a);
-      color: white;
-      box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+      font-weight: 700 !important;
+      font-size: 14px !important;
+      padding: 8px 16px !important;
+      border-radius: 20px !important;
+      background: linear-gradient(135deg, #4caf50, #66bb6a) !important;
+      color: white !important;
+      box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3) !important;
     }
 
     .balance-chip.negative {
-      background: linear-gradient(135deg, var(--warn-color), #ff7043);
-      box-shadow: 0 2px 8px rgba(244, 67, 54, 0.3);
+      background: linear-gradient(135deg, var(--warn-color), #ff7043) !important;
+      box-shadow: 0 2px 8px rgba(244, 67, 54, 0.3) !important;
     }
 
     .payments-count {
-      color: var(--text-secondary);
+      color: var(--text-primary) !important;
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 600;
       background: var(--hover-color);
       padding: 4px 12px;
       border-radius: 12px;
@@ -268,11 +305,15 @@ import { AccountFormDialogComponent } from './account-form-dialog.component';
 
     .mat-mdc-header-cell {
       font-weight: 700;
-      color: var(--success-color);
-      background: linear-gradient(135deg, rgba(76, 175, 80, 0.05), rgba(139, 195, 74, 0.05));
+      color: var(--success-color) !important;
+      background-color: var(--surface-color) !important;
       border-bottom: 2px solid var(--success-color);
       font-size: 14px;
       letter-spacing: 0.5px;
+    }
+
+    .mat-mdc-header-row {
+      background-color: var(--surface-color) !important;
     }
 
     @media (max-width: 768px) {

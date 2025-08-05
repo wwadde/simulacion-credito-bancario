@@ -148,12 +148,25 @@ import { PersonFormDialogComponent } from './person-form-dialog.component';
     .page-title {
       font-size: 32px;
       font-weight: 400;
-      color: var(--text-primary);
       margin: 0;
       background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      position: relative;
+    }
+
+    .page-title::after {
+      content: attr(title);
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: var(--text-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      z-index: -1;
+      opacity: 0.1;
     }
 
     .table-card {
@@ -164,12 +177,6 @@ import { PersonFormDialogComponent } from './person-form-dialog.component';
       background-color: var(--surface-color);
       border: 1px solid var(--border-color);
       overflow: hidden;
-      transition: all 0.3s ease;
-    }
-
-    .table-card:hover {
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
-      transform: translateY(-2px);
     }
 
     .loading-container {
@@ -216,14 +223,49 @@ import { PersonFormDialogComponent } from './person-form-dialog.component';
       width: 100%;
     }
 
+    .person-row {
+      background-color: var(--surface-color) !important;
+    }
+
     .person-row:hover {
-      background: linear-gradient(135deg, var(--hover-color), rgba(103, 58, 183, 0.02));
-      transition: all 0.3s ease;
+      background-color: #f0f0f0 !important;
+    }
+
+    /* Deshabilitar todas las transiciones y animaciones en las filas */
+    .person-row,
+    .person-row *,
+    .person-row::before,
+    .person-row::after {
+      transition: none !important;
+      animation: none !important;
+    }
+
+    .dark-theme .person-row:hover {
+      background-color: var(--hover-color) !important;
+    }
+
+    .person-row td {
+      color: var(--text-primary) !important;
+      font-weight: 500;
+    }
+
+    .person-row:hover td {
+      color: var(--text-primary) !important;
     }
 
     .name-container {
       display: flex;
       flex-direction: column;
+    }
+
+    .name-container strong {
+      color: var(--text-primary) !important;
+      font-weight: 600;
+    }
+
+    .name-container span {
+      color: var(--text-secondary) !important;
+      font-weight: 500;
     }
 
     .document-container {
@@ -234,7 +276,7 @@ import { PersonFormDialogComponent } from './person-form-dialog.component';
 
     .document-number {
       font-weight: 600;
-      color: var(--text-primary);
+      color: var(--text-primary) !important;
     }
 
     mat-chip {
@@ -245,18 +287,62 @@ import { PersonFormDialogComponent } from './person-form-dialog.component';
     }
 
     .mat-mdc-chip.mat-accent {
-      background: linear-gradient(135deg, var(--accent-color), #ff6ec7);
-      color: white;
+      background: linear-gradient(135deg, var(--accent-color), #ff6ec7) !important;
+      color: white !important;
     }
 
     .mat-mdc-chip.mat-primary {
-      background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-      color: white;
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-light)) !important;
+      color: white !important;
     }
 
     .mat-mdc-chip.mat-warn {
-      background: linear-gradient(135deg, var(--warn-color), #ff7043);
-      color: white;
+      background: linear-gradient(135deg, var(--warn-color), #ff7043) !important;
+      color: white !important;
+    }
+
+    /* Específicamente para los chips en las celdas de la tabla */
+    .person-row td .mat-mdc-chip {
+      color: white !important;
+    }
+
+    .person-row td .mat-mdc-chip.mat-primary {
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-light)) !important;
+      color: white !important;
+    }
+
+    .person-row td .mat-mdc-chip.mat-warn {
+      background: linear-gradient(135deg, var(--warn-color), #ff7043) !important;
+      color: white !important;
+    }
+
+    .person-row td .mat-mdc-chip.mat-accent {
+      background: linear-gradient(135deg, var(--accent-color), #ff6ec7) !important;
+      color: white !important;
+    }
+
+    /* Asegurar texto blanco en todos los elementos internos del chip */
+    .person-row td .mat-mdc-chip .mdc-evolution-chip__text-label {
+      color: white !important;
+    }
+
+    .person-row td .mat-mdc-chip .mat-mdc-chip-action-label {
+      color: white !important;
+    }
+
+    .person-row td .mat-mdc-chip span {
+      color: white !important;
+    }
+
+    /* Tema claro específico para chips */
+    .light-theme .person-row td .mat-mdc-chip,
+    :root .person-row td .mat-mdc-chip {
+      color: white !important;
+    }
+
+    .light-theme .person-row td .mat-mdc-chip .mdc-evolution-chip__text-label,
+    :root .person-row td .mat-mdc-chip .mdc-evolution-chip__text-label {
+      color: white !important;
     }
 
     .mat-mdc-table {
@@ -281,11 +367,15 @@ import { PersonFormDialogComponent } from './person-form-dialog.component';
 
     .mat-mdc-header-cell {
       font-weight: 700;
-      color: var(--primary-color);
-      background: linear-gradient(135deg, rgba(103, 58, 183, 0.05), rgba(156, 39, 176, 0.05));
+      color: var(--primary-color) !important;
+      background-color: var(--surface-color) !important;
       border-bottom: 2px solid var(--primary-color);
       font-size: 14px;
       letter-spacing: 0.5px;
+    }
+
+    .mat-mdc-header-row {
+      background-color: var(--surface-color) !important;
     }
 
     @media (max-width: 768px) {

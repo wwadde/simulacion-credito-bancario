@@ -1,19 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
+import { DashboardService, DashboardStats } from '../../core/services/dashboard.service';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatIconModule],
+  imports: [CommonModule, MatCardModule, MatIconModule, MatButtonModule],
   styleUrls: ['./dashboard.component.css'],
   template: `
     <div class="dashboard-container">
-      <h1 class="page-title">
-        Dashboard del Sistema de Crédito
-      </h1>
+      <div class="header-section">
+        <h1 class="page-title">Dashboard</h1>
+        <button mat-icon-button (click)="refreshData()" [disabled]="loading" class="refresh-button">
+          <mat-icon [class.spin]="loading">refresh</mat-icon>
+        </button>
+      </div>
       
       <div class="stats-section">
         <div class="stats-grid">
@@ -23,7 +28,7 @@ import { Router } from '@angular/router';
                 <mat-icon class="stat-icon">people</mat-icon>
               </div>
               <div class="stat-content">
-                <div class="stat-value">125</div>
+                <div class="stat-value">{{ loading ? '...' : stats.totalPersonas }}</div>
                 <div class="stat-label">Total Personas</div>
               </div>
             </mat-card-content>
@@ -35,7 +40,7 @@ import { Router } from '@angular/router';
                 <mat-icon class="stat-icon">account_balance</mat-icon>
               </div>
               <div class="stat-content">
-                <div class="stat-value">89</div>
+                <div class="stat-value">{{ loading ? '...' : stats.cuentasActivas }}</div>
                 <div class="stat-label">Cuentas Activas</div>
               </div>
             </mat-card-content>
@@ -47,7 +52,7 @@ import { Router } from '@angular/router';
                 <mat-icon class="stat-icon">credit_card</mat-icon>
               </div>
               <div class="stat-content">
-                <div class="stat-value">34</div>
+                <div class="stat-value">{{ loading ? '...' : stats.creditosOtorgados }}</div>
                 <div class="stat-label">Créditos Otorgados</div>
               </div>
             </mat-card-content>
@@ -59,7 +64,7 @@ import { Router } from '@angular/router';
                 <mat-icon class="stat-icon">attach_money</mat-icon>
               </div>
               <div class="stat-content">
-                <div class="stat-value">$2,500,000</div>
+                <div class="stat-value">{{ loading ? '...' : ('$' + stats.montoTotal.toLocaleString()) }}</div>
                 <div class="stat-label">Monto Total</div>
               </div>
             </mat-card-content>
@@ -98,8 +103,49 @@ import { Router } from '@angular/router';
     </div>
   `
 })
-export class DashboardComponent {
-  constructor(private router: Router) {}
+export class DashboardComponent implements OnInit {
+  stats: DashboardStats = {
+    totalPersonas: 0,
+    cuentasActivas: 0,
+    creditosOtorgados: 0,
+    montoTotal: 0
+  };
+  
+  loading = true;
+
+  constructor(
+    private router: Router,
+    private dashboardService: DashboardService
+  ) {}
+
+  ngOnInit() {
+    this.loadDashboardStats();
+  }
+
+  loadDashboardStats() {
+    this.loading = true;
+    this.dashboardService.getDashboardStats().subscribe({
+      next: (stats) => {
+        this.stats = stats;
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Error loading dashboard stats:', error);
+        this.loading = false;
+        // En caso de error, mantener valores por defecto
+        this.stats = {
+          totalPersonas: 0,
+          cuentasActivas: 0,
+          creditosOtorgados: 0,
+          montoTotal: 0
+        };
+      }
+    });
+  }
+
+  refreshData() {
+    this.loadDashboardStats();
+  }
 
   navigateTo(route: string) {
     this.router.navigate([route]);
