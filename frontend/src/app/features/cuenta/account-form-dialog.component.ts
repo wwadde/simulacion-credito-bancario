@@ -56,12 +56,10 @@ import { PersonDTO } from '../../core/models/person.model';
               matInput
               formControlName="personSearch"
               [matAutocomplete]="auto"
-              placeholder="Haga clic para buscar y seleccionar una persona"
+              placeholder="Seleccione una persona"
               (focus)="onInputFocus()"
               (input)="onInputChange()"
-              tabindex="2"
-              [readonly]="!searchEnabled"
-              (click)="enableSearch($event)">
+              tabindex="-1">
             <mat-autocomplete 
               #auto="matAutocomplete" 
               [displayWith]="displayPersonFn"
@@ -145,10 +143,10 @@ import { PersonDTO } from '../../core/models/person.model';
             Configuración de Cuenta
           </h3>
           
-          <mat-form-field appearance="outline" class="full-width">
+            <mat-form-field appearance="outline" class="full-width">
             <mat-label>Balance Inicial *</mat-label>
             <input matInput type="number" formControlName="balance" placeholder="0.00" 
-                   min="0" step="0.01" (input)="formatBalance($event)" tabindex="1">
+                   min="0" step="0.01" (input)="formatBalance($event)" tabindex="1" autofocus>
             <span matPrefix>$ </span>
             <mat-icon matSuffix>account_balance_wallet</mat-icon>
             <mat-hint>Ingrese el monto inicial para la cuenta</mat-hint>
@@ -225,12 +223,11 @@ import { PersonDTO } from '../../core/models/person.model';
       border-radius: 12px;
       border: 1px solid var(--border-color);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      transition: all 0.3s ease;
+      transition: box-shadow 0.2s ease;
     }
 
     .form-section:hover {
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
 
     .section-title {
@@ -284,7 +281,6 @@ import { PersonDTO } from '../../core/models/person.model';
 
     .selected-person-card {
       margin-top: 16px;
-      animation: slideInUp 0.3s ease-out;
     }
 
     .person-card {
@@ -334,7 +330,6 @@ import { PersonDTO } from '../../core/models/person.model';
 
     .balance-preview {
       margin-top: 16px;
-      animation: slideInUp 0.3s ease-out;
     }
 
     .preview-card {
@@ -462,16 +457,16 @@ import { PersonDTO } from '../../core/models/person.model';
 
     /* Material form field customizations */
     .mat-mdc-form-field {
-      transition: all 0.3s ease;
+      transition: none;
     }
 
     .mat-mdc-form-field:hover {
-      transform: translateY(-1px);
+      transform: none;
     }
 
     .mat-mdc-form-field.mat-focused {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
+      transform: none;
+      box-shadow: none;
     }
 
     .mat-mdc-text-field-wrapper {
@@ -673,21 +668,21 @@ import { PersonDTO } from '../../core/models/person.model';
 
     /* Dark theme adjustments with higher specificity */
     .dark-theme .form-section {
-      background: var(--surface-color);
-      border-color: var(--border-color);
+      background: var(--surface-color) !important;
+      border-color: var(--border-color) !important;
     }
 
     .dark-theme .section-title {
-      color: #8bc34a;
-      border-bottom-color: #8bc34a;
+      color: #8bc34a !important;
+      border-bottom-color: #8bc34a !important;
     }
 
     .dark-theme .section-title mat-icon {
-      color: #8bc34a;
+      color: #8bc34a !important;
     }
 
     .dark-theme .mat-mdc-form-field-icon-suffix mat-icon {
-      color: #8bc34a;
+      color: #8bc34a !important;
     }
 
     .dark-theme .mat-mdc-form-field.mat-focused .mdc-floating-label {
@@ -707,12 +702,58 @@ import { PersonDTO } from '../../core/models/person.model';
       border-width: 2px !important;
     }
 
-    .dark-theme .mat-mdc-form-field .mat-mdc-input-element {
-      color: var(--text-primary) !important;
+    /* Critical: Dark theme input text color fixes */
+    .dark-theme .mat-mdc-form-field .mat-mdc-input-element,
+    body.dark-theme .mat-mdc-form-field .mat-mdc-input-element,
+    html.dark-theme .mat-mdc-form-field .mat-mdc-input-element {
+      color: #ffffff !important;
+      caret-color: #8bc34a !important;
     }
 
     .dark-theme .mat-mdc-form-field .mdc-floating-label {
       color: rgba(255, 255, 255, 0.6) !important;
+    }
+
+    .dark-theme .mat-mdc-text-field-wrapper {
+      background-color: var(--surface-color) !important;
+    }
+
+    .dark-theme .mat-mdc-form-field .mat-mdc-select-value-text {
+      color: var(--text-primary) !important;
+    }
+
+    /* Force white text for dark theme inputs with higher specificity */
+    .dark-theme input.mat-mdc-input-element,
+    .dark-theme .mat-mdc-form-field input,
+    body.dark-theme input.mat-mdc-input-element,
+    body.dark-theme .mat-mdc-form-field input {
+      color: #ffffff !important;
+      background: transparent !important;
+    }
+
+    /* Placeholder text for dark theme */
+    .dark-theme .mat-mdc-form-field input::placeholder,
+    body.dark-theme .mat-mdc-form-field input::placeholder {
+      color: rgba(255, 255, 255, 0.6) !important;
+    }
+
+    /* Additional fixes for dark theme text visibility */
+    :host-context(.dark-theme) .mat-mdc-form-field .mat-mdc-input-element,
+    :host-context(body.dark-theme) .mat-mdc-form-field .mat-mdc-input-element {
+      color: #ffffff !important;
+    }
+
+    /* Global ng-deep fixes for dark theme */
+    .dark-theme ::ng-deep .mat-mdc-form-field .mat-mdc-input-element,
+    body.dark-theme ::ng-deep .mat-mdc-form-field .mat-mdc-input-element {
+      color: #ffffff !important;
+    }
+
+    .dark-theme ::ng-deep input[type="text"],
+    .dark-theme ::ng-deep input[type="number"],
+    body.dark-theme ::ng-deep input[type="text"],
+    body.dark-theme ::ng-deep input[type="number"] {
+      color: #ffffff !important;
     }
 
     /* Light theme fixes - optimized */
@@ -751,45 +792,58 @@ import { PersonDTO } from '../../core/models/person.model';
     }
 
     .dark-theme .person-card {
-      background: linear-gradient(135deg, rgba(139, 195, 74, 0.1), rgba(76, 175, 80, 0.1));
-      border-color: #8bc34a;
+      background: linear-gradient(135deg, rgba(139, 195, 74, 0.1), rgba(76, 175, 80, 0.1)) !important;
+      border-color: #8bc34a !important;
     }
 
     .dark-theme .preview-card {
-      background: linear-gradient(135deg, rgba(139, 195, 74, 0.1), rgba(76, 175, 80, 0.1));
-      border-color: #8bc34a;
+      background: linear-gradient(135deg, rgba(139, 195, 74, 0.1), rgba(76, 175, 80, 0.1)) !important;
+      border-color: #8bc34a !important;
     }
 
     .dark-theme .person-card mat-card-avatar {
-      background: #8bc34a;
+      background: #8bc34a !important;
     }
 
     .dark-theme .person-card mat-card-title {
-      color: var(--text-primary);
+      color: var(--text-primary) !important;
     }
 
     .dark-theme .person-card mat-card-subtitle {
-      color: var(--text-secondary);
+      color: var(--text-secondary) !important;
     }
 
     .dark-theme .info-item {
-      color: var(--text-primary);
+      color: var(--text-primary) !important;
     }
 
     .dark-theme .info-item mat-icon {
-      color: #8bc34a;
+      color: #8bc34a !important;
     }
 
     .dark-theme .preview-card mat-icon {
-      color: #8bc34a;
+      color: #8bc34a !important;
     }
 
     .dark-theme .preview-label {
-      color: var(--text-secondary);
+      color: var(--text-secondary) !important;
     }
 
     .dark-theme .preview-amount {
-      color: #8bc34a;
+      color: #8bc34a !important;
+    }
+
+    .dark-theme .person-main strong {
+      color: var(--text-primary) !important;
+    }
+
+    .dark-theme .person-details {
+      color: var(--text-secondary) !important;
+    }
+
+    .dark-theme mat-dialog-actions {
+      background: var(--surface-color) !important;
+      border-top-color: var(--border-color) !important;
     }
 
     /* Global styles for Material components that render outside this component */
@@ -831,7 +885,7 @@ import { PersonDTO } from '../../core/models/person.model';
       color: #212121 !important;
     }
 
-    /* Dark theme global adjustments */
+    /* Dark theme autocomplete and global fixes */
     .dark-theme ::ng-deep .mat-mdc-select-panel {
       background: var(--surface-color) !important;
       border: 1px solid var(--border-color) !important;
@@ -839,28 +893,116 @@ import { PersonDTO } from '../../core/models/person.model';
 
     .dark-theme ::ng-deep .mat-mdc-option {
       color: var(--text-primary) !important;
+      background: var(--surface-color) !important;
     }
 
-    .form-section:nth-child(2) { animation-delay: 0.2s; }
-
-    /* Animations */
-    @keyframes slideInUp {
-      from {
-        transform: translateY(20px);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
+    .dark-theme ::ng-deep .mat-mdc-option:hover {
+      background: var(--hover-color) !important;
+      color: var(--text-primary) !important;
     }
 
+    .dark-theme ::ng-deep .person-autocomplete-panel {
+      background: var(--surface-color) !important;
+      border: 1px solid var(--border-color) !important;
+    }
+
+    .dark-theme .person-autocomplete-option {
+      color: var(--text-primary) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    }
+
+    .dark-theme .person-autocomplete-option:hover {
+      background: rgba(139, 195, 74, 0.12) !important;
+      color: var(--text-primary) !important;
+    }
+
+    .dark-theme .no-results {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    .dark-theme .no-results mat-icon {
+      color: rgba(255, 255, 255, 0.5) !important;
+    }
+
+    .dark-theme .no-results span {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    /* Force visibility for all no-results content in dark theme */
+    .dark-theme ::ng-deep .no-results,
+    body.dark-theme ::ng-deep .no-results {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    .dark-theme ::ng-deep .no-results mat-icon,
+    body.dark-theme ::ng-deep .no-results mat-icon {
+      color: rgba(255, 255, 255, 0.5) !important;
+    }
+
+    .dark-theme ::ng-deep .no-results span,
+    body.dark-theme ::ng-deep .no-results span {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    /* Additional dark theme input fixes with maximum specificity */
+    .dark-theme ::ng-deep .mat-mdc-form-field .mat-mdc-input-element,
+    body.dark-theme ::ng-deep .mat-mdc-form-field .mat-mdc-input-element,
+    html.dark-theme ::ng-deep .mat-mdc-form-field .mat-mdc-input-element {
+      color: #ffffff !important;
+    }
+
+    .dark-theme ::ng-deep input[formControlName="personSearch"],
+    body.dark-theme ::ng-deep input[formControlName="personSearch"] {
+      color: #ffffff !important;
+    }
+
+    .dark-theme ::ng-deep input[formControlName="balance"],
+    body.dark-theme ::ng-deep input[formControlName="balance"] {
+      color: #ffffff !important;
+    }
+
+    /* Force autocomplete panel text colors in dark theme */
+    .dark-theme ::ng-deep .mat-mdc-autocomplete-panel,
+    body.dark-theme ::ng-deep .mat-mdc-autocomplete-panel {
+      background: var(--surface-color) !important;
+      color: #ffffff !important;
+    }
+
+    .dark-theme ::ng-deep .mat-mdc-autocomplete-panel .mat-mdc-option,
+    body.dark-theme ::ng-deep .mat-mdc-autocomplete-panel .mat-mdc-option {
+      color: #ffffff !important;
+      background: var(--surface-color) !important;
+    }
+
+    .dark-theme ::ng-deep .mat-mdc-autocomplete-panel .mat-mdc-option:hover,
+    body.dark-theme ::ng-deep .mat-mdc-autocomplete-panel .mat-mdc-option:hover {
+      background: var(--hover-color) !important;
+      color: #ffffff !important;
+    }
+
+    /* Force all autocomplete text to be white in dark theme */
+    .dark-theme ::ng-deep .person-autocomplete-panel .person-option *,
+    body.dark-theme ::ng-deep .person-autocomplete-panel .person-option * {
+      color: #ffffff !important;
+    }
+
+    .dark-theme ::ng-deep .person-autocomplete-panel .person-main strong,
+    body.dark-theme ::ng-deep .person-autocomplete-panel .person-main strong {
+      color: #ffffff !important;
+    }
+
+    .dark-theme ::ng-deep .person-autocomplete-panel .person-details,
+    body.dark-theme ::ng-deep .person-autocomplete-panel .person-details {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    .form-section:nth-child(2) { opacity: 1; }
+
+    /* Animations - Removed slideInUp and transitions to prevent black screen */
     .form-section {
-      animation: slideInUp 0.3s ease-out;
+      opacity: 1;
+      transform: none;
     }
-
-    .form-section:nth-child(1) { animation-delay: 0.1s; }
-    .form-section:nth-child(2) { animation-delay: 0.2s; }
 
     /* Success states */
     .mat-mdc-form-field.ng-valid.ng-touched .mat-mdc-form-field-icon-suffix mat-icon {
@@ -1004,6 +1146,26 @@ import { PersonDTO } from '../../core/models/person.model';
       color: rgba(0, 0, 0, 0.38);
     }
 
+    .no-results span {
+      color: rgba(0, 0, 0, 0.54);
+    }
+
+    /* Dark theme no-results fixes with higher specificity */
+    .dark-theme .no-results,
+    body.dark-theme .no-results {
+      color: rgba(255, 255, 255, 0.8) !important;
+    }
+
+    .dark-theme .no-results mat-icon,
+    body.dark-theme .no-results mat-icon {
+      color: rgba(255, 255, 255, 0.6) !important;
+    }
+
+    .dark-theme .no-results span,
+    body.dark-theme .no-results span {
+      color: rgba(255, 255, 255, 0.8) !important;
+    }
+
     /* Light theme autocomplete fixes */
     .light-theme :host ::ng-deep .person-autocomplete-panel {
       background: #ffffff !important;
@@ -1022,22 +1184,31 @@ import { PersonDTO } from '../../core/models/person.model';
       color: rgba(0, 0, 0, 0.54) !important;
     }
 
-    /* Readonly input styling */
-    input[readonly]:not([disabled]) {
-      cursor: pointer !important;
-      background: transparent !important;
+    .light-theme .no-results mat-icon {
+      color: rgba(0, 0, 0, 0.38) !important;
     }
 
-    input[readonly]:not([disabled]):hover {
-      background: rgba(0, 0, 0, 0.04) !important;
+    .light-theme .no-results span {
+      color: rgba(0, 0, 0, 0.54) !important;
     }
 
-    .mat-mdc-form-field input[readonly]:not([disabled]) {
-      color: rgba(0, 0, 0, 0.87) !important;
+    /* Additional dark theme autocomplete panel fixes */
+    .dark-theme :host ::ng-deep .person-autocomplete-panel,
+    body.dark-theme :host ::ng-deep .person-autocomplete-panel {
+      background: var(--surface-color) !important;
+      border: 1px solid var(--border-color) !important;
     }
 
-    .light-theme .mat-mdc-form-field input[readonly]:not([disabled]) {
-      color: #212121 !important;
+    .dark-theme :host ::ng-deep .person-autocomplete-panel .mat-mdc-option,
+    body.dark-theme :host ::ng-deep .person-autocomplete-panel .mat-mdc-option {
+      color: #ffffff !important;
+      background: var(--surface-color) !important;
+    }
+
+    .dark-theme :host ::ng-deep .person-autocomplete-panel .mat-mdc-option:hover,
+    body.dark-theme :host ::ng-deep .person-autocomplete-panel .mat-mdc-option:hover {
+      background: var(--hover-color) !important;
+      color: #ffffff !important;
     }
   `]
 })
@@ -1050,7 +1221,6 @@ export class AccountFormDialogComponent implements OnInit {
   selectedPerson: PersonDTO | null = null;
   hasUserInteracted = false;
   currentFilteredCount = 0;
-  searchEnabled = false;
 
   constructor(
     private fb: FormBuilder,
@@ -1136,33 +1306,13 @@ export class AccountFormDialogComponent implements OnInit {
   }
 
   onInputFocus(): void {
-    if (this.searchEnabled) {
-      this.hasUserInteracted = true;
-      // Trigger filter update
-      this.accountForm.get('personSearch')?.updateValueAndValidity();
-    }
+    this.hasUserInteracted = true;
+    // Trigger filter update
+    this.accountForm.get('personSearch')?.updateValueAndValidity();
   }
 
   onInputChange(): void {
-    if (this.searchEnabled) {
-      this.hasUserInteracted = true;
-    }
-  }
-
-  enableSearch(event: Event): void {
-    if (!this.searchEnabled) {
-      this.searchEnabled = true;
-      this.hasUserInteracted = true;
-      // Pequeño delay para que el campo se vuelva editable antes de hacer focus
-      setTimeout(() => {
-        const input = event.target as HTMLInputElement;
-        input.removeAttribute('readonly');
-        input.focus();
-        input.placeholder = "Escriba el nombre o documento de la persona";
-        // Trigger filter update
-        this.accountForm.get('personSearch')?.updateValueAndValidity();
-      }, 10);
-    }
+    this.hasUserInteracted = true;
   }
 
   shouldShowLoadingOption(): boolean {
@@ -1193,7 +1343,6 @@ export class AccountFormDialogComponent implements OnInit {
 
   onPersonSelected(person: PersonDTO): void {
     this.selectedPerson = person;
-    this.searchEnabled = false; // Deshabilitar la búsqueda una vez seleccionada
     // Actualizar el campo personId para la validación del formulario
     this.accountForm.get('personId')?.setValue(person.id);
     this.accountForm.get('personId')?.markAsTouched();
@@ -1204,7 +1353,6 @@ export class AccountFormDialogComponent implements OnInit {
   clearPersonSelection(): void {
     this.selectedPerson = null;
     this.hasUserInteracted = false;
-    this.searchEnabled = false;
     this.currentFilteredCount = 0;
     this.accountForm.get('personId')?.setValue('');
     this.accountForm.get('personSearch')?.setValue('');

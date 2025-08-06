@@ -161,6 +161,42 @@ html, body {
   color: var(--text-primary) !important;
 }
 
+/* Additional specificity for form inputs in dark theme */
+.dark-theme input.mat-mdc-input-element,
+.dark-theme .mat-mdc-form-field input,
+body.dark-theme input.mat-mdc-input-element,
+body.dark-theme .mat-mdc-form-field input {
+  color: #ffffff !important;
+  background: transparent !important;
+}
+
+.dark-theme .mat-mdc-form-field input::placeholder,
+body.dark-theme .mat-mdc-form-field input::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Force text color in all input elements for dark theme */
+.dark-theme input[type="text"],
+.dark-theme input[type="number"],
+.dark-theme input[type="email"],
+body.dark-theme input[type="text"],
+body.dark-theme input[type="number"],
+body.dark-theme input[type="email"] {
+  color: #ffffff !important;
+}
+
+/* Autocomplete panel fixes for dark theme */
+.dark-theme .mat-mdc-autocomplete-panel,
+body.dark-theme .mat-mdc-autocomplete-panel {
+  background: var(--surface-color) !important;
+  color: #ffffff !important;
+}
+
+.dark-theme .mat-mdc-autocomplete-panel .mat-mdc-option,
+body.dark-theme .mat-mdc-autocomplete-panel .mat-mdc-option {
+  color: #ffffff !important;
+}
+
 .dark-theme .mat-mdc-dialog-container {
   background: var(--surface-color) !important;
   color: var(--text-primary) !important;

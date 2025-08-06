@@ -60,3 +60,38 @@
 .dark-theme .mat-mdc-dialog-container {
   border-color: rgba(255, 255, 255, 0.1);
 }
+
+/* Dark Theme Input Text Color Fixes */
+.dark-theme .mat-mdc-form-field .mat-mdc-input-element,
+body.dark-theme .mat-mdc-form-field .mat-mdc-input-element {
+  color: #ffffff !important;
+}
+
+.dark-theme input.mat-mdc-input-element,
+body.dark-theme input.mat-mdc-input-element {
+  color: #ffffff !important;
+}
+
+.dark-theme .mat-mdc-form-field input,
+body.dark-theme .mat-mdc-form-field input {
+  color: #ffffff !important;
+}
+
+/* Dark theme autocomplete fixes */
+.dark-theme .mat-mdc-autocomplete-panel,
+body.dark-theme .mat-mdc-autocomplete-panel {
+  background: var(--surface-color) !important;
+  color: #ffffff !important;
+}
+
+.dark-theme .mat-mdc-autocomplete-panel .mat-mdc-option,
+body.dark-theme .mat-mdc-autocomplete-panel .mat-mdc-option {
+  color: #ffffff !important;
+  background: var(--surface-color) !important;
+}
+
+.dark-theme .mat-mdc-autocomplete-panel .mat-mdc-option:hover,
+body.dark-theme .mat-mdc-autocomplete-panel .mat-mdc-option:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
+}
