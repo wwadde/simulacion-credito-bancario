@@ -177,7 +177,7 @@ public class CreditServiceImpl implements CreditService {
 
         } catch (FeignException.BadRequest | FeignException.NotFound e) {
             log.error("Error fetching account for personId: {}", personId, e);
-            throw new CreditException("Person with id: " + personId + " not found");
+            throw new CreditException("Account with person id: " + personId + " not found");
         } catch (FeignException e) {
             log.error("Feign exception occurred while fetching account for personId: {}", personId, e);
             throw new CreditException("An error occurred while fetching the account information");
