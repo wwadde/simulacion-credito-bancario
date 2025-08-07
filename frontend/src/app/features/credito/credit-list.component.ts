@@ -13,6 +13,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, DateAdapter, MAT_DATE_FORMATS, NativeDateAdapter } from '@angular/material/core';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatTabsModule } from '@angular/material/tabs';
 import { CreditService } from '../../core/services/credit.service';
 import { PersonService } from '../../core/services/person.service';
 import { CreditDTO, CreateCreditDTO } from '../../core/models/credit.model';
@@ -63,7 +64,8 @@ export class CustomDateAdapter extends NativeDateAdapter {
     MatProgressBarModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatDividerModule
+    MatDividerModule,
+    MatTabsModule
   ],
   providers: [
     { provide: DateAdapter, useClass: CustomDateAdapter },
@@ -106,69 +108,134 @@ export class CustomDateAdapter extends NativeDateAdapter {
             </div>
 
             <div *ngIf="hasCredit(person.id)" class="credit-info">
-              <div class="credits-header" *ngIf="getPersonCredits(person.id).length > 1">
-                <span class="credits-count">{{getPersonCredits(person.id).length}} créditos activos</span>
+              <!-- Un solo crédito - mostrar directamente -->
+              <div *ngIf="getPersonCredits(person.id).length === 1" class="single-credit">
+                <ng-container *ngFor="let credit of getPersonCredits(person.id)">
+                  <div class="credit-content">
+                    <div class="credit-details">
+                      <div class="amount-info">
+                        <span class="label">Monto Total:</span>
+                        <span class="amount">{{formatCurrency(credit.totalLoan || 0)}}</span>
+                      </div>
+                      
+                      <div class="progress-info">
+                        <div class="progress-header">
+                          <span>Progreso: {{credit.paymentsMade || 0}}/{{credit.agreedPayments || 0}} pagos</span>
+                          <span>{{getProgressPercentage(credit)}}%</span>
+                        </div>
+                        <mat-progress-bar 
+                          [value]="getProgressPercentage(credit)" 
+                          [color]="getProgressColor(credit)">
+                        </mat-progress-bar>
+                      </div>
+
+                      <div class="payment-info">
+                        <div class="payment-row">
+                          <span class="label">Pagado:</span>
+                          <span class="paid">{{formatCurrency(credit.amountPaid || 0)}}</span>
+                        </div>
+                        <div class="payment-row">
+                          <span class="label">Por pagar:</span>
+                          <span class="pending">{{formatCurrency(credit.amountToPay || 0)}}</span>
+                        </div>
+                      </div>
+
+                      <div class="status-info">
+                        <mat-chip 
+                          [color]="getStatusColor(credit.status)" 
+                          selected>
+                          {{credit.status || 'Sin estado'}}
+                        </mat-chip>
+                        <span class="interest-rate">Tasa: {{formatInterestRate(credit.interestRate)}}%</span>
+                      </div>
+
+                      <div class="date-info">
+                        <small>Vence: {{formatDate(credit.creditExpirationDate)}}</small>
+                      </div>
+                    </div>
+
+                    <div class="credit-actions">
+                      <button mat-raised-button color="accent" (click)="makePayment(credit)">
+                        <mat-icon>payment</mat-icon>
+                        Realizar Pago
+                      </button>
+                      <button mat-icon-button color="warn" (click)="deleteCredit(credit)">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </ng-container>
               </div>
-              
-              <div *ngFor="let credit of getPersonCredits(person.id); let i = index" class="credit-item">
-                <div class="credit-header" *ngIf="getPersonCredits(person.id).length > 1">
-                  <span class="credit-number">Crédito #{{i + 1}}</span>
-                  <small class="credit-id">ID: {{credit.id}}</small>
-                </div>
-                
-                <div class="credit-details">
-                  <div class="amount-info">
-                    <span class="label">Monto Total:</span>
-                    <span class="amount">{{formatCurrency(credit.totalLoan || 0)}}</span>
-                  </div>
-                  
-                  <div class="progress-info">
-                    <div class="progress-header">
-                      <span>Progreso: {{credit.paymentsMade || 0}}/{{credit.agreedPayments || 0}} pagos</span>
-                      <span>{{getProgressPercentage(credit)}}%</span>
-                    </div>
-                    <mat-progress-bar 
-                      [value]="getProgressPercentage(credit)" 
-                      [color]="getProgressColor(credit)">
-                    </mat-progress-bar>
-                  </div>
 
-                  <div class="payment-info">
-                    <div class="payment-row">
-                      <span class="label">Pagado:</span>
-                      <span class="paid">{{formatCurrency(credit.amountPaid || 0)}}</span>
-                    </div>
-                    <div class="payment-row">
-                      <span class="label">Por pagar:</span>
-                      <span class="pending">{{formatCurrency(credit.amountToPay || 0)}}</span>
-                    </div>
-                  </div>
-
-                  <div class="status-info">
-                    <mat-chip 
-                      [color]="getStatusColor(credit.status)" 
-                      selected>
-                      {{credit.status || 'Sin estado'}}
-                    </mat-chip>
-                    <span class="interest-rate">Tasa: {{formatInterestRate(credit.interestRate)}}%</span>
-                  </div>
-
-                  <div class="date-info">
-                    <small>Vence: {{formatDate(credit.creditExpirationDate)}}</small>
-                  </div>
+              <!-- Múltiples créditos - mostrar con pestañas -->
+              <div *ngIf="getPersonCredits(person.id).length > 1" class="multiple-credits">
+                <div class="credits-summary">
+                  <span class="credits-count">{{getPersonCredits(person.id).length}} créditos activos</span>
+                  <span class="total-debt">Total adeudado: {{getTotalDebt(person.id)}}</span>
                 </div>
 
-                <div class="credit-actions">
-                  <button mat-raised-button color="accent" (click)="makePayment(credit)">
-                    <mat-icon>payment</mat-icon>
-                    Realizar Pago
-                  </button>
-                  <button mat-icon-button color="warn" (click)="deleteCredit(credit)">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </div>
-                
-                <mat-divider *ngIf="i < getPersonCredits(person.id).length - 1" class="credit-divider"></mat-divider>
+                <mat-tab-group class="credit-tabs" backgroundColor="primary">
+                  <mat-tab *ngFor="let credit of getPersonCredits(person.id); let i = index" 
+                           [label]="'Crédito #' + (i + 1)">
+                    <div class="tab-content">
+                      <div class="credit-id-header">
+                        <small class="credit-id">ID: {{credit.id}}</small>
+                      </div>
+                      
+                      <div class="credit-details">
+                        <div class="amount-info">
+                          <span class="label">Monto Total:</span>
+                          <span class="amount">{{formatCurrency(credit.totalLoan || 0)}}</span>
+                        </div>
+                        
+                        <div class="progress-info">
+                          <div class="progress-header">
+                            <span>Progreso: {{credit.paymentsMade || 0}}/{{credit.agreedPayments || 0}} pagos</span>
+                            <span>{{getProgressPercentage(credit)}}%</span>
+                          </div>
+                          <mat-progress-bar 
+                            [value]="getProgressPercentage(credit)" 
+                            [color]="getProgressColor(credit)">
+                          </mat-progress-bar>
+                        </div>
+
+                        <div class="payment-info">
+                          <div class="payment-row">
+                            <span class="label">Pagado:</span>
+                            <span class="paid">{{formatCurrency(credit.amountPaid || 0)}}</span>
+                          </div>
+                          <div class="payment-row">
+                            <span class="label">Por pagar:</span>
+                            <span class="pending">{{formatCurrency(credit.amountToPay || 0)}}</span>
+                          </div>
+                        </div>
+
+                        <div class="status-info">
+                          <mat-chip 
+                            [color]="getStatusColor(credit.status)" 
+                            selected>
+                            {{credit.status || 'Sin estado'}}
+                          </mat-chip>
+                          <span class="interest-rate">Tasa: {{formatInterestRate(credit.interestRate)}}%</span>
+                        </div>
+
+                        <div class="date-info">
+                          <small>Vence: {{formatDate(credit.creditExpirationDate)}}</small>
+                        </div>
+                      </div>
+
+                      <div class="credit-actions">
+                        <button mat-raised-button color="accent" (click)="makePayment(credit)">
+                          <mat-icon>payment</mat-icon>
+                          Realizar Pago
+                        </button>
+                        <button mat-icon-button color="warn" (click)="deleteCredit(credit)">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </mat-tab>
+                </mat-tab-group>
               </div>
             </div>
           </mat-card-content>
@@ -272,47 +339,66 @@ export class CustomDateAdapter extends NativeDateAdapter {
       padding: 8px;
     }
 
-    .credits-header {
-      text-align: center;
-      margin-bottom: 16px;
+    /* Estilos para crédito único */
+    .single-credit {
       padding: 8px;
+    }
+
+    .credit-content {
+      background-color: rgba(0, 0, 0, 0.02);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    /* Estilos para múltiples créditos */
+    .multiple-credits {
+      padding: 8px;
+    }
+
+    .credits-summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding: 12px;
       background-color: var(--primary-color, #3f51b5);
       color: white;
-      border-radius: 6px;
+      border-radius: 8px;
       font-size: 14px;
       font-weight: 500;
     }
 
-    .credit-item {
-      margin-bottom: 16px;
-    }
-
-    .credit-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-      padding: 8px 12px;
-      background-color: var(--surface-variant, #f5f5f5);
-      border-radius: 6px;
-      border-left: 4px solid var(--primary-color, #3f51b5);
-    }
-
-    .credit-number {
+    .total-debt {
       font-weight: 600;
-      color: var(--primary-color, #3f51b5);
-      font-size: 14px;
+      font-size: 15px;
+    }
+
+    .credit-tabs {
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .tab-content {
+      padding: 16px;
+      min-height: 300px;
+    }
+
+    .credit-id-header {
+      text-align: center;
+      margin-bottom: 12px;
+      padding: 6px 12px;
+      background-color: var(--surface-variant, #f5f5f5);
+      border-radius: 4px;
     }
 
     .credit-id {
       color: var(--text-secondary);
       font-size: 12px;
+      font-weight: 500;
     }
 
-    .credit-divider {
-      margin: 20px 0;
-      border-color: var(--border-color, #e0e0e0);
-    }
+    /* Estilos comunes removidos de aquí y mantenidos abajo */
 
     .credit-details {
       margin-bottom: 16px;
@@ -732,5 +818,11 @@ export class CreditListComponent implements OnInit {
       return interestRate.parsedValue || parseFloat(interestRate.source) || 0;
     }
     return 0;
+  }
+
+  getTotalDebt(personId: number): string {
+    const credits = this.getPersonCredits(personId);
+    const totalDebt = credits.reduce((sum, credit) => sum + (credit.amountToPay || 0), 0);
+    return this.formatCurrency(totalDebt);
   }
 }
