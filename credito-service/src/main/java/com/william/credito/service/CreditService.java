@@ -3,6 +3,8 @@ package com.william.credito.service;
 
 import com.william.credito.infrastructure.dto.CreateCreditDTO;
 import com.william.credito.infrastructure.dto.CreditDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -19,4 +21,5 @@ public interface CreditService {
 
     String deleteCredit(Long creditId);
 
+    Page<CreditDTO> getAllCredits(Pageable pageable);
 }

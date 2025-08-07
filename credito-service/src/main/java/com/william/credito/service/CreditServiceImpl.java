@@ -12,6 +12,8 @@ import com.william.credito.infrastructure.dto.CreditDTO;
 import feign.FeignException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.fileupload.servlet.ServletRequestContext;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
@@ -150,6 +152,17 @@ public class CreditServiceImpl implements CreditService {
             entity.setStatus(Status.CANCELED.getDescription());
             creditDao.save(entity);
             return "Credit with id: " + creditId + " cancelled successfully";
+    }
+
+    @Override
+    public Page<CreditDTO> getAllCredits(Pageable pageable) {
+        Page<Credit> pagina = creditDao.findAll(pageable);
+        return pagina.map(p -> {
+            CreditDTO dto = entityToCreditDTO.apply(p);
+            AccountDTO account = fetchAccount(p.getAccountId());
+            dto.setAccount(account);
+            return dto;
+        });
     }
 
 

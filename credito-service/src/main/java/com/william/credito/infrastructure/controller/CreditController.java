@@ -6,6 +6,10 @@ import com.william.credito.infrastructure.dto.PaymentDTO;
 import com.william.credito.service.CreditService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +28,12 @@ public class CreditController {
     @GetMapping("/{personId}")
     public ResponseEntity<List<CreditDTO>> getCredit(@PathVariable Long personId) {
         return ResponseEntity.ok(service.getCredit(personId));
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<CreditDTO>> getAllCredits(@PageableDefault(size = 5, page = 0, sort = "loan", direction = Sort.Direction.DESC)
+                                                                 Pageable pageable) {
+        return ResponseEntity.ok(service.getAllCredits(pageable));
     }
 
     @PostMapping

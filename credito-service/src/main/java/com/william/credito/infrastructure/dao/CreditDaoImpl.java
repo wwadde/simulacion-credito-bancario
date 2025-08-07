@@ -4,6 +4,8 @@ package com.william.credito.infrastructure.dao;
 
 import com.william.credito.domain.model.Credit;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -35,6 +37,11 @@ public class CreditDaoImpl implements CreditDao {
     @Override
     public Optional<Credit> findByCreditId(Long creditId) {
         return creditRepository.findById(creditId);
+    }
+
+    @Override
+    public Page<Credit> findAll(Pageable pageable) {
+        return creditRepository.findAll(pageable);
     }
 
 

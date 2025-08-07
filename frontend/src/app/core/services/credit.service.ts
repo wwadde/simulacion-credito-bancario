@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { CreditDTO, CreateCreditDTO } from '../models/credit.model';
+import { CreditDTO, CreateCreditDTO, PageCreditDTO, Pageable } from '../models/credit.model';
 import { PaymentDTO } from '../models/account.model';
 import { environment } from '../../../environments/environment';
 
@@ -13,6 +13,26 @@ export class CreditService {
   private readonly API_URL = environment.creditoApiUrl;
 
   constructor(private http: HttpClient) {}
+
+  getAllCredits(pageable?: Pageable): Observable<PageCreditDTO> {
+    let params = new HttpParams();
+    
+    if (pageable) {
+      if (pageable.page !== undefined) {
+        params = params.set('page', pageable.page.toString());
+      }
+      if (pageable.size !== undefined) {
+        params = params.set('size', pageable.size.toString());
+      }
+      if (pageable.sort) {
+        pageable.sort.forEach(sortParam => {
+          params = params.append('sort', sortParam);
+        });
+      }
+    }
+    
+    return this.http.get<PageCreditDTO>(`${this.API_URL}/api/credits`, { params });
+  }
 
   createCredit(personId: number, credit: CreateCreditDTO): Observable<string> {
     const params = new HttpParams().set('personId', personId.toString());

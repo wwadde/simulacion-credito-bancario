@@ -21,3 +21,38 @@ export interface CreateCreditDTO {
   agreedPayments: number;
   creditExpirationDate: string;
 }
+
+export interface Pageable {
+  page?: number;
+  size?: number;
+  sort?: string[];
+}
+
+export interface PageCreditDTO {
+  content: CreditDTO[];
+  pageable: {
+    pageNumber: number;
+    pageSize: number;
+    sort: {
+      empty: boolean;
+      sorted: boolean;
+      unsorted: boolean;
+    };
+    offset: number;
+    paged: boolean;
+    unpaged: boolean;
+  };
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  sort: {
+    empty: boolean;
+    sorted: boolean;
+    unsorted: boolean;
+  };
+  first: boolean;
+  numberOfElements: number;
+  empty: boolean;
+}
