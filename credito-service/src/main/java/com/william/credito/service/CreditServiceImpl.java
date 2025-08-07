@@ -171,14 +171,18 @@ public class CreditServiceImpl implements CreditService {
             String token = getBearerTokenFromContext();
             AccountDTO account = feign.getAccount(personId, token).getBody();
             if (account == null) {
-                throw new CreditException("Account with person id: " + personId + " could not found");
+                throw new CreditException("Account with person id: " + personId + " not found");
             }
             return account;
 
-        } catch (FeignException e) {
+        } catch (FeignException.BadRequest | FeignException.NotFound e) {
             log.error("Error fetching account for personId: {}", personId, e);
             throw new CreditException("Person with id: " + personId + " not found");
+        } catch (FeignException e) {
+            log.error("Feign exception occurred while fetching account for personId: {}", personId, e);
+            throw new CreditException("An error occurred while fetching the account information");
         }
+
     }
 
     private BigInteger calculateAmountToPay(BigInteger amount, Float interestRate, Integer agreedPayments) {
