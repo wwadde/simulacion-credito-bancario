@@ -12,6 +12,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, DateAdapter, MAT_DATE_FORMATS, NativeDateAdapter } from '@angular/material/core';
+import { MatDividerModule } from '@angular/material/divider';
 import { CreditService } from '../../core/services/credit.service';
 import { PersonService } from '../../core/services/person.service';
 import { CreditDTO, CreateCreditDTO } from '../../core/models/credit.model';
@@ -61,7 +62,8 @@ export class CustomDateAdapter extends NativeDateAdapter {
     MatChipsModule,
     MatProgressBarModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatDividerModule
   ],
   providers: [
     { provide: DateAdapter, useClass: CustomDateAdapter },
@@ -104,16 +106,25 @@ export class CustomDateAdapter extends NativeDateAdapter {
             </div>
 
             <div *ngIf="hasCredit(person.id)" class="credit-info">
-              <ng-container *ngFor="let credit of getPersonCredits(person.id)">
+              <div class="credits-header" *ngIf="getPersonCredits(person.id).length > 1">
+                <span class="credits-count">{{getPersonCredits(person.id).length}} créditos activos</span>
+              </div>
+              
+              <div *ngFor="let credit of getPersonCredits(person.id); let i = index" class="credit-item">
+                <div class="credit-header" *ngIf="getPersonCredits(person.id).length > 1">
+                  <span class="credit-number">Crédito #{{i + 1}}</span>
+                  <small class="credit-id">ID: {{credit.id}}</small>
+                </div>
+                
                 <div class="credit-details">
                   <div class="amount-info">
                     <span class="label">Monto Total:</span>
-                    <span class="amount">{{formatCurrency(credit.totalLoan)}}</span>
+                    <span class="amount">{{formatCurrency(credit.totalLoan || 0)}}</span>
                   </div>
                   
                   <div class="progress-info">
                     <div class="progress-header">
-                      <span>Progreso: {{credit.paymentsMade}}/{{credit.agreedPayments}} pagos</span>
+                      <span>Progreso: {{credit.paymentsMade || 0}}/{{credit.agreedPayments || 0}} pagos</span>
                       <span>{{getProgressPercentage(credit)}}%</span>
                     </div>
                     <mat-progress-bar 
@@ -125,11 +136,11 @@ export class CustomDateAdapter extends NativeDateAdapter {
                   <div class="payment-info">
                     <div class="payment-row">
                       <span class="label">Pagado:</span>
-                      <span class="paid">{{formatCurrency(credit.amountPaid)}}</span>
+                      <span class="paid">{{formatCurrency(credit.amountPaid || 0)}}</span>
                     </div>
                     <div class="payment-row">
                       <span class="label">Por pagar:</span>
-                      <span class="pending">{{formatCurrency(credit.amountToPay)}}</span>
+                      <span class="pending">{{formatCurrency(credit.amountToPay || 0)}}</span>
                     </div>
                   </div>
 
@@ -137,9 +148,9 @@ export class CustomDateAdapter extends NativeDateAdapter {
                     <mat-chip 
                       [color]="getStatusColor(credit.status)" 
                       selected>
-                      {{credit.status}}
+                      {{credit.status || 'Sin estado'}}
                     </mat-chip>
-                    <span class="interest-rate">Tasa: {{credit.interestRate}}%</span>
+                    <span class="interest-rate">Tasa: {{formatInterestRate(credit.interestRate)}}%</span>
                   </div>
 
                   <div class="date-info">
@@ -156,7 +167,9 @@ export class CustomDateAdapter extends NativeDateAdapter {
                     <mat-icon>delete</mat-icon>
                   </button>
                 </div>
-              </ng-container>
+                
+                <mat-divider *ngIf="i < getPersonCredits(person.id).length - 1" class="credit-divider"></mat-divider>
+              </div>
             </div>
           </mat-card-content>
         </mat-card>
@@ -213,12 +226,34 @@ export class CustomDateAdapter extends NativeDateAdapter {
     .person-card {
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       border-radius: 12px;
-      transition: transform 0.3s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
       background-color: var(--surface-color);
+      overflow: hidden;
     }
 
     .person-card:hover {
       transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .person-card mat-card-header {
+      background-color: var(--primary-color, #3f51b5);
+      color: white;
+      padding: 16px;
+      margin: 0;
+    }
+
+    .person-card mat-card-header .mat-mdc-card-title {
+      color: white;
+      font-size: 18px;
+      font-weight: 500;
+      margin: 0;
+    }
+
+    .person-card mat-card-header .mat-mdc-card-subtitle {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+      margin: 4px 0 0 0;
     }
 
     .no-credit {
@@ -237,6 +272,48 @@ export class CustomDateAdapter extends NativeDateAdapter {
       padding: 8px;
     }
 
+    .credits-header {
+      text-align: center;
+      margin-bottom: 16px;
+      padding: 8px;
+      background-color: var(--primary-color, #3f51b5);
+      color: white;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .credit-item {
+      margin-bottom: 16px;
+    }
+
+    .credit-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding: 8px 12px;
+      background-color: var(--surface-variant, #f5f5f5);
+      border-radius: 6px;
+      border-left: 4px solid var(--primary-color, #3f51b5);
+    }
+
+    .credit-number {
+      font-weight: 600;
+      color: var(--primary-color, #3f51b5);
+      font-size: 14px;
+    }
+
+    .credit-id {
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+
+    .credit-divider {
+      margin: 20px 0;
+      border-color: var(--border-color, #e0e0e0);
+    }
+
     .credit-details {
       margin-bottom: 16px;
     }
@@ -246,12 +323,15 @@ export class CustomDateAdapter extends NativeDateAdapter {
       justify-content: space-between;
       align-items: center;
       margin-bottom: 12px;
+      padding: 12px;
+      background-color: var(--surface-variant, #f5f5f5);
+      border-radius: 8px;
     }
 
     .amount {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 600;
-      color: var(--primary-color);
+      color: var(--primary-color, #3f51b5);
     }
 
     .progress-info {
@@ -268,22 +348,28 @@ export class CustomDateAdapter extends NativeDateAdapter {
 
     .payment-info {
       margin-bottom: 12px;
+      padding: 8px;
+      border-radius: 6px;
+      background-color: rgba(0, 0, 0, 0.02);
     }
 
     .payment-row {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
+      padding: 2px 0;
     }
 
     .paid {
       color: #4caf50;
-      font-weight: 500;
+      font-weight: 600;
+      font-size: 14px;
     }
 
     .pending {
       color: #f44336;
-      font-weight: 500;
+      font-weight: 600;
+      font-size: 14px;
     }
 
     .status-info {
@@ -305,11 +391,23 @@ export class CustomDateAdapter extends NativeDateAdapter {
 
     .credit-actions {
       display: flex;
-      gap: 8px;
-      justify-content: space-between;
+      gap: 12px;
+      justify-content: center;
+      align-items: center;
       margin-top: 16px;
       padding-top: 16px;
-      border-top: 1px solid var(--border-color);
+      border-top: 1px solid var(--border-color, #e0e0e0);
+    }
+
+    .credit-actions button {
+      flex: 1;
+      min-height: 40px;
+    }
+
+    .credit-actions .mat-mdc-icon-button {
+      flex: 0 0 auto;
+      width: 40px;
+      height: 40px;
     }
 
     .label {
@@ -393,7 +491,7 @@ export class CustomDateAdapter extends NativeDateAdapter {
 })
 export class CreditListComponent implements OnInit {
   persons: PersonDTO[] = [];
-  credits: { [personId: number]: CreditDTO } = {};
+  credits: { [personId: number]: CreditDTO[] } = {};
   loading = true;
 
   constructor(
@@ -426,31 +524,52 @@ export class CreditListComponent implements OnInit {
   }
 
   private loadCreditsForPersons(): void {
+    console.log('Loading credits for persons:', this.persons.map(p => p.id));
+    
     const creditPromises = this.persons.map(person =>
-      this.creditService.getCredit(person.id).toPromise().catch(() => null)
+      this.creditService.getCredit(person.id).toPromise()
+        .then(credits => {
+          console.log(`Credits loaded for person ${person.id}:`, credits);
+          return { personId: person.id, credits };
+        })
+        .catch(error => {
+          console.log(`No credits found for person ${person.id}:`, error);
+          return { personId: person.id, credits: [] };
+        })
     );
 
     Promise.all(creditPromises).then(results => {
-      results.forEach((credit, index) => {
-        if (credit) {
-          this.credits[this.persons[index].id] = credit;
+      console.log('All credit results:', results);
+      
+      results.forEach(result => {
+        if (result.credits && result.credits.length > 0) {
+          this.credits[result.personId] = result.credits;
+          console.log(`Credits stored for person ${result.personId}:`, result.credits);
         }
       });
+      
+      console.log('Final credits object:', this.credits);
       this.loading = false;
     });
   }
 
   hasCredit(personId: number): boolean {
-    return !!this.credits[personId];
+    const credits = this.credits[personId];
+    return !!(credits && credits.length > 0);
   }
 
   getPersonCredits(personId: number): CreditDTO[] {
-    const credit = this.credits[personId];
-    return credit ? [credit] : [];
+    const credits = this.credits[personId];
+    return credits && credits.length > 0 ? credits : [];
   }
 
   getProgressPercentage(credit: CreditDTO): number {
-    return Math.round((credit.paymentsMade / credit.agreedPayments) * 100);
+    if (!credit || !credit.agreedPayments || credit.agreedPayments === 0) {
+      return 0;
+    }
+    const paymentsMade = credit.paymentsMade || 0;
+    const percentage = (paymentsMade / credit.agreedPayments) * 100;
+    return Math.round(Math.min(percentage, 100));
   }
 
   getProgressColor(credit: CreditDTO): string {
@@ -461,8 +580,10 @@ export class CreditListComponent implements OnInit {
   }
 
   getStatusColor(status: string): string {
+    if (!status) return 'primary';
     switch (status.toLowerCase()) {
       case 'activo': return 'primary';
+      case 'pendiente': return 'accent';
       case 'completado': return 'accent';
       case 'vencido': return 'warn';
       default: return 'primary';
@@ -470,12 +591,12 @@ export class CreditListComponent implements OnInit {
   }
 
   createCredit(): void {
-    // Get list of persons who don't have credits
+    // Get list of persons who don't have credits (aunque ahora pueden tener múltiples)
     const personsWithCredits = Object.keys(this.credits).map(id => parseInt(id));
     
     const dialogData: PersonSelectionData = {
       persons: this.persons,
-      excludePersonsWithCredit: personsWithCredits
+      excludePersonsWithCredit: [] // Permitir crear créditos adicionales
     };
 
     const dialogRef = this.dialog.open(PersonSelectionDialogComponent, {
@@ -567,7 +688,8 @@ export class CreditListComponent implements OnInit {
             duration: 3000,
             panelClass: ['success-snackbar']
           });
-          delete this.credits[personId];
+          // Reload credits to refresh the list
+          this.loadCreditsForPersons();
         },
         error: () => {
           this.snackBar.open('Error al eliminar crédito', 'Cerrar', {
@@ -579,7 +701,10 @@ export class CreditListComponent implements OnInit {
     }
   }
 
-  formatCurrency(amount: number): string {
+  formatCurrency(amount: number | null | undefined): string {
+    if (amount === null || amount === undefined || isNaN(amount)) {
+      return '$0';
+    }
     return new Intl.NumberFormat('es-CO', {
       style: 'currency',
       currency: 'COP',
@@ -588,7 +713,24 @@ export class CreditListComponent implements OnInit {
     }).format(amount);
   }
 
-  formatDate(dateString: string): string {
-    return new Date(dateString).toLocaleDateString('es-CO');
+  formatDate(dateString: string | null | undefined): string {
+    if (!dateString) {
+      return 'Fecha no disponible';
+    }
+    try {
+      return new Date(dateString).toLocaleDateString('es-CO');
+    } catch (error) {
+      return 'Fecha inválida';
+    }
+  }
+
+  formatInterestRate(interestRate: any): number {
+    if (typeof interestRate === 'number') {
+      return interestRate;
+    }
+    if (interestRate && typeof interestRate === 'object') {
+      return interestRate.parsedValue || parseFloat(interestRate.source) || 0;
+    }
+    return 0;
   }
 }

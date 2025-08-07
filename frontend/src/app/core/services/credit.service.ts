@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { CreditDTO, CreateCreditDTO } from '../models/credit.model';
 import { PaymentDTO } from '../models/account.model';
 import { environment } from '../../../environments/environment';
@@ -18,8 +19,20 @@ export class CreditService {
     return this.http.post<string>(`${this.API_URL}/api/credits`, credit, { params });
   }
 
-  getCredit(personId: number): Observable<CreditDTO> {
-    return this.http.get<CreditDTO>(`${this.API_URL}/api/credits/${personId}`);
+  getCredit(personId: number): Observable<CreditDTO[]> {
+    return this.http.get<CreditDTO | CreditDTO[]>(`${this.API_URL}/api/credits/${personId}`)
+      .pipe(
+        map(response => {
+          // Si la respuesta es un array, devolverlo directamente
+          if (Array.isArray(response)) {
+            console.log('API returned array of credits:', response);
+            return response;
+          }
+          // Si es un objeto directo, convertirlo a array
+          console.log('API returned single credit, converting to array:', response);
+          return [response];
+        })
+      );
   }
 
   makePayment(creditId: number, personId: number, payment: PaymentDTO): Observable<string> {
