@@ -345,7 +345,7 @@ export class CustomDateAdapter extends NativeDateAdapter {
     }
 
     .credit-content {
-      background-color: rgba(0, 0, 0, 0.02);
+      background-color: var(--surface-variant, rgba(0, 0, 0, 0.02));
       border-radius: 8px;
       padding: 16px;
     }
@@ -388,12 +388,12 @@ export class CustomDateAdapter extends NativeDateAdapter {
       text-align: center;
       margin-bottom: 12px;
       padding: 6px 12px;
-      background-color: var(--surface-variant, #f5f5f5);
+      background-color: var(--surface-variant, rgba(0, 0, 0, 0.04));
       border-radius: 4px;
     }
 
     .credit-id {
-      color: var(--text-secondary);
+      color: var(--text-primary, #666);
       font-size: 12px;
       font-weight: 500;
     }
@@ -410,8 +410,12 @@ export class CustomDateAdapter extends NativeDateAdapter {
       align-items: center;
       margin-bottom: 12px;
       padding: 12px;
-      background-color: var(--surface-variant, #f5f5f5);
+      background-color: var(--surface-variant, rgba(0, 0, 0, 0.04));
       border-radius: 8px;
+    }
+
+    .amount-info .label {
+      color: var(--text-primary, #333);
     }
 
     .amount {
@@ -436,7 +440,7 @@ export class CustomDateAdapter extends NativeDateAdapter {
       margin-bottom: 12px;
       padding: 8px;
       border-radius: 6px;
-      background-color: rgba(0, 0, 0, 0.02);
+      background-color: var(--surface-variant, rgba(0, 0, 0, 0.02));
     }
 
     .payment-row {
@@ -498,7 +502,7 @@ export class CustomDateAdapter extends NativeDateAdapter {
 
     .label {
       font-size: 14px;
-      color: var(--text-secondary);
+      color: var(--text-primary, #333);
     }
 
     .loading-container {
