@@ -2,7 +2,7 @@ package com.william.authservice.controller;
 
 import com.william.authservice.domain.dto.AuthResponse;
 import com.william.authservice.domain.dto.LoginDTO;
-import com.william.authservice.domain.dto.RefreshTokenRequest;
+import com.william.authservice.domain.dto.TokenRequest;
 import com.william.authservice.service.AuthService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -42,7 +42,7 @@ public class AuthController {
     }
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<AuthResponse> refreshToken(@RequestBody RefreshTokenRequest request) {
+    public ResponseEntity<AuthResponse> refreshToken(@Valid @RequestBody TokenRequest request) {
 
         return ResponseEntity.ok(authService.refreshToken(request.accessToken()));
     }

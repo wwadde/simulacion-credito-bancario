@@ -4,7 +4,7 @@ package com.william.authservice.service;
 
 import com.william.authservice.controller.AuthController;
 import com.william.authservice.domain.dto.AuthResponse;
-import com.william.authservice.domain.dto.RefreshTokenRequest;
+import com.william.authservice.domain.dto.TokenRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,12 +30,12 @@ class AuthControllerRefreshTokenTest {
     @InjectMocks
     private AuthController authController;
 
-    private RefreshTokenRequest refreshTokenRequest;
+    private TokenRequest tokenRequest;
     private AuthResponse authResponse;
 
     @BeforeEach
     void setUp() {
-        refreshTokenRequest = new RefreshTokenRequest("expired-access-token");
+        tokenRequest = new TokenRequest("expired-access-token");
         authResponse = new AuthResponse("new-access-token", "access", Instant.now(), null);
     }
 
@@ -45,7 +45,7 @@ class AuthControllerRefreshTokenTest {
         when(authService.refreshToken(anyString())).thenReturn(authResponse);
 
         // When
-        ResponseEntity<AuthResponse> response = authController.refreshToken(refreshTokenRequest);
+        ResponseEntity<AuthResponse> response = authController.refreshToken(tokenRequest);
 
         // Then
         assertNotNull(response);
@@ -59,7 +59,7 @@ class AuthControllerRefreshTokenTest {
     void refreshToken_ShouldCallAuthServiceWithCorrectToken() {
         // Given
         String expectedToken = "test-expired-token";
-        RefreshTokenRequest request = new RefreshTokenRequest(expectedToken);
+        TokenRequest request = new TokenRequest(expectedToken);
         when(authService.refreshToken(expectedToken)).thenReturn(authResponse);
 
         // When

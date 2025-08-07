@@ -24,7 +24,7 @@ public class TokenService {
     private final JwtEncoder encoder;
     private final JwtDecoder decoder;
     private final RefreshTokenRepository refreshTokenRepository;
-    public static final long ACCESS_TOKEN_MINUTES_TO_EXPIRE = 10;
+    public static final long ACCESS_TOKEN_MINUTES_TO_EXPIRE = 5;
     public static final ChronoUnit ACCESS_TOKEN_UNIT = ChronoUnit.MINUTES;
     public static final long REFRESH_TOKEN_DAYS_TO_EXPIRE = 1;
     public static final ChronoUnit REFRESH_TOKEN_UNIT = ChronoUnit.DAYS;

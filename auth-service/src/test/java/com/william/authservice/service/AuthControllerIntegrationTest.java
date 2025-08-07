@@ -2,7 +2,7 @@ package com.william.authservice.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.william.authservice.domain.dto.PersonDTO;
-import com.william.authservice.domain.dto.RefreshTokenRequest;
+import com.william.authservice.domain.dto.TokenRequest;
 import com.william.authservice.domain.model.Person;
 import com.william.authservice.domain.model.RefreshToken;
 import com.william.authservice.repository.PersonaRepository;
@@ -84,7 +84,7 @@ class AuthControllerIntegrationTest {
         Pair<String, Instant> expiredTokenData = tokenService.generateToken(personDTO, -1, TokenService.ACCESS_TOKEN_UNIT);
         String expiredToken = expiredTokenData.getFirst();
 
-        RefreshTokenRequest request = new RefreshTokenRequest(expiredToken);
+        TokenRequest request = new TokenRequest(expiredToken);
 
         // When & Then
         mockMvc.perform(post("/refresh-token")
@@ -108,7 +108,7 @@ class AuthControllerIntegrationTest {
         Pair<String, Instant> expiredTokenData = tokenService.generateToken(nonExistentPerson, -1, TokenService.ACCESS_TOKEN_UNIT);
         String expiredToken = expiredTokenData.getFirst();
 
-        RefreshTokenRequest request = new RefreshTokenRequest(expiredToken);
+        TokenRequest request = new TokenRequest(expiredToken);
 
         // When & Then
         mockMvc.perform(post("/refresh-token")
@@ -131,7 +131,7 @@ class AuthControllerIntegrationTest {
         Pair<String, Instant> expiredTokenData = tokenService.generateToken(personDTO, -1, TokenService.ACCESS_TOKEN_UNIT);
         String expiredToken = expiredTokenData.getFirst();
 
-        RefreshTokenRequest request = new RefreshTokenRequest(expiredToken);
+        TokenRequest request = new TokenRequest(expiredToken);
 
         // When & Then
         mockMvc.perform(post("/refresh-token")
@@ -143,7 +143,7 @@ class AuthControllerIntegrationTest {
     @Test
     void refreshToken_ShouldReturnBadRequest_WhenInvalidTokenFormat() throws Exception {
         // Given
-        RefreshTokenRequest request = new RefreshTokenRequest("invalid-token-format");
+        TokenRequest request = new TokenRequest("invalid-token-format");
 
         // When & Then
         mockMvc.perform(post("/refresh-token")
