@@ -579,6 +579,9 @@ export class CreditListComponent implements OnInit {
   persons: PersonDTO[] = [];
   credits: { [personId: number]: CreditDTO[] } = {};
   loading = true;
+  totalCredits = 0;
+  currentPage = 0;
+  pageSize = 50; // Tamaño de página razonable
 
   constructor(
     private creditService: CreditService,
@@ -594,10 +597,11 @@ export class CreditListComponent implements OnInit {
   private loadData(): void {
     this.loading = true;
     
+    // Cargar tanto las personas como todos los créditos en paralelo
     this.personService.findAllPersons().subscribe({
       next: (persons) => {
         this.persons = persons.filter(p => p.status === 'ACTIVO');
-        this.loadCreditsForPersons();
+        this.loadAllCredits();
       },
       error: () => {
         this.loading = false;
@@ -609,33 +613,84 @@ export class CreditListComponent implements OnInit {
     });
   }
 
-  private loadCreditsForPersons(): void {
-    console.log('Loading credits for persons:', this.persons.map(p => p.id));
-    
-    const creditPromises = this.persons.map(person =>
-      this.creditService.getCredit(person.id).toPromise()
-        .then(credits => {
-          console.log(`Credits loaded for person ${person.id}:`, credits);
-          return { personId: person.id, credits };
-        })
-        .catch(error => {
-          console.log(`No credits found for person ${person.id}:`, error);
-          return { personId: person.id, credits: [] };
-        })
-    );
-
-    Promise.all(creditPromises).then(results => {
-      console.log('All credit results:', results);
-      
-      results.forEach(result => {
-        if (result.credits && result.credits.length > 0) {
-          this.credits[result.personId] = result.credits;
-          console.log(`Credits stored for person ${result.personId}:`, result.credits);
+  private loadAllCredits(): void {
+    // Usar el endpoint optimizado para obtener todos los créditos de una vez
+    this.creditService.getAllCredits({ 
+      page: this.currentPage, 
+      size: this.pageSize,
+      sort: ['creditGivenDate,desc'] // Ordenar por fecha de creación descendente
+    }).subscribe({
+      next: (creditsPage) => {
+        console.log('All credits loaded:', creditsPage);
+        
+        this.totalCredits = creditsPage.totalElements;
+        
+        // Organizar créditos por persona
+        this.credits = {};
+        creditsPage.content.forEach(credit => {
+          if (credit.account?.person?.id) {
+            const personId = credit.account.person.id;
+            if (!this.credits[personId]) {
+              this.credits[personId] = [];
+            }
+            this.credits[personId].push(credit);
+          }
+        });
+        
+        // Si es la primera página o hay más páginas, cargar todas para mostrar completo
+        if (creditsPage.totalPages > 1 && this.currentPage === 0) {
+          // Para el dashboard de créditos, es mejor cargar todos los créditos de una vez
+          // para mostrar una vista completa de todas las personas y sus créditos
+          this.loadAllCreditsComplete();
+        } else {
+          console.log('Credits organized by person:', this.credits);
+          this.loading = false;
         }
-      });
-      
-      console.log('Final credits object:', this.credits);
-      this.loading = false;
+      },
+      error: (error) => {
+        console.error('Error loading credits:', error);
+        this.loading = false;
+        this.snackBar.open('Error al cargar créditos', 'Cerrar', {
+          duration: 3000,
+          panelClass: ['error-snackbar']
+        });
+      }
+    });
+  }
+
+  private loadAllCreditsComplete(): void {
+    // Cargar todos los créditos sin paginación para la vista completa
+    this.creditService.getAllCredits({ 
+      page: 0, 
+      size: this.totalCredits || 1000,
+      sort: ['creditGivenDate,desc']
+    }).subscribe({
+      next: (creditsPage) => {
+        console.log('All credits loaded completely:', creditsPage);
+        
+        // Organizar créditos por persona
+        this.credits = {};
+        creditsPage.content.forEach(credit => {
+          if (credit.account?.person?.id) {
+            const personId = credit.account.person.id;
+            if (!this.credits[personId]) {
+              this.credits[personId] = [];
+            }
+            this.credits[personId].push(credit);
+          }
+        });
+        
+        console.log('Credits organized by person (complete):', this.credits);
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Error loading all credits:', error);
+        this.loading = false;
+        this.snackBar.open('Error al cargar todos los créditos', 'Cerrar', {
+          duration: 3000,
+          panelClass: ['error-snackbar']
+        });
+      }
     });
   }
 
@@ -716,7 +771,7 @@ export class CreditListComponent implements OnInit {
               panelClass: ['success-snackbar']
             });
             // Reload credits to show the new one
-            this.loadCreditsForPersons();
+            this.loadAllCredits();
           },
           error: (error) => {
             console.error('Error creating credit:', error);
@@ -749,7 +804,7 @@ export class CreditListComponent implements OnInit {
               panelClass: ['success-snackbar']
             });
             // Reload credits to show updated payment information
-            this.loadCreditsForPersons();
+            this.loadAllCredits();
           },
           error: (error) => {
             console.error('Error making payment:', error);
@@ -775,7 +830,7 @@ export class CreditListComponent implements OnInit {
             panelClass: ['success-snackbar']
           });
           // Reload credits to refresh the list
-          this.loadCreditsForPersons();
+          this.loadAllCredits();
         },
         error: () => {
           this.snackBar.open('Error al eliminar crédito', 'Cerrar', {
