@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { HttpInterceptorFn, HttpErrorResponse, HttpRequest, HttpHandlerFn } from '@angular/common/http';
-import { throwError } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { throwError, EMPTY } from 'rxjs';
+import { catchError, switchMap, delay, retryWhen, take } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 
@@ -13,6 +13,11 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const token = authService.getToken();
   const isApiUrl = isApiUrlFn(req.url);
   const isLogoutUrl = req.url.includes('/logout');
+  
+  // Actualizar actividad del usuario en cada request a la API
+  if (isApiUrl && !isLogoutUrl) {
+    authService.updateActivity();
+  }
   
   if (token && isApiUrl) {
     req = req.clone({
@@ -42,6 +47,29 @@ function handle401Error(request: HttpRequest<unknown>, next: HttpHandlerFn, auth
   const token = authService.getToken();
   
   if (token && !authService.isTokenExpired()) {
+    // Si ya hay un refresh en progreso, esperar un poco y reintentar
+    if (authService.isRefreshingToken()) {
+      return EMPTY.pipe(
+        delay(1000),
+        switchMap(() => {
+          const newToken = authService.getToken();
+          if (newToken && newToken !== token) {
+            const newRequest = request.clone({
+              setHeaders: {
+                Authorization: `Bearer ${newToken}`
+              }
+            });
+            return next(newRequest);
+          } else {
+            authService.clearSessionPublic();
+            router.navigate(['/auth/login']);
+            return throwError(() => new Error('Token refresh failed'));
+          }
+        })
+      );
+    }
+
+    // Intentar refresh del token
     return authService.refreshToken(token).pipe(
       switchMap((response) => {
         const newToken = response.accessToken;

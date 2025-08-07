@@ -3,13 +3,14 @@ package com.william.credito.infrastructure.dao;
 
 import com.william.credito.domain.model.Credit;
 
+import java.util.List;
 import java.util.Optional;
 
 
 public interface CreditDao {
 
 
-    Credit findByAccountId(Long id);
+    List<Credit> findByAccountId(Long id);
 
     void save(Credit credit);
 

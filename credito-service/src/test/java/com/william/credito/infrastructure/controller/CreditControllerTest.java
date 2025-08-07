@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigInteger;
+import java.util.List;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -31,7 +32,7 @@ class CreditControllerTest {
         CreditDTO creditDTO = new CreditDTO();
         // Configurar creditDTO según sea necesario
 
-        when(creditService.getCredit(personId)).thenReturn(creditDTO);
+        when(creditService.getCredit(personId)).thenReturn(List.of(creditDTO));
 
         mockMvc.perform(get("/credit/get-credit")
                         .param("PersonaId", String.valueOf(personId)))

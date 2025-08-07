@@ -10,10 +10,40 @@ import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule, DateAdapter, MAT_DATE_FORMATS, NativeDateAdapter } from '@angular/material/core';
 import { CreditService } from '../../core/services/credit.service';
 import { PersonService } from '../../core/services/person.service';
-import { CreditDTO } from '../../core/models/credit.model';
+import { CreditDTO, CreateCreditDTO } from '../../core/models/credit.model';
 import { PersonDTO } from '../../core/models/person.model';
+import { CreditFormDialogComponent, CreditDialogData } from './credit-form-dialog.component';
+import { PaymentFormDialogComponent, PaymentDialogData } from './payment-form-dialog.component';
+import { PersonSelectionDialogComponent, PersonSelectionData } from './person-selection-dialog.component';
+
+export class CustomDateAdapter extends NativeDateAdapter {
+  override format(date: Date, displayFormat: Object): string {
+    if (displayFormat === 'DD/MM/YYYY') {
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
+    }
+    return super.format(date, displayFormat);
+  }
+
+  override parse(value: any): Date | null {
+    if (typeof value === 'string') {
+      const parts = value.split('/');
+      if (parts.length === 3) {
+        const day = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10) - 1;
+        const year = parseInt(parts[2], 10);
+        return new Date(year, month, day);
+      }
+    }
+    return super.parse(value);
+  }
+}
 
 @Component({
   selector: 'app-credit-list',
@@ -29,7 +59,26 @@ import { PersonDTO } from '../../core/models/person.model';
     MatSnackBarModule,
     MatProgressSpinnerModule,
     MatChipsModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatDatepickerModule,
+    MatNativeDateModule
+  ],
+  providers: [
+    { provide: DateAdapter, useClass: CustomDateAdapter },
+    {
+      provide: MAT_DATE_FORMATS,
+      useValue: {
+        parse: {
+          dateInput: 'DD/MM/YYYY',
+        },
+        display: {
+          dateInput: 'DD/MM/YYYY',
+          monthYearLabel: 'MMM YYYY',
+          dateA11yLabel: 'DD/MM/YYYY',
+          monthYearA11yLabel: 'MMMM YYYY',
+        },
+      },
+    }
   ],
   template: `
     <div class="credit-list-container">
@@ -52,10 +101,6 @@ import { PersonDTO } from '../../core/models/person.model';
             <div *ngIf="!hasCredit(person.id)" class="no-credit">
               <mat-icon class="no-credit-icon">credit_card_off</mat-icon>
               <p>Sin crédito activo</p>
-              <button mat-raised-button color="primary" (click)="createCreditForPerson(person)">
-                <mat-icon>add</mat-icon>
-                Crear Crédito
-              </button>
             </div>
 
             <div *ngIf="hasCredit(person.id)" class="credit-info">
@@ -425,20 +470,89 @@ export class CreditListComponent implements OnInit {
   }
 
   createCredit(): void {
-    this.snackBar.open('Funcionalidad próximamente', 'Cerrar', {
-      duration: 2000
+    // Get list of persons who don't have credits
+    const personsWithCredits = Object.keys(this.credits).map(id => parseInt(id));
+    
+    const dialogData: PersonSelectionData = {
+      persons: this.persons,
+      excludePersonsWithCredit: personsWithCredits
+    };
+
+    const dialogRef = this.dialog.open(PersonSelectionDialogComponent, {
+      width: '700px',
+      data: dialogData,
+      disableClose: false
+    });
+
+    dialogRef.afterClosed().subscribe((selectedPerson: PersonDTO) => {
+      if (selectedPerson) {
+        this.createCreditForPerson(selectedPerson);
+      }
     });
   }
 
   createCreditForPerson(person: PersonDTO): void {
-    this.snackBar.open('Funcionalidad próximamente', 'Cerrar', {
-      duration: 2000
+    const dialogData: CreditDialogData = { person };
+    
+    const dialogRef = this.dialog.open(CreditFormDialogComponent, {
+      width: '600px',
+      data: dialogData,
+      disableClose: false
+    });
+
+    dialogRef.afterClosed().subscribe((creditData: CreateCreditDTO) => {
+      if (creditData) {
+        this.creditService.createCredit(person.id, creditData).subscribe({
+          next: (response) => {
+            this.snackBar.open('Crédito creado exitosamente', 'Cerrar', {
+              duration: 3000,
+              panelClass: ['success-snackbar']
+            });
+            // Reload credits to show the new one
+            this.loadCreditsForPersons();
+          },
+          error: (error) => {
+            console.error('Error creating credit:', error);
+            this.snackBar.open('Error al crear el crédito', 'Cerrar', {
+              duration: 3000,
+              panelClass: ['error-snackbar']
+            });
+          }
+        });
+      }
     });
   }
 
   makePayment(credit: CreditDTO): void {
-    this.snackBar.open('Funcionalidad próximamente', 'Cerrar', {
-      duration: 2000
+    const dialogData: PaymentDialogData = { credit };
+    
+    const dialogRef = this.dialog.open(PaymentFormDialogComponent, {
+      width: '600px',
+      data: dialogData,
+      disableClose: false
+    });
+
+    dialogRef.afterClosed().subscribe((paymentData) => {
+      if (paymentData) {
+        const personId = credit.account.person.id;
+        this.creditService.makePayment(credit.id, personId, paymentData).subscribe({
+          next: (response) => {
+            this.snackBar.open('Pago realizado exitosamente', 'Cerrar', {
+              duration: 3000,
+              panelClass: ['success-snackbar']
+            });
+            // Reload credits to show updated payment information
+            this.loadCreditsForPersons();
+          },
+          error: (error) => {
+            console.error('Error making payment:', error);
+            this.snackBar.open('Error al realizar el pago', 'Cerrar', {
+              duration: 3000,
+              panelClass: ['error-snackbar']
+            });
+          }
+        });
+      }
     });
   }
 

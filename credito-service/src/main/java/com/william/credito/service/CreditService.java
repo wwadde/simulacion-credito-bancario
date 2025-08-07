@@ -10,7 +10,7 @@ import java.util.List;
 public interface CreditService {
 
 
-    CreditDTO getCredit(Long personaId);
+    List<CreditDTO> getCredit(Long personaId);
 
 
     String createCredit(CreateCreditDTO creditDTO, Long personId);

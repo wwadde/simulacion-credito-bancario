@@ -43,17 +43,21 @@ public class CreditServiceImpl implements CreditService {
 
 
     @Override
-    public CreditDTO getCredit(Long personaId) {
+    public List<CreditDTO> getCredit(Long personaId) {
 
         AccountDTO account = fetchAccount(personaId);
 
-        Credit creditEntity = creditDao.findByAccountId(account.getId());
+        List<Credit> creditEntity = creditDao.findByAccountId(account.getId());
         if (creditEntity == null) {
             throw new CreditException("Person with id: " + personaId + " doesn't have any credits");
         }
-        CreditDTO dto = entityToCreditDTO.apply(creditEntity);
-        dto.setAccount(account);
-        return dto;
+
+
+        return creditEntity.stream().map(x -> {
+            CreditDTO dto = entityToCreditDTO.apply(x);
+            dto.setAccount(account);
+            return dto;
+        }).toList();
     }
 
     @Transactional
@@ -62,6 +66,7 @@ public class CreditServiceImpl implements CreditService {
 
         AccountDTO account = fetchAccount(personId);
         Credit credit = dtoToCreditEntity.apply(dto);
+        credit.setCreditExpirationDate(dto.getCreditExpirationDate().atStartOfDay());
         credit.setCreditGivenDate(LocalDateTime.now().withNano(0));
         credit.setPaymentsMade(0);
         credit.setAccountId(account.getId());

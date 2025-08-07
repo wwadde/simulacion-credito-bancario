@@ -6,6 +6,7 @@ import com.william.credito.domain.model.Credit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -17,7 +18,7 @@ public class CreditDaoImpl implements CreditDao {
 
 
     @Override
-    public Credit findByAccountId(Long id) {
+    public List<Credit> findByAccountId(Long id) {
         return creditRepository.findByAccountId(id);
     }
 

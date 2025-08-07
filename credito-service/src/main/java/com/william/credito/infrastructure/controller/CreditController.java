@@ -4,10 +4,13 @@ import com.william.credito.infrastructure.dto.CreateCreditDTO;
 import com.william.credito.infrastructure.dto.CreditDTO;
 import com.william.credito.infrastructure.dto.PaymentDTO;
 import com.william.credito.service.CreditService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -19,12 +22,12 @@ public class CreditController {
 
 
     @GetMapping("/{personId}")
-    public ResponseEntity<CreditDTO> getCredit(@PathVariable Long personId) {
+    public ResponseEntity<List<CreditDTO>> getCredit(@PathVariable Long personId) {
         return ResponseEntity.ok(service.getCredit(personId));
     }
 
     @PostMapping
-    public ResponseEntity<String> createCredit(@RequestBody CreateCreditDTO creditDTO,
+    public ResponseEntity<String> createCredit(@Valid @RequestBody CreateCreditDTO creditDTO,
                                                   @RequestParam Long personId) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(service.createCredit(creditDTO, personId));
