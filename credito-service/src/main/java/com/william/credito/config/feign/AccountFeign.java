@@ -18,7 +18,7 @@ import java.math.BigInteger;
 @FeignClient(name = "cuenta-service", path = "/cuenta/api")
 public interface AccountFeign {
     @GetMapping
-    ResponseEntity<AccountDTO> getAccount(@RequestParam Long personId,
+    ResponseEntity<AccountDTO> getAccount(@RequestParam Long accountId,
                                           @RequestHeader(value = HttpHeaders.AUTHORIZATION) String token);
 
 

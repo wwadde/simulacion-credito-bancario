@@ -42,10 +42,10 @@ public class AccountServiceImpl implements AccountService {
 
 
     @Override
-    public AccountDTO getAccount(Long personId) {
+    public AccountDTO getAccount(Long accountId) {
         String authToken = extractAuthToken();
-        PersonResponseDTO person = fetchPerson(personId, authToken);
-        Account account = fetchAccount(personId);
+        Account account = fetchAccount(accountId);
+        PersonResponseDTO person = fetchPerson(account.getPersonId(), authToken);
         AccountDTO accountDTO = entityToAccountDTO.apply(account);
         accountDTO.setPerson(person);
         return accountDTO;

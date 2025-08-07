@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface AccountService {
 
-    AccountDTO getAccount(Long personId);
+    AccountDTO getAccount(Long accountId);
 
     String createAccount(Long personId, BigInteger balance);
 
