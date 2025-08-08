@@ -18,8 +18,8 @@ public class AccountController {
     private final AccountService service;
 
     @GetMapping
-    public ResponseEntity<AccountDTO> getAccount(@RequestParam Long personId) {
-        return ResponseEntity.ok(service.getAccount(personId));
+    public ResponseEntity<AccountDTO> getAccount(@RequestParam(required = true) Long accountId) {
+        return ResponseEntity.ok(service.getAccount(accountId));
     }
 
     @GetMapping("/all")

@@ -1,6 +1,7 @@
 package com.william.cuenta.infrastructure.dao.account;
 
 
+import com.william.cuenta.config.exceptions.AccountNotFoundException;
 import com.william.cuenta.domain.model.Account;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -39,5 +40,11 @@ public class AccountDaoImpl implements AccountDao {
     @Override
     public List<Account> findAll() {
         return accountRepository.findAll();
+    }
+
+    @Override
+    public Account findById(Long accountId) {
+        return accountRepository.findById(accountId)
+                .orElseThrow(() -> new AccountNotFoundException("Account with id: " + accountId + " not found"));
     }
 }

@@ -44,7 +44,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountDTO getAccount(Long accountId) {
         String authToken = extractAuthToken();
-        Account account = fetchAccount(accountId);
+        Account account = accountDao.findById(accountId);
         PersonResponseDTO person = fetchPerson(account.getPersonId(), authToken);
         AccountDTO accountDTO = entityToAccountDTO.apply(account);
         accountDTO.setPerson(person);
