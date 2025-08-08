@@ -47,4 +47,10 @@ public class AccountDaoImpl implements AccountDao {
         return accountRepository.findById(accountId)
                 .orElseThrow(() -> new AccountNotFoundException("Account with id: " + accountId + " not found"));
     }
+
+    @Override
+    public Account findByPersonId(Long personId) {
+        return accountRepository.findByPersonId(personId)
+                .orElseThrow(() -> new AccountNotFoundException("Account for person with id: " + personId + " not found"));
+    }
 }

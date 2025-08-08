@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface AccountService {
 
-    AccountDTO getAccount(Long accountId);
 
     String createAccount(Long personId, BigInteger balance);
 
@@ -19,4 +18,8 @@ public interface AccountService {
     String deleteAccount(Long personId);
 
     List<AccountDTO> getAllAccounts();
+
+    AccountDTO getAccountById(Long accountId);
+
+    AccountDTO getAccountByPersonId(Long personId);
 }

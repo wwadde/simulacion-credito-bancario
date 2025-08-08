@@ -47,7 +47,7 @@ public class CreditServiceImpl implements CreditService {
     @Override
     public List<CreditDTO> getCredit(Long personaId) {
 
-        AccountDTO account = fetchAccount(personaId);
+        AccountDTO account = fetchAccountByPersonId(personaId);
 
         List<Credit> creditEntity = creditDao.findByAccountId(account.getId());
         if (creditEntity == null) {
@@ -66,7 +66,7 @@ public class CreditServiceImpl implements CreditService {
     @Override
     public String createCredit(CreateCreditDTO dto, Long personId) {
 
-        AccountDTO account = fetchAccount(personId);
+        AccountDTO account = fetchAccountByPersonId(personId);
         Credit credit = dtoToCreditEntity.apply(dto);
         credit.setCreditExpirationDate(dto.getCreditExpirationDate().atStartOfDay());
         credit.setCreditGivenDate(LocalDateTime.now().withNano(0));
@@ -149,9 +149,9 @@ public class CreditServiceImpl implements CreditService {
             throw new CreditException("Credit with id: " + creditId + " is " + entity.getStatus());
         }
 
-            entity.setStatus(Status.CANCELED.getDescription());
-            creditDao.save(entity);
-            return "Credit with id: " + creditId + " cancelled successfully";
+        entity.setStatus(Status.CANCELED.getDescription());
+        creditDao.save(entity);
+        return "Credit with id: " + creditId + " cancelled successfully";
     }
 
     @Override
@@ -159,30 +159,49 @@ public class CreditServiceImpl implements CreditService {
         Page<Credit> pagina = creditDao.findAll(pageable);
         return pagina.map(p -> {
             CreditDTO dto = entityToCreditDTO.apply(p);
-            AccountDTO account = fetchAccount(p.getAccountId());
+            AccountDTO account = fetchAccountById(p.getAccountId());
             dto.setAccount(account);
             return dto;
         });
     }
 
 
-    private AccountDTO fetchAccount(Long accountId) {
+    private AccountDTO fetchAccountById(Long accountId) {
         try {
             String token = getBearerTokenFromContext();
-            AccountDTO account = feign.getAccount(accountId, token).getBody();
+            AccountDTO account = feign.getAccountById(accountId, token).getBody();
+
             if (account == null) {
-                throw new CreditException("Account with person id: " + accountId + " not found");
+                throw new CreditException("Account with id: " + accountId + " not found");
             }
             return account;
 
         } catch (FeignException.BadRequest | FeignException.NotFound e) {
             log.error("Error fetching account for accountId: {}", accountId, e);
-            throw new CreditException("Account with accountId: " + accountId + " not found");
+            throw new CreditException("Account with id: " + accountId + " not found");
         } catch (FeignException e) {
             log.error("Feign exception occurred while fetching account for accountId: {}", accountId, e);
             throw new CreditException("An error occurred while fetching the account information");
         }
+    }
 
+    private AccountDTO fetchAccountByPersonId(Long personId) {
+        try {
+            String token = getBearerTokenFromContext();
+            AccountDTO account = feign.getAccountByPersonId(personId, token).getBody();
+
+            if (account == null) {
+                throw new CreditException("Account with person id: " + personId + " not found");
+            }
+            return account;
+
+        } catch (FeignException.BadRequest | FeignException.NotFound e) {
+            log.error("Error fetching account for personId: {}", personId, e);
+            throw new CreditException("Account with person id: " + personId + " not found");
+        } catch (FeignException e) {
+            log.error("Feign exception occurred while fetching account for personId: {}", personId, e);
+            throw new CreditException("An error occurred while fetching the account information");
+        }
     }
 
     private BigInteger calculateAmountToPay(BigInteger amount, Float interestRate, Integer agreedPayments) {
@@ -205,7 +224,6 @@ public class CreditServiceImpl implements CreditService {
         }
         return null;
     }
-
 
 
 }

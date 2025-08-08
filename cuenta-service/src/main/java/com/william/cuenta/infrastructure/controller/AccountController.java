@@ -17,9 +17,14 @@ public class AccountController {
 
     private final AccountService service;
 
-    @GetMapping
-    public ResponseEntity<AccountDTO> getAccount(@RequestParam(required = true) Long accountId) {
-        return ResponseEntity.ok(service.getAccount(accountId));
+    @GetMapping("/by-account/{accountId}")
+    public ResponseEntity<AccountDTO> getAccountById(@PathVariable Long accountId) {
+        return ResponseEntity.ok(service.getAccountById(accountId));
+    }
+
+    @GetMapping("/by-person/{personId}")
+    public ResponseEntity<AccountDTO> getAccountByPersonId(@PathVariable Long personId) {
+        return ResponseEntity.ok(service.getAccountByPersonId(personId));
     }
 
     @GetMapping("/all")

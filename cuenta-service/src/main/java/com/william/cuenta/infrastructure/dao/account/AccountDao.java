@@ -19,4 +19,6 @@ public interface AccountDao {
     List<Account> findAll();
 
     Account findById(Long accountId);
+
+    Account findByPersonId(Long personId);
 }

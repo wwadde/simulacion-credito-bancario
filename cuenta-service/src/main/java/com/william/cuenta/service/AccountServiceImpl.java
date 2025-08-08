@@ -23,10 +23,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,16 +40,6 @@ public class AccountServiceImpl implements AccountService {
 
 
     @Override
-    public AccountDTO getAccount(Long accountId) {
-        String authToken = extractAuthToken();
-        Account account = accountDao.findById(accountId);
-        PersonResponseDTO person = fetchPerson(account.getPersonId(), authToken);
-        AccountDTO accountDTO = entityToAccountDTO.apply(account);
-        accountDTO.setPerson(person);
-        return accountDTO;
-    }
-
-    @Override
     public List<AccountDTO> getAllAccounts() {
         List<Account> accounts = accountDao.findAll();
         String authToken = extractAuthToken();
@@ -63,7 +51,19 @@ public class AccountServiceImpl implements AccountService {
                     accountDTO.setPerson(person);
                     return accountDTO;
                 })
-                .collect(Collectors.toList());
+                .toList();
+    }
+
+    @Override
+    public AccountDTO getAccountById(Long accountId) {
+        Account account = accountDao.findById(accountId);
+        return buildAccountDTO(account);
+    }
+
+    @Override
+    public AccountDTO getAccountByPersonId(Long personId) {
+        Account account = accountDao.findByPersonId(personId);
+        return buildAccountDTO(account);
     }
 
     @Override
@@ -156,4 +156,11 @@ public class AccountServiceImpl implements AccountService {
         return request.getHeader("Authorization");
     }
 
+    private AccountDTO buildAccountDTO(Account account) {
+        String authToken = extractAuthToken();
+        PersonResponseDTO person = fetchPerson(account.getPersonId(), authToken);
+        AccountDTO accountDTO = entityToAccountDTO.apply(account);
+        accountDTO.setPerson(person);
+        return accountDTO;
+    }
 }
