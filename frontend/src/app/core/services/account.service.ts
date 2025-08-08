@@ -17,7 +17,10 @@ export class AccountService {
       .set('personId', personId.toString())
       .set('balance', balance.toString());
     
-    return this.http.post<string>(`${this.API_URL}/api/create-account`, null, { params });
+    return this.http.post(`${this.API_URL}/api/create-account`, null, { 
+      params, 
+      responseType: 'text' 
+    });
   }
 
   getAccount(personId: number): Observable<AccountDTO> {
@@ -34,7 +37,10 @@ export class AccountService {
       .set('personId', personId.toString())
       .set('addAmount', addAmount.toString());
     
-    return this.http.put<string>(`${this.API_URL}/api/update-balance`, null, { params });
+    return this.http.put(`${this.API_URL}/api/update-balance`, null, { 
+      params, 
+      responseType: 'text' 
+    });
   }
 
   sendPayment(personId: number, amount: number, creditId: number): Observable<string> {
@@ -43,11 +49,17 @@ export class AccountService {
       .set('amount', amount.toString())
       .set('creditId', creditId.toString());
     
-    return this.http.post<string>(`${this.API_URL}/api/send-payment`, null, { params });
+    return this.http.post(`${this.API_URL}/api/send-payment`, null, { 
+      params, 
+      responseType: 'text' 
+    });
   }
 
   deleteAccount(personId: number): Observable<string> {
     const params = new HttpParams().set('personId', personId.toString());
-    return this.http.delete<string>(`${this.API_URL}/api/delete-account`, { params });
+    return this.http.delete(`${this.API_URL}/api/delete-account`, { 
+      params, 
+      responseType: 'text' 
+    });
   }
 }

@@ -66,17 +66,18 @@ export interface PaymentDialogData {
               <input matInput 
                      type="number" 
                      formControlName="value"
-                     placeholder="Ingrese el valor del pago">
+                     placeholder="Ingrese el valor exacto de la cuota">
               <span matTextPrefix>$ </span>
-              <mat-error *ngIf="paymentForm.get('value')?.hasError('required')">
-                El valor del pago es requerido
-              </mat-error>
-              <mat-error *ngIf="paymentForm.get('value')?.hasError('min')">
-                El valor debe ser mayor a cero
-              </mat-error>
-              <mat-error *ngIf="paymentForm.get('value')?.hasError('max')">
-                El valor no puede ser mayor al monto pendiente
-              </mat-error>
+              @if (paymentForm.get('value')?.hasError('required')) {
+                <mat-error>
+                  El valor del pago es requerido
+                </mat-error>
+              }
+              @if (paymentForm.get('value')?.hasError('min') || paymentForm.get('value')?.hasError('max')) {
+                <mat-error>
+                  Debe pagar exactamente el monto pendiente: {{formatCurrency(data.credit.amountToPay)}}
+                </mat-error>
+              }
             </mat-form-field>
           </div>
 
@@ -480,7 +481,7 @@ export class PaymentFormDialogComponent {
     return this.fb.group({
       value: [null, [
         Validators.required, 
-        Validators.min(1),
+        Validators.min(this.data.credit.amountToPay),
         Validators.max(this.data.credit.amountToPay)
       ]],
       paymentDate: [new Date(), Validators.required],

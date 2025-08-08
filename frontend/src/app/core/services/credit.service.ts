@@ -36,7 +36,10 @@ export class CreditService {
 
   createCredit(personId: number, credit: CreateCreditDTO): Observable<string> {
     const params = new HttpParams().set('personId', personId.toString());
-    return this.http.post<string>(`${this.API_URL}/api/credits`, credit, { params });
+    return this.http.post(`${this.API_URL}/api/credits`, credit, { 
+      params, 
+      responseType: 'text' 
+    });
   }
 
   getCredit(personId: number): Observable<CreditDTO[]> {
@@ -57,7 +60,10 @@ export class CreditService {
 
   makePayment(creditId: number, personId: number, payment: PaymentDTO): Observable<string> {
     const params = new HttpParams().set('personId', personId.toString());
-    return this.http.post<string>(`${this.API_URL}/api/credits/${creditId}/payments`, payment, { params });
+    return this.http.post(`${this.API_URL}/api/credits/${creditId}/payments`, payment, { 
+      params, 
+      responseType: 'text' 
+    });
   }
 
   deleteCredit(creditId: number, personId: number): Observable<void> {

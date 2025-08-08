@@ -14,6 +14,17 @@ import { MatIconModule } from '@angular/material/icon';
 import { PersonService } from '../../core/services/person.service';
 import { PersonDTO, EditPersonDTO, DocumentType, PersonStatus, AddPersonDTO } from '../../core/models/person.model';
 
+// Custom Date Adapter para permitir fechas de nacimiento más antiguas
+export class BirthDateAdapter extends NativeDateAdapter {
+  override getYearName(date: Date): string {
+    return String(date.getFullYear());
+  }
+
+  override getFirstDayOfWeek(): number {
+    return 1; // Lunes como primer día de la semana
+  }
+}
+
 @Component({
   selector: 'app-person-form-dialog',
   standalone: true,
@@ -33,8 +44,21 @@ import { PersonDTO, EditPersonDTO, DocumentType, PersonStatus, AddPersonDTO } fr
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
-    { provide: DateAdapter, useClass: NativeDateAdapter },
-    { provide: MAT_DATE_FORMATS, useValue: MAT_NATIVE_DATE_FORMATS }
+    { provide: DateAdapter, useClass: BirthDateAdapter },
+    {
+      provide: MAT_DATE_FORMATS,
+      useValue: {
+        parse: {
+          dateInput: 'DD/MM/YYYY',
+        },
+        display: {
+          dateInput: 'DD/MM/YYYY',
+          monthYearLabel: 'MMM YYYY',
+          dateA11yLabel: 'DD/MM/YYYY',
+          monthYearA11yLabel: 'MMMM YYYY',
+        },
+      },
+    }
   ],
   template: `
     <div class="dialog-header">
@@ -127,9 +151,11 @@ import { PersonDTO, EditPersonDTO, DocumentType, PersonStatus, AddPersonDTO } fr
             <mat-form-field appearance="outline" class="half-width">
               <mat-label>Fecha de Nacimiento</mat-label>
               <input matInput [matDatepicker]="picker" formControlName="birthDate" 
+                     [max]="maxBirthDate"
+                     [min]="minBirthDate"
                      readonly (click)="openDatePicker(picker)">
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
+              <mat-datepicker #picker startView="multi-year" [startAt]="defaultBirthDate"></mat-datepicker>
             </mat-form-field>
           </div>
 
@@ -759,6 +785,9 @@ export class PersonFormDialogComponent implements OnInit {
   isEdit = false;
   hidePassword = true;
   hideConfirmPassword = true;
+  maxBirthDate = new Date(); // Fecha máxima es hoy (para evitar fechas futuras)
+  minBirthDate = new Date(1900, 0, 1); // Fecha mínima: 1 enero 1900
+  defaultBirthDate = new Date(1990, 0, 1); // Fecha por defecto: 1990 para facilitar navegación
 
   documentTypes = [
     { value: DocumentType.CC, label: 'Cédula de Ciudadanía' },

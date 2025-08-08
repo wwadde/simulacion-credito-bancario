@@ -14,7 +14,9 @@ export class PersonService {
 
   // Public endpoints
   register(person: AddPersonDTO): Observable<string> {
-    return this.http.post<string>(`${this.API_URL}/public/register`, person);
+    return this.http.post(`${this.API_URL}/public/register`, person, { 
+      responseType: 'text' 
+    });
   }
 
   verifyCredentials(credentials: LoginDTO): Observable<PersonDTO> {
@@ -39,11 +41,16 @@ export class PersonService {
   }
 
   updatePerson(person: EditPersonDTO): Observable<string> {
-    return this.http.put<string>(`${this.API_URL}/private/update`, person);
+    return this.http.put(`${this.API_URL}/private/update`, person, { 
+      responseType: 'text' 
+    });
   }
 
   deletePerson(personaId: number): Observable<string> {
     const params = new HttpParams().set('personaId', personaId.toString());
-    return this.http.delete<string>(`${this.API_URL}/private/delete`, { params });
+    return this.http.delete(`${this.API_URL}/private/delete`, { 
+      params, 
+      responseType: 'text' 
+    });
   }
 }

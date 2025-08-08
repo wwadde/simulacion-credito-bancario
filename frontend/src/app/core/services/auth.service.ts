@@ -55,7 +55,9 @@ export class AuthService {
   }
 
   logout(): Observable<string> {
-    return this.http.post<string>(`${this.API_URL}${API_ENDPOINTS.AUTH.LOGOUT}`, {})
+    return this.http.post(`${this.API_URL}${API_ENDPOINTS.AUTH.LOGOUT}`, {}, { 
+      responseType: 'text' 
+    })
       .pipe(
         tap(() => {
           this.clearSession();

@@ -8,13 +8,24 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, DateAdapter, MAT_DATE_FORMATS, NativeDateAdapter } from '@angular/material/core';
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRippleModule } from '@angular/material/core';
 import { PersonService } from '../../core/services/person.service';
 import { AddPersonDTO, DocumentType } from '../../core/models/person.model';
+
+// Custom Date Adapter para permitir fechas de nacimiento más antiguas
+export class BirthDateAdapter extends NativeDateAdapter {
+  override getYearName(date: Date): string {
+    return String(date.getFullYear());
+  }
+
+  override getFirstDayOfWeek(): number {
+    return 1; // Lunes como primer día de la semana
+  }
+}
 
 @Component({
   selector: 'app-register',
@@ -33,6 +44,23 @@ import { AddPersonDTO, DocumentType } from '../../core/models/person.model';
     MatProgressSpinnerModule,
     MatIconModule,
     MatRippleModule
+  ],
+  providers: [
+    { provide: DateAdapter, useClass: BirthDateAdapter },
+    {
+      provide: MAT_DATE_FORMATS,
+      useValue: {
+        parse: {
+          dateInput: 'DD/MM/YYYY',
+        },
+        display: {
+          dateInput: 'DD/MM/YYYY',
+          monthYearLabel: 'MMM YYYY',
+          dateA11yLabel: 'DD/MM/YYYY',
+          monthYearA11yLabel: 'MMMM YYYY',
+        },
+      },
+    }
   ],
   template: `
     <div class="register-container">
@@ -130,10 +158,12 @@ import { AddPersonDTO, DocumentType } from '../../core/models/person.model';
                   matInput 
                   [matDatepicker]="picker" 
                   formControlName="birthDate" 
+                  [max]="maxBirthDate"
+                  [min]="minBirthDate"
                   placeholder="Selecciona tu fecha de nacimiento"
                   readonly>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
+                <mat-datepicker #picker startView="multi-year" [startAt]="defaultBirthDate"></mat-datepicker>
               </mat-form-field>
 
               <!-- Información de Contacto -->
@@ -742,6 +772,9 @@ export class RegisterComponent implements OnInit {
   loading = false;
   hidePassword = true;
   hideConfirmPassword = true;
+  maxBirthDate = new Date(); // Fecha máxima es hoy (para evitar fechas futuras)
+  minBirthDate = new Date(1900, 0, 1); // Fecha mínima: 1 enero 1900
+  defaultBirthDate = new Date(1990, 0, 1); // Fecha por defecto: 1990 para facilitar navegación
   documentTypes = [
     { value: DocumentType.CC, label: 'Cédula de Ciudadanía' },
     { value: DocumentType.TI, label: 'Tarjeta de Identidad' },
@@ -803,7 +836,8 @@ export class RegisterComponent implements OnInit {
       this.personService.register(personData).subscribe({
         next: (response) => {
           this.loading = false;
-          this.snackBar.open('Registro exitoso. Ya puedes iniciar sesión.', 'Cerrar', {
+          console.log('Respuesta del servidor:', response); // Para debugging
+          this.snackBar.open(response || 'Registro exitoso. Ya puedes iniciar sesión.', 'Cerrar', {
             duration: 4000,
             panelClass: ['success-snackbar']
           });
@@ -811,10 +845,17 @@ export class RegisterComponent implements OnInit {
         },
         error: (error) => {
           this.loading = false;
+          console.error('Error en registro:', error); // Para debugging
           let errorMessage = 'Error al registrarse. Intente nuevamente.';
           
           if (error.status === 400) {
             errorMessage = 'Datos inválidos. Verifique la información ingresada.';
+          } else if (error.status === 409) {
+            errorMessage = 'Ya existe una persona con este email o documento.';
+          } else if (error.error && typeof error.error === 'string') {
+            errorMessage = error.error;
+          } else if (error.message) {
+            errorMessage = error.message;
           }
           
           this.snackBar.open(errorMessage, 'Cerrar', {
