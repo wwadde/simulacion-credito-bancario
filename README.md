@@ -1,70 +1,87 @@
-# Credit Management System - Backend
+# Gestión de Crédito
 
-Sistema de gestión de crédito basado en microservicios con Java Spring Boot. Maneja clientes, cuentas, créditos y autenticación, con foco en seguridad, disponibilidad y escalabilidad.
+Sistema de gestión de personas, cuentas y créditos construido con Spring Boot y Angular. La comunicación combina APIs REST, Eureka, Feign y eventos Kafka.
+![Eventos de autenticación](assets/auth-event.webp)
 
-## Servicios de negocio
-- Auth Service (8083): Autenticación/autoriza­ción con JWT (RSA), registro, login y refresh.
-- Persona Service: Perfiles de cliente y onboarding.
-- Cuenta Service: Cuentas, saldos y transacciones.
-- Credito Service: Solicitudes, riesgo, intereses y pagos.
+![Flujo de pago de cuota](assets/pago-cuota.webp)
+## Servicios
 
-## Infraestructura
-- Discovery Server (8761): Eureka para registro y descubrimiento.
-- Gateway Service (8090): Spring Cloud Gateway para enrutamiento, balanceo y políticas transversales.
+- `auth-service`: registro, login y tokens JWT.
+- `persona-service`: gestión de personas.
+- `cuenta-service`: cuentas, saldos y pagos.
+- `credito-service`: créditos y cuotas.
+- `discovery-server`: registro de servicios con Eureka.
+- `gateway-service`: entrada común a las APIs.
+- `frontend`: aplicación Angular.
 
-## Arquitectura y patrones
-- DDD y Clean Architecture: Controller, Service, Repository y Domain.
-- Comunicación: Eureka + LoadBalancer, Feign, Circuit Breaker, API Gateway.
-- Seguridad: JWT stateless, claves RSA, Spring Security, context paths por servicio.
+## Tecnologías
 
-## Stack y prácticas
-- Java 25, Spring Boot 4.1.1, Spring Cloud 2025.1.3, Maven.
-- REST consistente; errores centralizados (@RestControllerAdvice).
-- Configuración externalizada (application.properties).
-- Monitoring con Actuator (health, info, metrics).
+- Java 25, Spring Boot 4.1.1 y Maven.
+- Spring Cloud, Eureka, OpenFeign y Spring Security.
+- PostgreSQL.
+- Apache Kafka y Kafka UI.
+- Angular.
+## Requisitos
 
-## Comunicación y enrutamiento
-- REST/JSON sincrónico con Feign y balanceo por descubrimiento.
-- Gateway: rutas por path (/persona/**, /cuenta/**, /credito/**) y resolución por nombre de servicio.
+- Docker Desktop.
+- Java 25.
+- Maven.
+- Node.js y npm para el frontend.
 
-## Estructura
-├── auth-service/          # Autenticación y usuarios  
-├── persona-service/       # Perfiles de cliente  
-├── cuenta-service/        # Cuentas y transacciones  
-├── credito-service/       # Créditos y préstamos  
-├── discovery-server/      # Eureka  
-├── gateway-service/       # API Gateway  
-└── frontend/              # Angular SPA
+## Arranque local
 
-## Despliegue y escalabilidad
-- Servicios
-
-## Arquitectura orientada a eventos
-
-El flujo REST sigue disponible para operaciones que necesitan una respuesta inmediata, pero cada cambio de negocio publica un evento JSON en Kafka. Todos los eventos comparten `eventId`, `eventType`, `aggregateId`, `occurredAt` y `payload`.
-
-| Topico | Productor | Eventos principales |
-|---|---|---|
-| `auth.events` | auth-service | `USER_AUTHENTICATED` |
-| `persona.events` | persona-service | `PERSON_CREATED`, `PERSON_UPDATED`, `PERSON_DELETED` |
-| `cuenta.events` | cuenta-service | `ACCOUNT_CREATED`, `PAYMENT_DEBITED`, `ACCOUNT_BALANCE_UPDATED`, `ACCOUNT_DELETED` |
-| `credito.events` | credito-service | `CREDIT_CREATED`, `CREDIT_PAYMENT_APPLIED`, `CREDIT_CANCELLED` |
-
-Hay consumidores de ejemplo con efecto de negocio: `cuenta-service` elimina una cuenta cuando recibe `PERSON_DELETED`, y `credito-service` cancela créditos pendientes cuando recibe `ACCOUNT_DELETED`. Esto permite extender el sistema con notificaciones, auditoría, scoring y proyecciones sin acoplar los servicios por llamadas REST.
-
-## Infraestructura local
-
-Requisitos: Docker Desktop, Java 25 y Maven. Levanta PostgreSQL, Kafka en modo KRaft y Kafka UI con:
+Inicia PostgreSQL, Kafka y Kafka UI:
 
 ```bash
 docker compose up -d
 ```
 
-- PostgreSQL: `localhost:5432`, base `credito`, usuario `postgres`, clave `admin`
-- Kafka: `localhost:9092`
-- Kafka UI: `http://localhost:8088`
+Después inicia los servicios Spring Boot y el frontend desde sus respectivas carpetas.
+Servicios locales:
 
-Para ejecutar los servicios fuera de Docker se usa `localhost:9092` por defecto. En una red Docker, define `KAFKA_BOOTSTRAP_SERVERS=kafka:9092`.
+| Servicio | URL o puerto |
+|---|---|
+| Frontend | según la configuración de Angular |
+| Gateway | `http://localhost:8090` |
+| Persona | `http://localhost:8080` |
+| Cuenta | `http://localhost:8081` |
+| Crédito | `http://localhost:8082` |
+| Auth | `http://localhost:8083` |
+| Eureka | `http://localhost:8761` |
+| Kafka | `localhost:9092` |
+| Kafka UI | `http://localhost:8088` |
 
-## Front demo:
-![Frontend Angular](assets/frontgif.gif)
+La configuración de PostgreSQL local es:
+
+- Base de datos: `credito`
+- Usuario: `postgres`
+- Contraseña: `admin`
+- Puerto: `5432`
+## Eventos Kafka
+
+Cada cambio de negocio publica un evento JSON con `eventId`, `eventType`, `aggregateId`, `occurredAt` y `payload`.
+
+| Topic | Productor |
+|---|---|
+| `auth.events` | `auth-service` |
+| `persona.events` | `persona-service` |
+| `cuenta.events` | `cuenta-service` |
+| `credito.events` | `credito-service` |
+
+Los topics se crean automáticamente al utilizarse. Para consultar los mensajes, abre Kafka UI y entra en `credito-local` → `Topics`.
+
+Consumidores incluidos:
+
+- `cuenta-service` reacciona a `PERSON_DELETED`.
+- `credito-service` reacciona a `ACCOUNT_DELETED`.
+## Estructura
+
+```text
+auth-service/       Autenticación y usuarios
+persona-service/    Personas
+cuenta-service/     Cuentas y transacciones
+credito-service/    Créditos y pagos
+discovery-server/   Eureka
+gateway-service/    API Gateway
+frontend/           Aplicación Angular
+```
