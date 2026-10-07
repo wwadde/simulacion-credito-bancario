@@ -9,6 +9,7 @@ import com.william.cuenta.infrastructure.dao.account.AccountDao;
 import com.william.cuenta.infrastructure.dao.payment.PaymentDao;
 import com.william.cuenta.infrastructure.dto.AccountDTO;
 import com.william.cuenta.infrastructure.dto.PersonResponseDTO;
+import com.william.cuenta.infrastructure.messaging.DomainEventPublisher;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 @Service
@@ -35,8 +37,12 @@ public class AccountServiceImpl implements AccountService {
     private final Function<Account, AccountDTO> entityToAccountDTO;
     private final AccountDao accountDao;
     private final PaymentDao paymentDao;
+    private final DomainEventPublisher eventPublisher;
     @Value("${persona.base-url}")
     private String personaServiceUrl;
+
+    @Value("${app.kafka.topics.cuenta}")
+    private String accountEventsTopic;
 
 
     @Override
@@ -83,6 +89,8 @@ public class AccountServiceImpl implements AccountService {
         account.setPersonId(personId);
         account.setBalance(balance);
         accountDao.save(account);
+        eventPublisher.publish(accountEventsTopic, "ACCOUNT_CREATED", String.valueOf(account.getId()),
+            Map.of("accountId", account.getId(), "personId", personId, "balance", balance));
         return "Account created successfully";
     }
 
@@ -103,6 +111,8 @@ public class AccountServiceImpl implements AccountService {
 
         account.setBalance(account.getBalance().subtract(amount));
         accountDao.save(account);
+        eventPublisher.publish(accountEventsTopic, "PAYMENT_DEBITED", String.valueOf(account.getId()),
+            Map.of("accountId", account.getId(), "personId", personId, "creditId", creditId, "amount", amount));
 
         return "Payment sent successfully";
     }
@@ -112,6 +122,8 @@ public class AccountServiceImpl implements AccountService {
         Account account = fetchAccount(personId);
         account.setBalance(account.getBalance().add(amount));
         accountDao.save(account);
+        eventPublisher.publish(accountEventsTopic, "ACCOUNT_BALANCE_UPDATED", String.valueOf(account.getId()),
+            Map.of("accountId", account.getId(), "personId", personId, "amount", amount));
         return "Balance updated successfully";
     }
 
@@ -119,6 +131,8 @@ public class AccountServiceImpl implements AccountService {
     public String deleteAccount(Long personId) {
         Account account = fetchAccount(personId);
         accountDao.delete(account);
+        eventPublisher.publish(accountEventsTopic, "ACCOUNT_DELETED", String.valueOf(account.getId()),
+            Map.of("accountId", account.getId(), "personId", personId));
         return "Account belonging to person: " + personId + " deleted successfully";
     }
 

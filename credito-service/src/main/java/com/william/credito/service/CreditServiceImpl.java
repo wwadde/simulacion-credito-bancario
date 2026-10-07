@@ -9,6 +9,7 @@ import com.william.credito.infrastructure.dao.CreditDao;
 import com.william.credito.infrastructure.dto.AccountDTO;
 import com.william.credito.infrastructure.dto.CreateCreditDTO;
 import com.william.credito.infrastructure.dto.CreditDTO;
+import com.william.credito.infrastructure.messaging.DomainEventPublisher;
 import feign.FeignException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.fileupload.servlet.ServletRequestContext;
@@ -29,6 +30,7 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 
@@ -42,6 +44,10 @@ public class CreditServiceImpl implements CreditService {
     private final CreditDao creditDao;
     private final Function<Credit, CreditDTO> entityToCreditDTO;
     private final Function<CreateCreditDTO, Credit> dtoToCreditEntity;
+    private final DomainEventPublisher eventPublisher;
+
+    @org.springframework.beans.factory.annotation.Value("${app.kafka.topics.credito}")
+    private String creditEventsTopic;
 
 
     @Override
@@ -78,6 +84,9 @@ public class CreditServiceImpl implements CreditService {
         credit.setTotalLoan(loan.multiply(BigInteger.valueOf(credit.getAgreedPayments())));
         credit.setAmountPaid(BigInteger.ZERO);
         creditDao.save(credit);
+        eventPublisher.publish(creditEventsTopic, "CREDIT_CREATED", String.valueOf(credit.getId()),
+            Map.of("creditId", credit.getId(), "accountId", account.getId(), "personId", personId,
+                "loan", credit.getLoan(), "status", credit.getStatus()));
         return "Credit created successfully";
 
     }
@@ -136,6 +145,10 @@ public class CreditServiceImpl implements CreditService {
         }
 
 
+        creditDao.save(entity);
+        eventPublisher.publish(creditEventsTopic, "CREDIT_PAYMENT_APPLIED", String.valueOf(creditId),
+            Map.of("creditId", creditId, "personId", personId, "amount", amount,
+                "amountPaid", entity.getAmountPaid(), "status", entity.getStatus()));
         return respuesta;
     }
 
@@ -151,6 +164,8 @@ public class CreditServiceImpl implements CreditService {
 
         entity.setStatus(Status.CANCELED.getDescription());
         creditDao.save(entity);
+        eventPublisher.publish(creditEventsTopic, "CREDIT_CANCELLED", String.valueOf(creditId),
+            Map.of("creditId", creditId, "accountId", entity.getAccountId(), "status", entity.getStatus()));
         return "Credit with id: " + creditId + " cancelled successfully";
     }
 

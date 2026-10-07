@@ -18,7 +18,7 @@ Sistema de gestión de crédito basado en microservicios con Java Spring Boot. M
 - Seguridad: JWT stateless, claves RSA, Spring Security, context paths por servicio.
 
 ## Stack y prácticas
-- Java 21, Spring Boot 3.5.3, Spring Cloud 2025.0.0, Maven.
+- Java 25, Spring Boot 4.1.1, Spring Cloud 2025.1.3, Maven.
 - REST consistente; errores centralizados (@RestControllerAdvice).
 - Configuración externalizada (application.properties).
 - Monitoring con Actuator (health, info, metrics).
@@ -38,6 +38,33 @@ Sistema de gestión de crédito basado en microservicios con Java Spring Boot. M
 
 ## Despliegue y escalabilidad
 - Servicios
+
+## Arquitectura orientada a eventos
+
+El flujo REST sigue disponible para operaciones que necesitan una respuesta inmediata, pero cada cambio de negocio publica un evento JSON en Kafka. Todos los eventos comparten `eventId`, `eventType`, `aggregateId`, `occurredAt` y `payload`.
+
+| Topico | Productor | Eventos principales |
+|---|---|---|
+| `auth.events` | auth-service | `USER_AUTHENTICATED` |
+| `persona.events` | persona-service | `PERSON_CREATED`, `PERSON_UPDATED`, `PERSON_DELETED` |
+| `cuenta.events` | cuenta-service | `ACCOUNT_CREATED`, `PAYMENT_DEBITED`, `ACCOUNT_BALANCE_UPDATED`, `ACCOUNT_DELETED` |
+| `credito.events` | credito-service | `CREDIT_CREATED`, `CREDIT_PAYMENT_APPLIED`, `CREDIT_CANCELLED` |
+
+Hay consumidores de ejemplo con efecto de negocio: `cuenta-service` elimina una cuenta cuando recibe `PERSON_DELETED`, y `credito-service` cancela créditos pendientes cuando recibe `ACCOUNT_DELETED`. Esto permite extender el sistema con notificaciones, auditoría, scoring y proyecciones sin acoplar los servicios por llamadas REST.
+
+## Infraestructura local
+
+Requisitos: Docker Desktop, Java 25 y Maven. Levanta PostgreSQL, Kafka en modo KRaft y Kafka UI con:
+
+```bash
+docker compose up -d
+```
+
+- PostgreSQL: `localhost:5432`, base `credito`, usuario `postgres`, clave `admin`
+- Kafka: `localhost:9092`
+- Kafka UI: `http://localhost:8088`
+
+Para ejecutar los servicios fuera de Docker se usa `localhost:9092` por defecto. En una red Docker, define `KAFKA_BOOTSTRAP_SERVERS=kafka:9092`.
 
 ## Front demo:
 ![Frontend Angular](assets/frontgif.gif)

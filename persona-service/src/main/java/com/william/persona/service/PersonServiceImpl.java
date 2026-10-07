@@ -9,6 +9,7 @@ import com.william.persona.domain.model.Person;
 import com.william.persona.infrastructure.dto.AddPersonDTO;
 import com.william.persona.infrastructure.dto.EditPersonDTO;
 import com.william.persona.infrastructure.dto.PersonDTO;
+import com.william.persona.infrastructure.messaging.DomainEventPublisher;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -36,6 +38,10 @@ public class PersonServiceImpl implements PersonService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final DaoAuthenticationProvider daoAuthenticationProvider;
+    private final DomainEventPublisher eventPublisher;
+
+    @org.springframework.beans.factory.annotation.Value("${app.kafka.topics.persona}")
+    private String personaEventsTopic;
 
 
     @Override
@@ -71,6 +77,8 @@ public class PersonServiceImpl implements PersonService {
         p.setStatus(Status.ACTIVO);
         p.setPassword(passwordEncoder.encode(addPersonDTO.getPassword()));
         personDao.savePerson(p);
+        eventPublisher.publish(personaEventsTopic, "PERSON_CREATED", String.valueOf(p.getId()),
+            Map.of("personId", p.getId(), "document", p.getDocument(), "status", p.getStatus().name()));
         return "Person saved successfully";
     }
 
@@ -86,6 +94,8 @@ public class PersonServiceImpl implements PersonService {
         person.setDocumentType(entity.get().getDocumentType());
 
         personDao.savePerson(person);
+        eventPublisher.publish(personaEventsTopic, "PERSON_UPDATED", String.valueOf(person.getId()),
+            Map.of("personId", person.getId(), "status", person.getStatus().name()));
         return "Person updated successfully";
     }
 
@@ -98,6 +108,8 @@ public class PersonServiceImpl implements PersonService {
 
         entity.get().setStatus(Status.INACTIVO);
         personDao.savePerson(entity.get());
+        eventPublisher.publish(personaEventsTopic, "PERSON_DELETED", String.valueOf(id),
+            Map.of("personId", id));
         return "Person deleted successfully";
     }
 
